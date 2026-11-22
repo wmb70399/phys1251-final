@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PHYS 1251 Final Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a mission-control console. Left rail = flight modes, main = the active console, right drawer = AI tutor. Single dark world. */
+:root{
+  --bg:#05080F; --panel:#0B1220; --panel2:#101A2D; --line:#1C2942; --line2:#2A3B5E;
+  --ink:#E7EEFC; --mut:#8798BC; --dim:#5A6A8C;
+  --acc:#4FE3FF; --acc2:#A08BFF; --ok:#3BE29E; --warn:#FFC24F; --bad:#FF5F7E;
+  --fd:'Chakra Petch',ui-sans-serif,system-ui,sans-serif; --fb:'IBM Plex Sans',ui-sans-serif,system-ui,sans-serif; --fm:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  --r:14px; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--fb);-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1100px 600px at 85% -10%,rgba(79,227,255,.10),transparent 60%),radial-gradient(900px 500px at -10% 110%,rgba(160,139,255,.10),transparent 60%),
+  linear-gradient(rgba(79,227,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(79,227,255,.035) 1px,transparent 1px);
+  background-size:auto,auto,44px 44px,44px 44px;background-attachment:fixed}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+h1,h2,h3{font-family:var(--fd);letter-spacing:.02em;text-wrap:balance;margin:0}
+.mono{font-family:var(--fm);font-variant-numeric:tabular-nums}
+.app{display:grid;grid-template-columns:232px 1fr;min-height:100%}
+/* rail */
+.rail{position:sticky;top:0;height:100vh;padding:22px 14px;border-right:1px solid var(--line);background:linear-gradient(180deg,rgba(11,18,32,.92),rgba(5,8,15,.92));display:flex;flex-direction:column;gap:6px}
+.brand{display:flex;gap:10px;align-items:center;padding:4px 8px 18px}
+.brand .logo{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#05080F;font:700 14px var(--fd)}
+.brand b{font:700 15px var(--fd);display:block;letter-spacing:.06em}
+.brand small{color:var(--mut);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
+.nav{display:flex;flex-direction:column;gap:3px}
+.nav a{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;color:var(--mut);text-decoration:none;font-weight:500;border:1px solid transparent}
+.nav a svg{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7}
+.nav a:hover{color:var(--ink);background:rgba(79,227,255,.05)}
+.nav a.on{color:var(--ink);background:rgba(79,227,255,.08);border-color:rgba(79,227,255,.28);box-shadow:inset 3px 0 0 var(--acc)}
+.rail .foot{margin-top:auto;font-size:12px;color:var(--dim);padding:8px;display:flex;flex-direction:column;gap:6px}
+.syncdot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--dim);margin-right:6px}
+.syncdot.on{background:var(--ok);box-shadow:0 0 8px var(--ok)}
+main{padding:28px clamp(16px,3.2vw,44px) 90px;max-width:1180px;width:100%}
+.eyebrow{font:600 11.5px var(--fm);letter-spacing:.16em;text-transform:uppercase;color:var(--acc)}
+.pagehead{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.pagehead h1{font-size:30px;margin-top:4px}
+.pagehead p{color:var(--mut);margin:6px 0 0;max-width:62ch}
+/* panels */
+.card{background:linear-gradient(180deg,rgba(16,26,45,.86),rgba(11,18,32,.86));border:1px solid var(--line);border-radius:var(--r);padding:20px;position:relative}
+.card.glow{border-color:rgba(79,227,255,.35);box-shadow:0 0 0 1px rgba(79,227,255,.08),0 20px 60px -30px rgba(79,227,255,.35)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:1.25fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.lbl{color:var(--mut);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;border:1px solid var(--line2);background:var(--panel2);font-weight:600;font-size:14px}
+.btn:hover{border-color:var(--acc);color:var(--acc)}
+.btn.pri{background:linear-gradient(135deg,var(--acc),#6fb8ff);color:#04121A;border:0}
+.btn.pri:hover{filter:brightness(1.1);color:#04121A}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sm{padding:6px 11px;font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:7px 12px;border-radius:999px;border:1px solid var(--line2);background:transparent;color:var(--mut);font-size:13px;font-weight:500}
+.chip:hover{color:var(--ink);border-color:var(--mut)}
+.chip.on{color:#04121A;background:var(--acc);border-color:var(--acc);font-weight:600}
+.chip .star{color:var(--warn)}
+.chip.on .star{color:#04121A}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:999px;font:600 11.5px var(--fm);letter-spacing:.04em;border:1px solid var(--line2);color:var(--mut)}
+.pill.hot{color:var(--warn);border-color:rgba(255,194,79,.4);background:rgba(255,194,79,.06)}
+.pill.ok{color:var(--ok);border-color:rgba(59,226,158,.4)}
+.pill.bad{color:var(--bad);border-color:rgba(255,95,126,.4)}
+.pill.acc{color:var(--acc);border-color:rgba(79,227,255,.4)}
+/* home */
+.hero{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}
+.count{display:flex;gap:14px;margin:14px 0 6px}
+.count div{min-width:84px;padding:12px 14px;border:1px solid var(--line2);border-radius:12px;background:rgba(5,8,15,.6);text-align:center}
+.count b{display:block;font:600 38px/1 var(--fm);color:var(--ink);text-shadow:0 0 22px rgba(79,227,255,.35)}
+.count span{font:600 10.5px var(--fm);color:var(--mut);letter-spacing:.14em}
+.intel{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.intel li{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-size:14px}
+.intel li svg{width:18px;height:18px;stroke:var(--acc);fill:none;stroke-width:1.8;margin-top:2px}
+.intel b{color:var(--ink)}
+.readybar{height:10px;border-radius:99px;background:var(--line);overflow:hidden;margin:10px 0 6px}
+.readybar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--acc2),var(--acc));box-shadow:0 0 16px rgba(79,227,255,.5)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:12px}
+.tile{display:grid;grid-template-columns:54px 1fr;gap:12px;align-items:center;text-align:left;padding:14px;border-radius:12px;border:1px solid var(--line);background:rgba(11,18,32,.7)}
+.tile:hover{border-color:var(--acc);transform:translateY(-1px)}
+.tile .nm{font-weight:600;font-size:14px;line-height:1.3}
+.tile .meta{color:var(--mut);font-size:12px;margin-top:3px}
+.ring{width:54px;height:54px}
+.ring circle{fill:none;stroke-width:5}
+.ring .bg{stroke:var(--line)}
+.ring text{fill:var(--ink);font:600 13px var(--fm)}
+.mission li{margin:0 0 8px}
+.todo{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(5,8,15,.4)}
+.todo input{accent-color:var(--acc);width:17px;height:17px;margin-top:2px;flex:none}
+.todo.done span{color:var(--dim);text-decoration:line-through}
+.todo .go{margin-left:auto;flex:none}
+.alert{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,194,79,.35);background:rgba(255,194,79,.06);font-size:14px}
+.alert b{color:var(--warn)}
+/* problem card */
+.prob .ptag{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.prob .stem{font-size:16.5px;line-height:1.65;max-width:72ch}
+.prob .stem b{color:var(--acc)}
+.figwrap{margin:14px 0 4px;overflow-x:auto}
+.fig{width:100%;max-width:400px;height:auto;display:block}
+.fig.wide{max-width:600px}
+.fig .solid,.fig .thin,.fig .dash,.fig .spring,.fig .ax,.fig .gr,.fig .gr2,.fig .plot,.fig .vec,.fig .vec2{fill:none}
+.fig .solid{stroke:var(--mut);stroke-width:2}
+.fig .surf{fill:rgba(79,227,255,.06);stroke:var(--mut);stroke-width:1.6}
+.fig .thin{stroke:var(--dim);stroke-width:1.2}
+.fig .dash{stroke:var(--acc);stroke-width:1.8;stroke-dasharray:6 5}
+.fig .spring{stroke:var(--warn);stroke-width:2}
+.fig .blk{fill:rgba(160,139,255,.22);stroke:var(--acc2);stroke-width:1.6}
+.fig .ghost{fill:none;stroke:var(--acc2);stroke-dasharray:3 3}
+.fig .dot{fill:var(--acc)}
+.fig .vec{stroke:var(--acc);stroke-width:2.2}
+.fig .vec2{stroke:var(--acc2);stroke-width:2.2}
+.fig .ahd{fill:var(--acc)}
+.fig .ax{stroke:var(--mut);stroke-width:1.4}
+.fig .gr{stroke:var(--line2);stroke-width:1}
+.fig .gr2{stroke:var(--line);stroke-width:.8}
+.fig .plot{stroke:var(--acc);stroke-width:2.6;stroke-linejoin:round;filter:drop-shadow(0 0 4px rgba(79,227,255,.6))}
+.fig text{fill:var(--ink);font:13px var(--fb)}
+.fig .tick{fill:var(--mut);font:11px var(--fm)}
+.fig.mini{width:150px}
+.choices{display:grid;gap:9px;margin-top:18px}
+.choices.visual{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+.choice{display:flex;align-items:center;gap:12px;text-align:left;width:100%;padding:12px 14px;border-radius:11px;border:1px solid var(--line2);background:rgba(5,8,15,.55);font-size:15px}
+.choices.visual .choice{flex-direction:column;align-items:flex-start}
+.choice .key{flex:none;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;border:1px solid var(--line2);font:600 13px var(--fm);color:var(--mut)}
+.choice:hover:not(:disabled){border-color:var(--acc)}
+.choice.sel{border-color:var(--acc);background:rgba(79,227,255,.08)}
+.choice.sel .key{background:var(--acc);color:#04121A;border-color:var(--acc)}
+.choice.right{border-color:var(--ok);background:rgba(59,226,158,.09)}
+.choice.right .key{background:var(--ok);color:#04121A;border-color:var(--ok)}
+.choice.wrong{border-color:var(--bad);background:rgba(255,95,126,.08)}
+.choice.wrong .key{background:var(--bad);color:#04121A;border-color:var(--bad)}
+.choice:disabled{cursor:default}
+.ctext{font-family:var(--fb)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
+.actions .sp{flex:1}
+.kbd{font:11px var(--fm);color:var(--dim)}
+.hintbox{display:grid;gap:8px;margin-top:14px}
+.hint{padding:10px 14px;border-left:3px solid var(--acc2);background:rgba(160,139,255,.07);border-radius:0 10px 10px 0;font-size:14.5px}
+.hint b{color:var(--acc2);font:600 11px var(--fm);letter-spacing:.1em;display:block;margin-bottom:2px}
+.verdict{display:flex;align-items:center;gap:10px;font:700 18px var(--fd);margin:18px 0 10px}
+.verdict.ok{color:var(--ok)} .verdict.no{color:var(--bad)}
+.sol{border-top:1px solid var(--line);padding-top:12px;display:grid;gap:10px}
+.st b{font:600 11.5px var(--fm);letter-spacing:.08em;color:var(--acc);text-transform:uppercase}
+.st div{margin-top:3px}
+.eq{font-family:var(--fm);font-size:14px;background:rgba(5,8,15,.65);border:1px solid var(--line);padding:8px 12px;border-radius:8px;margin:5px 0;overflow-x:auto;white-space:nowrap}
+.eq b{color:var(--ok)}
+.hud{display:flex;gap:18px;flex-wrap:wrap;color:var(--mut);font-size:13px}
+.hud b{color:var(--ink);font-family:var(--fm)}
+.ctrlrow{display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:16px}
+/* replay */
+.rgroup{display:grid;gap:8px}
+.ritem{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:rgba(5,8,15,.45);text-align:left;width:100%}
+.ritem:hover{border-color:var(--acc)}
+.ritem .q{font:600 13px var(--fm);color:var(--acc);min-width:54px}
+/* mock */
+.navgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.navgrid button{aspect-ratio:1;border-radius:8px;border:1px solid var(--line2);background:transparent;font:600 12.5px var(--fm);color:var(--mut)}
+.navgrid button.ans{background:rgba(79,227,255,.14);color:var(--ink);border-color:rgba(79,227,255,.4)}
+.navgrid button.cur{outline:2px solid var(--acc)}
+.navgrid button.flag{box-shadow:inset 0 -3px 0 var(--warn)}
+.navgrid button.r{background:rgba(59,226,158,.18);border-color:var(--ok);color:var(--ink)}
+.navgrid button.w{background:rgba(255,95,126,.16);border-color:var(--bad);color:var(--ink)}
+.timer{font:600 26px var(--fm);letter-spacing:.04em}
+.timer.low{color:var(--warn)}
+.bars{display:grid;gap:8px}
+.bar{display:grid;grid-template-columns:170px 1fr 52px;gap:10px;align-items:center;font-size:13.5px}
+.bar .tr{height:8px;border-radius:9px;background:var(--line);overflow:hidden}
+.bar .tr i{display:block;height:100%;background:var(--acc)}
+.modal{position:fixed;inset:0;background:rgba(2,4,8,.72);display:grid;place-items:center;z-index:50;padding:16px}
+.modal .card{max-width:440px}
+.mockgrid{grid-template-columns:1fr 280px;align-items:start}.resgrid{grid-template-columns:340px 1fr;align-items:start}
+.field{width:100%;background:var(--bg);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;color:var(--ink);font:inherit;margin-top:6px}
+.field:focus{border-color:var(--acc);outline:none}
+/* methods */
+.mgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:16px}
+/* formulas */
+.fsec{display:grid;gap:8px}
+.frow{display:grid;grid-template-columns:minmax(180px,1.1fr) 1.4fr;gap:14px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(5,8,15,.45);align-items:center}
+.frow .f{font-family:var(--fm);font-size:14px}
+.frow .w{color:var(--mut);font-size:13.5px}
+/* plan */
+.day{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:16px;border:1px solid var(--line);border-radius:12px;background:rgba(11,18,32,.6)}
+.day.today{border-color:var(--acc);box-shadow:0 0 0 1px rgba(79,227,255,.15),0 0 40px -18px rgba(79,227,255,.6)}
+.day.past{opacity:.62}
+.day .dt{font:600 13px var(--fm);color:var(--mut)}
+.day .dt b{display:block;font:700 22px var(--fd);color:var(--ink)}
+.day h3{font-size:16px;margin-bottom:8px}
+/* tutor drawer */
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(440px,100%);background:var(--panel);border-left:1px solid var(--line2);z-index:40;display:flex;flex-direction:column;transform:translateX(102%);visibility:hidden;transition:transform .25s ease,visibility 0s .25s}
+.drawer.open{transform:none;visibility:visible;transition:transform .25s ease;box-shadow:-30px 0 80px rgba(0,0,0,.5)}
+.drawer header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line)}
+.drawer .msgs{flex:1;overflow-y:auto;padding:16px 18px;display:grid;gap:12px;align-content:start}
+.msg{padding:11px 14px;border-radius:12px;font-size:14.5px;white-space:pre-wrap}
+.msg.me{background:rgba(79,227,255,.1);border:1px solid rgba(79,227,255,.25);justify-self:end;max-width:88%}
+.msg.ai{background:var(--panel2);border:1px solid var(--line)}
+.drawer form{display:flex;gap:8px;padding:14px;border-top:1px solid var(--line)}
+.drawer input{flex:1;background:var(--bg);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;color:var(--ink);font:inherit}
+.empty{color:var(--mut);padding:24px;text-align:center;border:1px dashed var(--line2);border-radius:12px}
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .rail{position:fixed;bottom:0;top:auto;height:auto;width:100%;z-index:30;flex-direction:row;padding:6px;border-right:0;border-top:1px solid var(--line)}
+  .brand,.rail .foot{display:none}
+  .nav{flex-direction:row;width:100%;justify-content:space-around}
+  .nav a{flex-direction:column;gap:2px;padding:6px 4px;font-size:10px;box-shadow:none!important}
+  .nav a span{white-space:nowrap}
+  .hero,.g2,.g3,.mockgrid,.resgrid{grid-template-columns:1fr}
+  .mgrid{grid-template-columns:1fr}
+  .frow{grid-template-columns:1fr}
+  .day{grid-template-columns:1fr}
+  .bar{grid-template-columns:110px 1fr 44px}
+  .count b{font-size:30px}.count div{min-width:70px}
+  main{padding-bottom:110px}
+}
+@media (max-width:560px){.nav a span{display:none}.nav a{padding:10px 6px}.nav a svg{width:22px;height:22px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="rail">
+    <div class="brand"><div class="logo">ΣF</div><div><b>PHYS 1251</b><small>Final prep console</small></div></div>
+    <nav class="nav" id="nav"></nav>
+    <div class="foot"><div><span class="syncdot" id="syncdot"></span><span id="synctxt">Progress saved on this device</span></div><div>Built from the PHYS 1251 eLC course · Dr. Weliweriya · Fall 2026. Not an official UGA site.</div></div>
+  </aside>
+  <main id="view"></main>
+</div>
+<aside class="drawer" id="drawer" aria-label="AI tutor">
+  <header><div><div class="eyebrow">AI tutor</div><b style="font-family:var(--fd)">Explain this problem</b></div><button class="btn sm ghost" id="tclose">Close</button></header>
+  <div class="msgs" id="tmsgs"></div>
+  <form id="tform"><input id="tinput" placeholder="Ask a follow-up question…" autocomplete="off"><button class="btn pri sm" type="submit">Send</button></form>
+</aside>
+<div id="modal"></div>
+<script>
+/* ===================== PHYS 1251 problem engine ===================== */
+const G = 9.81, DEG = Math.PI / 180;
+const sin = d => Math.sin(d * DEG), cos = d => Math.cos(d * DEG), tan = d => Math.tan(d * DEG);
+const atand = x => Math.atan(x) / DEG;
+let _rng = Math.random; const R = () => _rng();
+function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const rnd = (a, b, step = 1) => { const n = Math.round((b - a) / step); return +(a + step * Math.floor(R() * (n + 1))).toFixed(6); };
+const pick = a => a[Math.floor(R() * a.length)];
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(R() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const fx = (fix, k, f) => (fix && fix[k] !== undefined) ? fix[k] : f();
+
+function fmt(x, sig = 3) {
+  if (!isFinite(x)) return '—';
+  if (Math.abs(x) < 1e-9) return '0';
+  const a = Math.abs(x);
+  let s = a >= 100 ? Math.round(x).toLocaleString('en-US') : x.toPrecision(sig);
+  if (s.includes('e')) s = Number(s).toString();
+  return s.replace('-', '−');
+}
+const U = (x, u, sig) => fmt(x, sig) + (u ? '&nbsp;' + u : '');
+
+function mc(correct, wrongs, unit = '', o = {}) {
+  const sig = o.sig || 3, signed = !!o.signed, fl = o.floor || 1e-9;
+  const same = (a, b) => Math.abs(a - b) <= 0.04 * Math.max(Math.abs(a), Math.abs(b), fl) || fmt(a, sig) === fmt(b, sig);
+  const vals = [correct];
+  for (const w of wrongs) {
+    if (!isFinite(w)) continue;
+    if (!signed && w <= 0) continue;
+    if (vals.some(v => same(v, w))) continue;
+    vals.push(w); if (vals.length === 5) break;
+  }
+  const mults = shuffle([0.5, 0.65, 0.8, 1.2, 1.35, 1.5, 1.75, 2, 2.5, 0.4]);
+  let i = 0;
+  while (vals.length < 5 && i < 60 && Math.abs(correct) > 1e-9) {
+    const w = correct * mults[i % mults.length] * (i >= 10 ? 1 + (R() - 0.5) * 0.3 : 1); i++;
+    if (!vals.some(v => same(v, w))) vals.push(w);
+  }
+  let k = 1;
+  while (vals.length < 5 && k < 50) {
+    const w = correct + (k % 2 ? 1 : -1) * Math.ceil(k / 2) * (o.step || 1); k++;
+    if (!signed && w <= 0) continue;
+    if (!vals.some(v => same(v, w))) vals.push(w);
+  }
+  const sorted = vals.slice().sort((a, b) => a - b);
+  return { choices: sorted.map(v => U(v, unit, sig)), ans: sorted.indexOf(correct), value: correct };
+}
+function mcText(correct, wrongs) {
+  const set = [correct]; for (const w of wrongs) if (!set.includes(w) && set.length < 5) set.push(w);
+  const s = shuffle(set); return { choices: s, ans: s.indexOf(correct) };
+}
+
+/* ---------- figures (inline SVG, themed through CSS classes) ---------- */
+const svg = (w, h, body, cls = '') => `<svg class="fig ${cls}" viewBox="0 0 ${w} ${h}" role="img" xmlns="http://www.w3.org/2000/svg">${body}</svg>`;
+const arrowDefs = `<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ahd"/></marker></defs>`;
+const T = (x, y, s, a = 'middle', c = 'lbl') => `<text x="${x}" y="${y}" text-anchor="${a}" class="${c}">${s}</text>`;
+
+function figVT(ts, vs) {
+  const W = 560, H = 240, L = 46, R = 16, Tp = 16, B = 34, tmax = ts[ts.length - 1];
+  const X = t => L + (W - L - R) * t / tmax, Y = v => Tp + (H - Tp - B) * (6 - v) / 12;
+  let g = '';
+  for (let t = 0; t <= tmax; t += 2) g += `<line x1="${X(t)}" y1="${Y(6)}" x2="${X(t)}" y2="${Y(-6)}" class="${t % 4 ? 'gr2' : 'gr'}"/>`;
+  for (let v = -6; v <= 6; v++) g += `<line x1="${L}" y1="${Y(v)}" x2="${W - R}" y2="${Y(v)}" class="${v === 0 ? 'ax' : (v % 5 ? 'gr2' : 'gr')}"/>`;
+  for (let t = 0; t <= tmax; t += 4) g += T(X(t), Y(0) + 15, t, 'middle', 'tick');
+  [-5, 5].forEach(v => g += T(L - 8, Y(v) + 4, (v > 0 ? '+' : '−') + '5', 'end', 'tick'));
+  g += T(W - R, Y(-6) + 26, 'time (s)', 'end', 'tick');
+  g += `<text x="14" y="${(Y(6) + Y(-6)) / 2}" transform="rotate(-90 14 ${(Y(6) + Y(-6)) / 2})" text-anchor="middle" class="tick">velocity (m/s)</text>`;
+  g += `<polyline points="${ts.map((t, i) => X(t) + ',' + Y(vs[i])).join(' ')}" class="plot"/>`;
+  return svg(W, H, g, 'wide');
+}
+function figMini(fn, kind) {
+  const W = 150, H = 96, L = 14, B = 12, pts = [];
+  for (let i = 0; i <= 60; i++) { const t = i / 60; pts.push([L + (W - L - 6) * t, (H - B) - (H - B - 6) * fn(t)]); }
+  const zeroY = kind === 'v' ? (H - B) - (H - B - 6) * 0.5 : H - B;
+  return svg(W, H, `<line x1="${L}" y1="4" x2="${L}" y2="${H - B}" class="ax"/><line x1="${L}" y1="${zeroY}" x2="${W - 4}" y2="${zeroY}" class="ax"/>` +
+    T(6, 12, kind, 'middle', 'tick') + T(W - 6, zeroY + 11, 't', 'end', 'tick') +
+    `<polyline points="${pts.map(p => p.join(',')).join(' ')}" class="plot"/>`, 'mini');
+}
+function figCliff(th) {
+  const a = Math.min(Math.max(th, 15), 60);
+  const body = arrowDefs + `<path d="M10,70 L70,70 L84,110 L96,150 L108,190 L120,210 L330,210" class="solid"/>` +
+    `<path d="M70,70 Q190,${70 - 110 * sin(a)} 310,210" class="dash"/>` +
+    `<line x1="70" y1="70" x2="${70 + 60 * cos(a)}" y2="${70 - 60 * sin(a)}" class="vec" marker-end="url(#ah)"/>` +
+    `<path d="M100,70 A30,30 0 0 0 ${70 + 30 * cos(a)},${70 - 30 * sin(a)}" class="thin"/>` + T(108, 64, 'θ', 'start') +
+    T(48, 140, 'h', 'middle') + `<line x1="58" y1="74" x2="58" y2="206" class="thin"/>` +
+    `<line x1="70" y1="222" x2="310" y2="222" class="thin"/>` + T(190, 238, 'R', 'middle') + T(70 + 64 * cos(a), 62 - 60 * sin(a), 'v₀', 'start') +
+    `<circle cx="310" cy="210" r="4" class="dot"/>`;
+  return svg(340, 244, body);
+}
+function zig(p, q, n, off, amp, k = 10) {
+  let d = `M${p[0] + n[0] * off},${p[1] + n[1] * off}`;
+  for (let i = 1; i < k; i++) { const t = i / k, s = (i % 2 ? 1 : -1) * amp; d += ` L${p[0] + (q[0] - p[0]) * t + n[0] * (off + s)},${p[1] + (q[1] - p[1]) * t + n[1] * (off + s)}`; }
+  return d + ` L${q[0] + n[0] * off},${q[1] + n[1] * off}`;
+}
+function figRamp(th, o = {}) {
+  const a = Math.min(Math.max(th, 12), 50), W = 400, H = 240, x0 = 60, y0 = 225, len = Math.min(310, 180 / sin(a));
+  const x1 = x0 + len * cos(a), y1 = y0 - len * sin(a);
+  const P = s => [x0 + s * len * cos(a), y1 + s * len * sin(a)], n = [sin(a), -cos(a)];
+  let b = arrowDefs + `<polygon points="${x0},${y0} ${x1},${y0} ${x0},${y1}" class="surf"/>`;
+  const s = o.blockAt ?? 0.4, [bx, by] = P(s);
+  b += `<g transform="translate(${bx},${by}) rotate(${a})"><rect x="-17" y="-26" width="34" height="26" rx="3" class="blk"/>${o.m ? T(0, -8, o.m) : ''}</g>`;
+  if (o.spring) { const p = P(0.8), q = P(0.985); b += `<path d="${zig(p, q, n, 12, 7)}" class="spring"/><line x1="${q[0] + n[0] * 2}" y1="${q[1] + n[1] * 2}" x2="${q[0] + n[0] * 24}" y2="${q[1] + n[1] * 24}" class="solid"/>` + T(p[0] + n[0] * 34, p[1] + n[1] * 34, 'k'); }
+  if (o.pullUp) { const p = P(s - 0.06), q = P(Math.max(s - 0.42, 0.03)); b += `<path d="${zig(p, q, n, 13, 6)}" class="spring"/>` + T(q[0] + n[0] * 30, q[1] + n[1] * 30, 'k'); }
+  if (o.pulley) {
+    const px = x0 - 8, py = y1 - 12;
+    b += `<circle cx="${px}" cy="${py}" r="11" class="solid"/><line x1="${bx - 17 * cos(a) + n[0] * 13}" y1="${by - 17 * sin(a) + n[1] * 13}" x2="${px + 2}" y2="${py - 11}" class="thin"/>` +
+      `<line x1="${px - 11}" y1="${py}" x2="${px - 11}" y2="${py + 70}" class="thin"/><rect x="${px - 26}" y="${py + 70}" width="30" height="30" rx="3" class="blk"/>` + T(px - 11, py + 90, 'm₂');
+  }
+  b += `<path d="M${x1 - 50},${y0} A50,50 0 0 1 ${x1 - 50 * cos(a)},${y0 - 50 * sin(a)}" class="thin"/>` + T(x1 - 64, y0 - 8, 'θ');
+  if (o.L) b += T((x0 + x1) / 2 + 30 * n[0] * -1, (y0 + y1) / 2 - 30 * n[1] * -1 + 6, o.L, 'middle', 'lbl');
+  return svg(W, H, b);
+}
+function figTable(o = {}) {
+  let b = arrowDefs + `<rect x="10" y="110" width="280" height="10" class="surf"/><line x1="290" y1="110" x2="290" y2="230" class="solid"/>` +
+    `<circle cx="300" cy="100" r="11" class="solid"/><rect x="120" y="70" width="56" height="40" rx="3" class="blk"/>` + T(148, 95, 'm₁') +
+    `<line x1="176" y1="88" x2="300" y2="89" class="thin"/><line x1="311" y1="100" x2="311" y2="170" class="thin"/>` +
+    `<rect x="296" y="170" width="30" height="30" rx="3" class="blk"/>` + T(311, 190, 'm₂');
+  if (o.pull) b += `<line x1="120" y1="90" x2="${120 - 70 * cos(o.pull)}" y2="${90 - 70 * sin(o.pull)}" class="vec" marker-end="url(#ah)"/>` +
+    T(120 - 80 * cos(o.pull), 82 - 70 * sin(o.pull), 'F') + `<path d="M85,90 A35,35 0 0 1 ${120 - 35 * cos(o.pull)},${90 - 35 * sin(o.pull)}" class="thin"/>` + T(72, 86, 'θ');
+  return svg(340, 236, b);
+}
+function figVCircle() {
+  return svg(260, 240, arrowDefs + `<circle cx="130" cy="120" r="90" class="dash"/><circle cx="130" cy="120" r="3" class="dot"/>` +
+    `<line x1="130" y1="120" x2="130" y2="30" class="thin"/><line x1="130" y1="120" x2="130" y2="210" class="thin"/>` +
+    `<rect x="118" y="18" width="24" height="20" rx="3" class="blk"/><rect x="118" y="202" width="24" height="20" rx="3" class="blk"/>` +
+    T(150, 22, 'B (top)', 'start') + T(150, 228, 'A (bottom)', 'start') + T(140, 80, 'r', 'start') +
+    `<line x1="142" y1="212" x2="196" y2="212" class="vec" marker-end="url(#ah)"/>` + T(200, 205, 'v', 'start'));
+}
+function figBlocks() {
+  return svg(380, 120, arrowDefs + `<line x1="10" y1="90" x2="370" y2="90" class="solid"/><rect x="40" y="62" width="40" height="28" rx="3" class="blk"/>` + T(60, 81, 'm₁') +
+    `<rect x="230" y="62" width="40" height="28" rx="3" class="blk"/>` + T(250, 81, 'm₂') +
+    `<line x1="84" y1="52" x2="134" y2="52" class="vec" marker-end="url(#ah)"/>` + T(110, 44, 'v₀') +
+    `<line x1="60" y1="106" x2="230" y2="106" class="thin"/>` + T(145, 118, 'd', 'middle', 'tick') + T(320, 110, 'rough, μₖ', 'middle', 'tick'));
+}
+function figCars() {
+  return svg(300, 220, arrowDefs + `<line x1="10" y1="150" x2="290" y2="150" class="dash"/><line x1="200" y1="10" x2="200" y2="210" class="dash"/>` +
+    `<rect x="40" y="138" width="44" height="24" rx="5" class="blk"/>` + T(62, 155, 'A') + `<line x1="88" y1="150" x2="150" y2="150" class="vec" marker-end="url(#ah)"/>` +
+    `<rect x="188" y="170" width="24" height="40" rx="5" class="blk"/>` + T(200, 194, 'B') + `<line x1="200" y1="166" x2="200" y2="110" class="vec2" marker-end="url(#ah)"/>` +
+    `<line x1="200" y1="150" x2="262" y2="96" class="vec" stroke-dasharray="4 4" marker-end="url(#ah)"/>` + T(268, 92, 'V?', 'start') + T(270, 16, 'N', 'middle', 'tick') + T(286, 145, 'E', 'middle', 'tick'));
+}
+function figWheel() {
+  return svg(220, 200, arrowDefs + `<circle cx="110" cy="100" r="80" class="surf"/><circle cx="110" cy="100" r="4" class="dot"/><line x1="110" y1="100" x2="190" y2="100" class="thin"/>` +
+    T(150, 92, 'r') + `<circle cx="190" cy="100" r="6" class="blk"/><path d="M110,20 A80,80 0 0 0 40,62" class="vec" marker-end="url(#ah)"/>` + T(60, 30, 'ω, α', 'middle'));
+}
+function figPend(th) {
+  const a = Math.min(Math.max(th, 15), 70), L = 150;
+  return svg(260, 200, `<line x1="60" y1="20" x2="200" y2="20" class="solid"/><line x1="130" y1="20" x2="130" y2="${20 + L}" class="dash"/>` +
+    `<line x1="130" y1="20" x2="${130 - L * sin(a)}" y2="${20 + L * cos(a)}" class="thin"/><circle cx="${130 - L * sin(a)}" cy="${20 + L * cos(a)}" r="10" class="blk"/>` +
+    `<circle cx="130" cy="${20 + L}" r="10" class="ghost"/>` + T(122, 70, 'θ', 'end') + T(140, 100, 'L', 'start'));
+}
+
+/* ---------- helpers for solution text ---------- */
+const step = (h, b) => `<div class="st"><b>${h}</b><div>${b}</div></div>`;
+const eq = s => `<div class="eq">${s}</div>`;
+
+/* ===================== GENERATORS ===================== */
+const GEN = {};
+function def(id, topic, title, fn) { GEN[id] = { id, topic, title, fn }; }
+
+/* ---- Motion graphs ---- */
+def('g_vt', 'graphs', 'Reading a velocity–time graph', (fix = {}) => {
+  const ts = [0, 4, 8, 12, 16, 20, 24, 28];
+  let vs;
+  do { vs = ts.map(() => pick([-5, -4, -3, -2, -1, 1, 2, 3, 4, 5])); } while (!vs.some((v, i) => i && v * vs[i - 1] < 0) || !vs.some((v, i) => i && v === vs[i - 1] || true));
+  vs = fx(fix, 'vs', () => vs);
+  const vAt = t => { for (let i = 1; i < ts.length; i++) if (t <= ts[i]) return vs[i - 1] + (vs[i] - vs[i - 1]) * (t - ts[i - 1]) / (ts[i] - ts[i - 1]); return vs[vs.length - 1]; };
+  const area = (a, b, abs) => { let s = 0; for (let i = 1; i < ts.length; i++) { const lo = Math.max(a, ts[i - 1]), hi = Math.min(b, ts[i]); if (hi <= lo) continue; const va = vAt(lo), vb = vAt(hi); if (abs && va * vb < 0) { const tz = lo + va / (va - vb) * (hi - lo); s += Math.abs(va) * (tz - lo) / 2 + Math.abs(vb) * (hi - tz) / 2; } else s += abs ? Math.abs((va + vb) / 2 * (hi - lo)) : (va + vb) / 2 * (hi - lo); } return s; };
+  const crossings = []; for (let i = 1; i < ts.length; i++) if (vs[i] * vs[i - 1] < 0) crossings.push(ts[i - 1] + vs[i - 1] / (vs[i - 1] - vs[i]) * 4);
+  const mode = fx(fix, 'mode', () => pick(['disp', 'disp', 'dist', 'turn', 'acc']));
+  const fig = figVT(ts, vs), base = 'The graph shows velocity as a function of time for an object moving along a straight line.';
+  if (mode === 'turn') {
+    const c = crossings[0];
+    const wr = [...crossings.slice(1), ...ts.filter(t => t > 0 && Math.abs(t - c) > 1), c + 4, c / 2];
+    return { stem: `${base} At what time does the object <b>first change direction</b> of motion?`, fig, ...mc(c, shuffle(wr), 's'), src: 'Midterm 1 Q5 style',
+      hints: ['Direction of motion = the sign of the velocity.', 'Look for the first moment v crosses the time axis (goes from + to − or − to +). A slope change alone is not a change in direction.', 'If the crossing happens inside a segment, interpolate: t = t₁ + v₁·Δt/(v₁ − v₂).'],
+      sol: step('Idea', 'The object reverses only when v changes sign.') + step('Find it', `The first sign change happens between the grid points around t ≈ ${fmt(c)} s, so the answer is <b>${fmt(c)} s</b>.`) };
+  }
+  if (mode === 'acc') {
+    const i = fx(fix, 'seg', () => 1 + Math.floor(R() * 7)), t = ts[i - 1] + 2, a = (vs[i] - vs[i - 1]) / 4;
+    return { stem: `${base} What is the object's acceleration at t = ${t} s?`, fig, ...mc(a, [-a, vAt(t), vAt(t) / t, a * 2, a === 0 ? 1 : a / 2, -1.25, 0.75], 'm/s²', { signed: true, floor: 0.5, step: 0.25 }), src: 'Motion graphs',
+      hints: ['Acceleration is the slope of a v–t graph.', `Use the straight segment from t = ${ts[i - 1]} s to t = ${ts[i]} s.`, 'slope = Δv/Δt, and keep the sign.'],
+      sol: step('Slope of v–t', eq(`a = Δv/Δt = (${vs[i]} − (${vs[i - 1]}))/(${ts[i]} − ${ts[i - 1]}) = <b>${fmt(a)} m/s²</b>`)) };
+  }
+  const pairs = []; for (let i = 0; i < ts.length; i++) for (let j = i + 2; j < ts.length; j++) pairs.push([ts[i], ts[j]]);
+  let [t1, t2] = fx(fix, 'win', () => pick(pairs));
+  if (fix.win === undefined && crossings.length) { const c = crossings[0]; const p = pairs.filter(([a, b]) => a < c && b > c); if (p.length) [t1, t2] = pick(p); }
+  const disp = area(t1, t2, false), dist = area(t1, t2, true);
+  if (mode === 'dist') return { stem: `${base} What total <b>distance</b> does the object travel between t = ${t1} s and t = ${t2} s?`, fig,
+    ...mc(dist, [disp, -disp, Math.abs(disp), dist / 2, area(0, t2, true), dist + 8], 'm', { signed: true, floor: 4, step: 4 }), src: 'Motion graphs',
+    hints: ['Distance = total area between the graph and the time axis, all counted as positive.', 'Split the region into triangles and rectangles; split again wherever v crosses zero.', 'Add the absolute values of every piece.'],
+    sol: step('Area, all positive', `Adding |area| of every triangle and rectangle from ${t1} s to ${t2} s gives <b>${fmt(dist)} m</b>.`) + step('Compare', `Net displacement over the same interval is ${fmt(disp)} m. Distance ignores direction; displacement does not.`) };
+  return { stem: `${base} What is the <b>net displacement</b> of the object between t = ${t1} s and t = ${t2} s?`, fig,
+    ...mc(disp, [dist, -disp, -dist, disp / 2, vAt(t2) * (t2 - t1), area(0, t2, false)], 'm', { signed: true, floor: 4, step: 4 }), src: 'Midterm 1 Q6 style',
+    hints: ['Displacement = signed area under the v–t curve.', 'Area below the axis (v < 0) counts as negative.', 'Break it into triangles and rectangles, then add with signs.'],
+    sol: step('Signed area', `Area above the axis is +, below is −. Adding the pieces from ${t1} s to ${t2} s gives Δx = <b>${fmt(disp)} m</b>.`) + step('Trap', `The total distance (all area positive) would be ${fmt(dist)} m, and it's usually one of the wrong choices.`) };
+});
+
+const SHAPES = {
+  rest: { d: 'is at rest the entire time', x: t => 0.5, v: t => 0.5 },
+  constPos: { d: 'moves at constant speed in the + direction', x: t => 0.08 + 0.84 * t, v: t => 0.8 },
+  constNeg: { d: 'moves at constant speed in the − direction', x: t => 0.92 - 0.84 * t, v: t => 0.2 },
+  speedUpPos: { d: 'starts from rest and speeds up uniformly in the + direction', x: t => 0.06 + 0.88 * t * t, v: t => 0.5 + 0.45 * t },
+  slowDownPos: { d: 'moves in the + direction while slowing down uniformly to a stop', x: t => 0.06 + 0.88 * (2 * t - t * t), v: t => 0.95 - 0.45 * t },
+  accThenConst: { d: 'accelerates from rest at a constant rate, then drives at constant speed', x: t => t < 0.5 ? 0.05 + 1.2 * t * t : 0.35 + 1.2 * (t - 0.5), v: t => t < 0.5 ? 0.5 + 0.8 * t : 0.9 },
+  constThenStop: { d: 'moves at constant speed in the + direction, then stops and stays at rest', x: t => t < 0.55 ? 0.08 + 1.4 * t : 0.85, v: t => t < 0.55 ? 0.85 : 0.5 },
+  speedUpNeg: { d: 'starts from rest and speeds up uniformly in the − direction', x: t => 0.94 - 0.88 * t * t, v: t => 0.5 - 0.45 * t },
+};
+def('g_shape', 'graphs', 'Match the motion to the graph', (fix = {}) => {
+  const keys = Object.keys(SHAPES), k = fx(fix, 'k', () => pick(keys)), kind = fx(fix, 'kind', () => pick(['x', 'x', 'v']));
+  const others = shuffle(keys.filter(z => z !== k)).slice(0, 3), opts = shuffle([k, ...others]);
+  const name = kind === 'x' ? 'position–time (x–t)' : 'velocity–time (v–t)';
+  return { stem: `An object ${SHAPES[k].d}. Which ${name} graph correctly shows this motion?`, fig: '',
+    choices: opts.map(z => figMini(SHAPES[z][kind], kind)), ans: opts.indexOf(k), visualChoices: true, src: 'Midterm 1 Q2 style',
+    hints: kind === 'x' ? ['On an x–t graph, the slope is the velocity.', 'Constant speed → straight line. Speeding up → curve getting steeper. Slowing down → curve flattening out.', 'At rest → horizontal line.'] : ['On a v–t graph, the height is the velocity and the slope is the acceleration.', 'Constant speed → horizontal line (not at zero). At rest → on the axis.', 'Speeding up in the − direction → line moving away from zero below the axis.'],
+    sol: step('Shape rules', kind === 'x' ? 'x–t slope = velocity: straight = constant v, steepening = speeding up, flattening = slowing, flat = rest.' : 'v–t height = velocity (sign = direction), slope = acceleration.') + step('Answer', `The graph for "${SHAPES[k].d}" is the one shown as choice ${'ABCDE'[opts.indexOf(k)]}.`) };
+});
+
+/* ---- Vectors / displacement maps ---- */
+const DIRS = { 'N of E': a => a, 'S of E': a => -a, 'N of W': a => 180 - a, 'S of W': a => 180 + a, 'E of N': a => 90 - a, 'W of N': a => 90 + a, 'E of S': a => -90 + a, 'W of S': a => -90 - a };
+const DUE = { 'due NORTH': 90, 'due SOUTH': -90, 'due EAST': 0, 'due WEST': 180 };
+const legTxt = l => l[1].startsWith('due') ? `${l[0]} m ${l[1].replace('due ', 'due ')}` : `${l[0]} m at ${l[2]}° ${l[1].replace('N', 'NORTH').replace('S ', 'SOUTH ').replace('E', 'EAST').replace('W', 'WEST').replace(' of ', ' of ').replace('SOUTH of EAST', 'SOUTH of EAST')}`;
+function dirWords(k) { return k.replace(/^N /, 'NORTH ').replace(/^S /, 'SOUTH ').replace(/^E /, 'EAST ').replace(/^W /, 'WEST ').replace(/ E$/, ' EAST').replace(/ W$/, ' WEST').replace(/ N$/, ' NORTH').replace(/ S$/, ' SOUTH'); }
+function legAngle(l) { return l[1].startsWith('due') ? DUE[l[1]] : DIRS[l[1]](l[2]); }
+function descDir(x, y) { const ang = atand(Math.abs(y) / Math.abs(x)); return [ang, (y >= 0 ? 'NORTH' : 'SOUTH'), (x >= 0 ? 'EAST' : 'WEST')]; }
+def('v_legs', 'vectors', 'Adding displacement legs on a map', (fix = {}) => {
+  let legs, X, Y;
+  do {
+    legs = fx(fix, 'legs', () => [[rnd(100, 300, 1), pick(Object.keys(DIRS)), rnd(15, 75)], [rnd(100, 300, 1), pick(Object.keys(DIRS)), rnd(15, 75)], [rnd(80, 260, 1), pick(Object.keys(DUE))]]);
+    X = legs.reduce((s, l) => s + l[0] * Math.cos(legAngle(l) * DEG), 0); Y = legs.reduce((s, l) => s + l[0] * Math.sin(legAngle(l) * DEG), 0);
+  } while (!fix.legs && (Math.hypot(X, Y) < 80 || Math.abs(X) < 30 || Math.abs(Y) < 30));
+  const mag = Math.hypot(X, Y), [ang, ns, ew] = descDir(X, Y);
+  const txt = legs.map((l, i) => `${['First', 'Then', 'Finally'][i]}, ${l[1].startsWith('due') ? `${l[0]} m ${l[1]}` : `${l[0]} m at ${l[2]}° ${dirWords(l[1])}`}`).join('. ') + '.';
+  const stem0 = `A cyclist rides three legs. ${txt}`;
+  const comps = legs.map(l => { const a = legAngle(l); return `${l[0]}·(${fmt(Math.cos(a * DEG), 3)}, ${fmt(Math.sin(a * DEG), 3)})`; });
+  const sol0 = step('1 · Turn each leg into components', 'Measure every angle from +x (East), counter-clockwise positive. Leg components:<br>' + comps.join('<br>')) +
+    step('2 · Add components', eq(`Δx = ${fmt(X)} m, &nbsp; Δy = ${fmt(Y)} m`));
+  const mode = fx(fix, 'mode', () => pick(['mag', 'dir']));
+  const flip = legs.map((l, i) => i === 0 ? [l[0], legAngle(l) * -1] : [l[0], legAngle(l)]);
+  const Xf = flip.reduce((s, l) => s + l[0] * Math.cos(l[1] * DEG), 0), Yf = flip.reduce((s, l) => s + l[0] * Math.sin(l[1] * DEG), 0);
+  if (mode === 'mag') return { stem: stem0 + ' What is the magnitude of the total displacement from the starting point?', fig: '',
+    ...mc(mag, [legs.reduce((s, l) => s + l[0], 0), Math.abs(X) + Math.abs(Y), Math.hypot(Xf, Yf), Math.abs(X), Math.abs(Y)], 'm'), src: 'Midterm 1 Q7 style',
+    hints: ['Sketch the legs head-to-tail on a N/E grid first.', 'Break each leg into East (x) and North (y) components. "33° SOUTH of EAST" means start at East and rotate 33° toward South, so y is negative.', 'Add all x\'s, add all y\'s, then |Δr| = √(Δx² + Δy²).'],
+    sol: sol0 + step('3 · Magnitude', eq(`|Δr| = √(${fmt(X)}² + ${fmt(Y)}²) = <b>${fmt(mag)} m</b>`)) + step('Trap', `Adding the leg lengths (${legs.reduce((s, l) => s + l[0], 0)} m) gives distance traveled, not displacement.`) };
+  const make = (a, n, e) => `${fmt(a, 2)}° ${n} of ${e}`;
+  const correct = make(ang, ns, ew), opp = n => n === 'NORTH' ? 'SOUTH' : 'NORTH';
+  const comp = `${fmt(90 - ang, 2)}° ${ew} of ${ns}`;
+  const r = mcText(correct, [make(ang, opp(ns), ew), make(90 - ang, ns, ew), make(90 - ang, opp(ns), ew), make(ang, ns, ew === 'EAST' ? 'WEST' : 'EAST'), make(ang, opp(ns), ew === 'EAST' ? 'WEST' : 'EAST'), make(90 - ang, ns, ew === 'EAST' ? 'WEST' : 'EAST'), make(30, ns, ew)]);
+  return { stem: stem0 + ' What is the direction of the total displacement?', fig: '', ...r, src: 'Midterm 1 Q8 style',
+    hints: ['Find Δx (East) and Δy (North) first.', 'The signs of Δx and Δy tell you the quadrant: + / − means SOUTH of EAST, etc.', 'Angle from the East–West axis: θ = tan⁻¹(|Δy|/|Δx|).'],
+    sol: sol0 + step('3 · Direction', eq(`θ = tan⁻¹(|${fmt(Y)}| / |${fmt(X)}|) = ${fmt(ang, 2)}°`) + `Δx ${X >= 0 ? '> 0 (East)' : '< 0 (West)'}, Δy ${Y >= 0 ? '> 0 (North)' : '< 0 (South)'} → <b>${correct}</b> (equivalently ${comp}).`) };
+});
+def('v_river', 'vectors', 'Relative velocity: boat in a current', (fix = {}) => {
+  const vb = fx(fix, 'vb', () => rnd(2, 6, 0.1)), vc = fx(fix, 'vc', () => rnd(0.8, 3, 0.1)), w = fx(fix, 'w', () => rnd(60, 300, 10));
+  const mode = fx(fix, 'mode', () => pick(['t', 'drift', 'speed'])), t = w / vb, s = Math.hypot(vb, vc);
+  const stem = `A boat that moves at ${vb} m/s relative to the water points its bow straight across a ${w} m wide river. The current flows at ${vc} m/s. `;
+  const hints = ['Use v(boat, shore) = v(boat, water) + v(water, shore). These are vectors.', 'The crossing time depends only on the velocity component straight across the river.', 'Drift downstream = current speed × crossing time.'];
+  const sol = step('Vector sum', eq(`v_shore = (${vc} m/s downstream, ${vb} m/s across)`)) + step('Time across', eq(`t = w / v_across = ${w}/${vb} = ${fmt(t)} s`));
+  if (mode === 't') return { stem: stem + 'How long does it take to cross?', ...mc(t, [w / s, w / vc, w / (vb + vc), w / (vb - vc)], 's'), hints, sol: sol + step('Answer', `<b>${fmt(t)} s</b>`), src: 'Relative motion' };
+  if (mode === 'drift') return { stem: stem + 'How far downstream does it land from the point directly opposite?', ...mc(vc * t, [vc * w / s, w * vc / (vb + vc), vb * t, w], 'm'), hints, sol: sol + step('Drift', eq(`x = v_c t = ${vc} × ${fmt(t)} = <b>${fmt(vc * t)} m</b>`)), src: 'Relative motion' };
+  return { stem: stem + 'What is the boat\'s speed relative to the shore?', ...mc(s, [vb + vc, Math.abs(vb - vc), vb, Math.sqrt(Math.abs(vb * vb - vc * vc))], 'm/s'), hints, sol: step('Perpendicular components', eq(`|v| = √(${vb}² + ${vc}²) = <b>${fmt(s)} m/s</b>`)), src: 'Relative motion' };
+});
+
+/* ---- 1-D kinematics / free fall ---- */
+def('k_planet', 'kin1d', 'Find g on another planet', (fix = {}) => {
+  const vx = fx(fix, 'vx', () => rnd(1, 4)), vy = fx(fix, 'vy', () => rnd(3, 9)), tt = fx(fix, 'tt', () => pick([2, 3]));
+  const g = vy / (tt - 1);
+  return { stem: `On Planet Meepzorp a student throws a ball (no air resistance). Its position is marked every 1 s, and it reaches the top of its path at t = ${tt} s. At t = 1 s the ball's velocity is v = (${vx} î + ${vy} ĵ) m/s. What is the gravitational acceleration g on Meepzorp?`,
+    ...mc(g, [vy / tt, Math.hypot(vx, vy) / (tt - 1), 2 * vy / (tt - 1), 9.81, vy], 'm/s²'), src: 'Midterm 1 Q1 style',
+    hints: ['At the top of the path, the vertical velocity is zero.', `From t = 1 s to t = ${tt} s, v_y goes from ${vy} m/s to 0.`, 'Use v_y,f = v_y,i − g·Δt.'],
+    sol: step('At the top', 'v_y = 0 at the highest point. Horizontal velocity is irrelevant for g.') + step('Kinematics in y', eq(`0 = ${vy} − g(${tt} − 1) → g = <b>${fmt(g)} m/s²</b>`)) };
+});
+def('k_roof', 'kin1d', 'Ball thrown from a roof', (fix = {}) => {
+  const h = fx(fix, 'h', () => rnd(10, 60)), v0 = fx(fix, 'v0', () => rnd(5, 20)), dir = fx(fix, 'dir', () => pick(['up', 'up', 'down']));
+  const vy = dir === 'up' ? v0 : -v0, mode = fx(fix, 'mode', () => pick(dir === 'up' ? ['t', 'vf', 'hmax'] : ['t', 'vf']));
+  const t = (vy + Math.sqrt(vy * vy + 2 * G * h)) / G, vf = Math.sqrt(v0 * v0 + 2 * G * h), hmax = h + v0 * v0 / (2 * G);
+  const stem = `A ball is thrown straight ${dir === 'up' ? 'upward' : 'downward'} at ${v0} m/s from the edge of a roof ${h} m above the ground. Ignore air resistance. `;
+  const hints = ['Pick +y = up, origin at the roof. Then the ground is at Δy = −h and a = −g, no matter which way the ball was thrown.', 'Use Δy = v₀t + ½at² for time, or v_f² = v₀² + 2aΔy for speed.', 'Time: solve the quadratic and keep the positive root.'];
+  if (mode === 't') return { stem: stem + 'How long until it hits the ground?', ...mc(t, [Math.sqrt(2 * h / G), v0 / G, (vy - Math.sqrt(vy * vy + 2 * G * h)) / -G, 2 * v0 / G + Math.sqrt(2 * h / G), h / v0], 's'), hints, src: 'Free fall',
+    sol: step('Set up', eq(`−${h} = (${vy})t − ½(9.81)t²`)) + step('Quadratic', eq(`4.905t² − (${vy})t − ${h} = 0 → t = <b>${fmt(t)} s</b> (positive root)`)) };
+  if (mode === 'vf') return { stem: stem + 'With what speed does it hit the ground?', ...mc(vf, [Math.sqrt(2 * G * h), v0 + Math.sqrt(2 * G * h), Math.sqrt(Math.abs(2 * G * h - v0 * v0)), v0 + G * Math.sqrt(2 * h / G) * 0.5], 'm/s'), hints, src: 'Free fall',
+    sol: step('Time-free equation', eq(`v_f² = v₀² + 2gh = ${v0}² + 2(9.81)(${h}) → v_f = <b>${fmt(vf)} m/s</b>`)) + step('Insight', 'Thrown up or down at the same speed → same landing speed (energy says the same thing).') };
+  return { stem: stem + 'What maximum height above the ground does it reach?', ...mc(hmax, [v0 * v0 / (2 * G), v0 * v0 / G + h, h + v0 * v0 / G, h + v0 / G], 'm'), hints: ['At the top, v = 0.', 'Rise above the roof: v² = v₀² − 2g·Δy.', 'Add the roof height.'], src: 'Free fall',
+    sol: step('Rise above roof', eq(`0 = ${v0}² − 2(9.81)Δy → Δy = ${fmt(v0 * v0 / (2 * G))} m`)) + step('Above ground', eq(`H = ${h} + ${fmt(v0 * v0 / (2 * G))} = <b>${fmt(hmax)} m</b>`)) };
+});
+def('k_brake', 'kin1d', 'Stopping distance with reaction time', (fix = {}) => {
+  const kmh = fx(fix, 'kmh', () => rnd(50, 110, 5)), tr = fx(fix, 'tr', () => rnd(0.6, 1.5, 0.1)), a = fx(fix, 'a', () => rnd(4, 8, 0.5)), v = kmh / 3.6;
+  const d = v * tr + v * v / (2 * a);
+  return { stem: `A driver moving at ${kmh} km/h sees a hazard. Her reaction time is ${tr} s, and then the car brakes at a constant ${a} m/s². What is the total stopping distance from the moment she sees the hazard?`,
+    ...mc(d, [v * v / (2 * a), v * tr + v * v / a, kmh * tr + kmh * kmh / 3.6 / 3.6 / (2 * a) * 0 + v * v / (2 * a) + kmh * tr / 3.6 * 2, v * tr], 'm'), src: '1-D kinematics',
+    hints: ['Convert km/h → m/s: divide by 3.6.', 'Two phases: during the reaction time the car moves at constant speed; then it decelerates.', 'Braking distance: 0 = v² − 2a·d.'],
+    sol: step('Units', eq(`v = ${kmh}/3.6 = ${fmt(v)} m/s`)) + step('Reaction phase', eq(`d₁ = v·t_r = ${fmt(v)}×${tr} = ${fmt(v * tr)} m`)) + step('Braking phase', eq(`d₂ = v²/(2a) = ${fmt(v * v / (2 * a))} m`)) + step('Total', eq(`<b>${fmt(d)} m</b>`)) };
+});
+def('k_catch', 'kin1d', 'Police car catches a speeder', (fix = {}) => {
+  const v = fx(fix, 'v', () => rnd(20, 40)), a = fx(fix, 'a', () => rnd(2, 5, 0.5)), t = 2 * v / a, mode = fx(fix, 'mode', () => pick(['t', 'x', 'v']));
+  const stem = `A speeder passes a parked police car at a constant ${v} m/s. At that instant the police car starts from rest with constant acceleration ${a} m/s². `;
+  const hints = ['Write x(t) for both cars from the same origin and the same t = 0.', `Speeder: x = ${v}t. Police: x = ½(${a})t².`, 'Set them equal and solve (t = 0 is the trivial root).'];
+  const sol = step('Equal positions', eq(`${v}t = ½(${a})t² → t = 2v/a = ${fmt(t)} s`));
+  if (mode === 't') return { stem: stem + 'How long does it take the police car to catch the speeder?', ...mc(t, [v / a, Math.sqrt(2 * v / a), 4 * v / a, v / (2 * a)], 's'), hints, sol, src: '1-D kinematics' };
+  if (mode === 'x') return { stem: stem + 'How far does the police car travel before catching the speeder?', ...mc(v * t, [v * v / a, v * v / (2 * a), 0.5 * a * (v / a) ** 2, 4 * v * v / a * 2], 'm'), hints, sol: sol + step('Distance', eq(`x = ${v}×${fmt(t)} = <b>${fmt(v * t)} m</b>`)), src: '1-D kinematics' };
+  return { stem: stem + 'How fast is the police car going when it catches the speeder?', ...mc(2 * v, [v, 1.5 * v, Math.sqrt(2) * v, 3 * v], 'm/s'), hints, sol: sol + step('Speed', eq(`v = at = ${a}×${fmt(t)} = <b>${fmt(2 * v)} m/s</b> (always exactly twice the speeder's)`)), src: '1-D kinematics' };
+});
+
+/* ---- Projectile motion ---- */
+def('p_cliff', 'proj', 'Arrow shot from a cliff', (fix = {}) => {
+  let th, R, t;
+  do { th = fx(fix, 'th', () => rnd(20, 45, 5)); R = fx(fix, 'R', () => rnd(120, 260, 10)); t = fx(fix, 't', () => rnd(6, 12, 0.5)); } while (!fix.t && G * t * t / 2 - R * tan(th) < 30);
+  const v0 = R / (t * cos(th)), vx = v0 * cos(th), vy = v0 * sin(th) - G * t, sp = Math.hypot(vx, vy), h = G * t * t / 2 - R * tan(th);
+  const mode = fx(fix, 'mode', () => pick(['v0', 'v0', 'vf', 'h']));
+  const stem = `An archer on top of a cliff shoots an arrow at ${th}° above the horizontal. It hits a target on the ground ${R} m (horizontally) from the base of the cliff, ${t} s after release. Ignore air resistance. `;
+  const hints0 = ['x and y are independent. In x there is no acceleration, so Δx = v₀ cos θ · t.', 'You know the range AND the time, so the x-equation gives v₀ directly.', 'For y: v_y = v₀ sin θ − g t, and Δy = v₀ sin θ t − ½ g t².'];
+  const s1 = step('x-direction (a_x = 0)', eq(`${R} = v₀ cos ${th}° × ${t} → v₀ = ${fmt(v0)} m/s`));
+  if (mode === 'v0') return { stem: stem + 'What was the initial speed v₀ of the arrow?', fig: figCliff(th), ...mc(v0, [R / t, R / (t * sin(th)), Math.sqrt(R * G / sin(2 * th)), R * cos(th) / t], 'm/s'), hints: hints0, sol: s1, src: 'Midterm 1 Q9 style' };
+  if (mode === 'vf') return { stem: stem + 'What is the speed of the arrow just before it hits the ground?', fig: figCliff(th), ...mc(sp, [Math.abs(vy), v0, Math.hypot(vx, v0 * sin(th) + G * t), v0 + G * t], 'm/s'), hints: [...hints0.slice(0, 2), 'Find v_x (unchanged) and v_y at impact, then combine: |v| = √(v_x² + v_y²).'], src: 'Midterm 1 Q10 style',
+    sol: s1 + step('Components at impact', eq(`v_x = ${fmt(v0)} cos ${th}° = ${fmt(vx)} m/s`) + eq(`v_y = ${fmt(v0)} sin ${th}° − 9.81(${t}) = ${fmt(vy)} m/s`)) + step('Speed', eq(`|v| = √(${fmt(vx)}² + ${fmt(vy)}²) = <b>${fmt(sp)} m/s</b>`)) };
+  return { stem: stem + 'How tall is the cliff?', fig: figCliff(th), ...mc(h, [G * t * t / 2, G * t * t / 2 + R * tan(th), R * tan(th), G * t * t], 'm'), hints: [...hints0.slice(0, 2), 'Origin at launch, +y up: the ground is at Δy = −h.'], src: 'Projectile motion',
+    sol: s1 + step('y-direction', eq(`Δy = v₀ sin θ t − ½gt² = ${fmt(v0 * sin(th) * t)} − ${fmt(G * t * t / 2)} = ${fmt(-h)} m`) + 'So the cliff is <b>' + fmt(h) + ' m</b> tall.') };
+});
+def('p_horiz', 'proj', 'Horizontal launch from a height', (fix = {}) => {
+  const h = fx(fix, 'h', () => rnd(5, 80)), v = fx(fix, 'v', () => rnd(4, 30)), t = Math.sqrt(2 * h / G), vy = G * t;
+  const mode = fx(fix, 'mode', () => pick(['t', 'R', 'vf', 'ang']));
+  const stem = `A ball rolls off a horizontal table-top ${h} m high (think: a ledge) with speed ${v} m/s. Ignore air resistance. `;
+  const hints = ['Horizontal launch: v₀y = 0. Fall time depends only on height: h = ½gt².', 'Horizontal distance: x = v₀ t.', 'Impact: v_x = v₀, v_y = g t.'];
+  const s = step('Fall time', eq(`t = √(2h/g) = √(2·${h}/9.81) = ${fmt(t)} s`));
+  if (mode === 't') return { stem: stem + 'How long is it in the air?', ...mc(t, [h / v, Math.sqrt(h / G), 2 * h / G, Math.sqrt(2 * h / G) * 2], 's'), hints, sol: s + step('Note', 'The horizontal speed does not change the fall time.'), src: 'Projectile motion' };
+  if (mode === 'R') return { stem: stem + 'How far from the base does it land?', ...mc(v * t, [v * Math.sqrt(h / G), v * 2 * h / G, h, v * v / G], 'm'), hints, sol: s + step('Range', eq(`x = ${v}×${fmt(t)} = <b>${fmt(v * t)} m</b>`)), src: 'Projectile motion' };
+  if (mode === 'vf') return { stem: stem + 'What is its speed just before landing?', ...mc(Math.hypot(v, vy), [v + vy, vy, v, Math.sqrt(v * v + G * h)], 'm/s'), hints, sol: s + step('Impact', eq(`v_y = 9.81×${fmt(t)} = ${fmt(vy)} m/s; |v| = √(${v}² + ${fmt(vy)}²) = <b>${fmt(Math.hypot(v, vy))} m/s</b>`)), src: 'Projectile motion' };
+  const ang = atand(vy / v);
+  return { stem: stem + 'At what angle below the horizontal does it hit the ground?', ...mc(ang, [90 - ang, atand(h / (v * t)), atand(v / vy) / 2 + 10, ang / 2], '°'), hints, sol: s + step('Angle', eq(`θ = tan⁻¹(v_y/v_x) = tan⁻¹(${fmt(vy)}/${v}) = <b>${fmt(ang)}°</b> below horizontal`)), src: 'Projectile motion' };
+});
+def('p_ground', 'proj', 'Launch and land at the same height', (fix = {}) => {
+  const v0 = fx(fix, 'v0', () => rnd(10, 35)), th = fx(fix, 'th', () => rnd(20, 70, 5)), mode = fx(fix, 'mode', () => pick(['R', 'H', 'T', 'apex']));
+  const R = v0 * v0 * sin(2 * th) / G, H = (v0 * sin(th)) ** 2 / (2 * G), Tt = 2 * v0 * sin(th) / G;
+  const stem = `A soccer ball is kicked from level ground at ${v0} m/s, ${th}° above the horizontal. Ignore air resistance. `;
+  const hints = ['Split v₀: v₀x = v₀ cos θ, v₀y = v₀ sin θ.', 'Time to the top: v_y = 0 → t = v₀y/g. Total flight time is twice that (same launch and landing height).', 'At the apex the velocity is purely horizontal, but the acceleration is still g downward.'];
+  const comps = step('Components', eq(`v₀x = ${fmt(v0 * cos(th))} m/s, v₀y = ${fmt(v0 * sin(th))} m/s`));
+  if (mode === 'R') return { stem: stem + 'How far away does it land?', ...mc(R, [v0 * v0 / G, R / 2, v0 * cos(th) * Tt / 2, v0 * v0 * sin(th) / G], 'm'), hints, sol: comps + step('Range', eq(`T = 2v₀y/g = ${fmt(Tt)} s; R = v₀x·T = <b>${fmt(R)} m</b>`)), src: 'Projectile motion' };
+  if (mode === 'H') return { stem: stem + 'What maximum height does it reach?', ...mc(H, [v0 * v0 / (2 * G), H * 2, (v0 * cos(th)) ** 2 / (2 * G), v0 * sin(th) * Tt], 'm'), hints, sol: comps + step('Apex', eq(`0 = v₀y² − 2gH → H = <b>${fmt(H)} m</b>`)), src: 'Projectile motion' };
+  if (mode === 'T') return { stem: stem + 'How long is it in the air?', ...mc(Tt, [Tt / 2, 2 * v0 / G, 2 * v0 * cos(th) / G, v0 / G], 's'), hints, sol: comps + step('Flight time', eq(`T = 2v₀ sin θ/g = <b>${fmt(Tt)} s</b>`)), src: 'Projectile motion' };
+  return { stem: stem + 'What is its speed at the very top of its path?', ...mc(v0 * cos(th), [v0 * sin(th), v0, v0 / 2, 0], 'm/s', { signed: true, floor: 1 }), hints, sol: step('At the apex', `v_y = 0, so the speed is just v_x = v₀ cos θ = <b>${fmt(v0 * cos(th))} m/s</b>. It is not zero.`), src: 'Projectile motion' };
+});
+def('p_wall', 'proj', 'Does it clear the wall?', (fix = {}) => {
+  let v0, th, d, y;
+  do { v0 = fx(fix, 'v0', () => rnd(15, 30)); th = fx(fix, 'th', () => rnd(25, 60, 5)); d = fx(fix, 'd', () => rnd(10, 40)); y = d * tan(th) - G * d * d / (2 * v0 * v0 * cos(th) ** 2); } while (!fix.d && (y < 1 || y > 25));
+  const t = d / (v0 * cos(th));
+  return { stem: `A ball is kicked from the ground at ${v0} m/s, ${th}° above horizontal, toward a wall ${d} m away. At what height does the ball pass the wall?`,
+    ...mc(y, [d * tan(th), d * tan(th) - G * d * d / (2 * v0 * v0), v0 * sin(th) * t, y + G * t * t / 2 * 0.5], 'm'), src: 'Projectile motion',
+    hints: ['Use x to find WHEN the ball reaches the wall.', `t = d/(v₀ cos θ).`, 'Plug that t into y = v₀ sin θ t − ½gt².'],
+    sol: step('Time to wall', eq(`t = ${d}/(${v0} cos ${th}°) = ${fmt(t)} s`)) + step('Height then', eq(`y = ${fmt(v0 * sin(th))}(${fmt(t)}) − ½(9.81)(${fmt(t)})² = <b>${fmt(y)} m</b>`)) };
+});
+
+/* ---- Newton's laws, FBD, friction ---- */
+def('n_push', 'newton', 'Pushing/pulling a box at an angle', (fix = {}) => {
+  let m, F, th, mu, up, N, a;
+  do { m = fx(fix, 'm', () => rnd(10, 50)); F = fx(fix, 'F', () => rnd(60, 300, 10)); th = fx(fix, 'th', () => rnd(15, 40, 5)); mu = fx(fix, 'mu', () => rnd(0.1, 0.4, 0.05)); up = fx(fix, 'up', () => pick([true, false]));
+    N = m * G + (up ? -1 : 1) * F * sin(th); a = (F * cos(th) - mu * N) / m; } while (!fix.m && (a < 0.3 || N < 0));
+  return { stem: `A ${m} kg box on a level floor is ${up ? 'pulled with a rope' : 'pushed'} with a force of ${F} N directed ${th}° ${up ? 'above' : 'below'} the horizontal. The coefficient of kinetic friction is ${mu}. What is the box's acceleration?`,
+    ...mc(a, [(F * cos(th) - mu * m * G) / m, (F * cos(th) - mu * (m * G + (up ? 1 : -1) * F * sin(th))) / m, F / m, (F - mu * m * G) / m, F * cos(th) / m], 'm/s²'), src: "Newton's 2nd law",
+    hints: ['Draw the FBD: weight, normal, friction, applied force (split into components).', `The normal force is NOT mg here. In y: N ${up ? '+' : '−'} F sin θ − mg = 0.`, 'In x: F cos θ − μₖN = ma.'],
+    sol: step('y: no vertical acceleration', eq(`N = mg ${up ? '−' : '+'} F sin θ = ${fmt(m * G)} ${up ? '−' : '+'} ${fmt(F * sin(th))} = ${fmt(N)} N`)) + step('x: Newton\'s 2nd law', eq(`a = (F cos θ − μₖN)/m = (${fmt(F * cos(th))} − ${fmt(mu * N)})/${m} = <b>${fmt(a)} m/s²</b>`)) };
+});
+def('n_elev', 'newton', 'Apparent weight in an elevator', (fix = {}) => {
+  const m = fx(fix, 'm', () => rnd(50, 95)), a = fx(fix, 'a', () => rnd(0.5, 3, 0.1)), c = fx(fix, 'c', () => pick([['moving upward and speeding up', 1], ['moving upward and slowing down', -1], ['moving downward and speeding up', -1], ['moving downward and slowing down', 1]]));
+  const ay = c[1] * a, N = m * (G + ay);
+  return { stem: `A ${m} kg student stands on a bathroom scale in an elevator that is ${c[0]} at a rate of ${a} m/s². What does the scale read (in newtons)?`,
+    ...mc(N, [m * G, m * (G - ay), m * a, m * (G + a) + (ay > 0 ? 40 : 0), m * G + m * a * 2], 'N'), src: "Newton's 2nd law",
+    hints: ['The scale reads the normal force N, not mg.', 'Find the direction of the ACCELERATION: speeding up → a along v; slowing down → a opposite v.', 'Up positive: N − mg = m·a_y.'],
+    sol: step('Direction of a', `${c[0]} → acceleration is <b>${ay > 0 ? 'upward' : 'downward'}</b>.`) + step('Newton\'s 2nd law', eq(`N = m(g + a_y) = ${m}(9.81 ${ay > 0 ? '+' : '−'} ${a}) = <b>${fmt(N)} N</b>`)) };
+});
+def('n_static', 'newton', 'Static vs kinetic friction trap', (fix = {}) => {
+  const m = fx(fix, 'm', () => rnd(20, 80)), ms = fx(fix, 'ms', () => rnd(0.35, 0.65, 0.05)), mk = fx(fix, 'mk', () => +(ms - rnd(0.1, 0.2, 0.05)).toFixed(2));
+  const fmax = ms * m * G, moves = fx(fix, 'moves', () => pick([true, false])), F = fx(fix, 'F', () => Math.round(moves ? fmax * rnd(1.1, 1.6, 0.05) : fmax * rnd(0.4, 0.85, 0.05)));
+  const f = F <= fmax ? F : mk * m * G;
+  return { stem: `A ${m} kg crate rests on a floor (μₛ = ${ms}, μₖ = ${mk}). You push horizontally with ${F} N. What is the magnitude of the friction force on the crate?`,
+    ...mc(f, [fmax, mk * m * G, F, Math.abs(F - mk * m * G), m * G], 'N'), src: 'Friction',
+    hints: ['First ask: does it move? Compare F with the maximum static friction μₛN.', 'If F < μₛN, static friction just matches F (f = F). μₛN is only the maximum.', 'If F > μₛN, the crate slides and f = μₖN.'],
+    sol: step('Max static friction', eq(`f_s,max = μₛmg = ${ms}(${m})(9.81) = ${fmt(fmax)} N`)) + step('Compare', F <= fmax ? `${F} N < ${fmt(fmax)} N → the crate does NOT move. Static friction equals the push: <b>${fmt(f)} N</b>.` : `${F} N > ${fmt(fmax)} N → it slides. Kinetic friction: μₖmg = <b>${fmt(f)} N</b>.`) };
+});
+def('n_contact', 'newton', 'Two blocks pushed together', (fix = {}) => {
+  const m1 = fx(fix, 'm1', () => rnd(2, 10)), m2 = fx(fix, 'm2', () => rnd(2, 10)), F = fx(fix, 'F', () => rnd(10, 60)), a = F / (m1 + m2), P = m2 * a;
+  return { stem: `Blocks of ${m1} kg and ${m2} kg sit side by side on a frictionless floor. A ${F} N horizontal force pushes the ${m1} kg block, which pushes the ${m2} kg block. What force does the ${m1} kg block exert on the ${m2} kg block?`,
+    ...mc(P, [F, m1 * a, F / m2, F - m1 * a * 0.5, F / 2], 'N'), src: "Newton's 2nd & 3rd laws",
+    hints: ['Treat both blocks as one system first to find a.', 'Then isolate the second block: the only horizontal force on it is the contact force.', 'P = m₂a.'],
+    sol: step('System', eq(`a = F/(m₁+m₂) = ${F}/${m1 + m2} = ${fmt(a)} m/s²`)) + step('Block 2 alone', eq(`P = m₂a = ${m2}×${fmt(a)} = <b>${fmt(P)} N</b>`)) + step('3rd law', 'Block 2 pushes back on block 1 with the same magnitude.') };
+});
+
+/* ---- Ramps & connected objects ---- */
+def('r_slide', 'ramps', 'Box slides down a ramp, then across concrete', (fix = {}) => {
+  let m, L, h, mk, ms, d, th, a, v;
+  do { m = fx(fix, 'm', () => rnd(20, 80, 5)); L = fx(fix, 'L', () => rnd(1, 4, 0.5)); h = fx(fix, 'h', () => +(L * rnd(0.35, 0.65, 0.05)).toFixed(2)); mk = fx(fix, 'mk', () => rnd(0.1, 0.3, 0.01)); ms = fx(fix, 'ms', () => +(mk + 0.1).toFixed(2)); d = fx(fix, 'd', () => rnd(0.3, 2, 0.01));
+    th = Math.asin(h / L) / DEG; a = G * (sin(th) - mk * cos(th)); v = Math.sqrt(2 * a * L); } while (!fix.m && a < 0.5);
+  const muf = v * v / (2 * G * d), mode = fx(fix, 'mode', () => pick(['v', 'mu']));
+  const stem = `A ${m} kg box starts from rest and slides down a ${L} m long plank used as a ramp; the top of the plank is ${h} m above the bottom. For box on plank, μₛ = ${ms} and μₖ = ${mk}. `;
+  const s1 = step('Angle (not given, find it!)', eq(`sin θ = ${h}/${L} → θ = ${fmt(th)}°`)) + step('FBD along ramp', eq(`mg sin θ − μₖ mg cos θ = ma → a = g(sin θ − μₖ cos θ) = ${fmt(a)} m/s²`)) + step('Kinematics', eq(`v² = 0 + 2aL → v = ${fmt(v)} m/s`));
+  if (mode === 'v') return { stem: stem + 'What is the box\'s speed at the bottom of the ramp?', fig: figRamp(th, { L: L + ' m' }), ...mc(v, [Math.sqrt(2 * G * h), Math.sqrt(2 * G * (sin(th) - ms * cos(th)) * L), Math.sqrt(a * L), Math.sqrt(2 * G * L * (sin(th) + mk * cos(th)))], 'm/s'), src: 'Midterm 2 Q6 style',
+    hints: ['The angle isn\'t given, so get it from sin θ = height / length.', 'It\'s sliding, so use KINETIC friction: f = μₖ mg cos θ.', 'a = g(sin θ − μₖ cos θ), then v² = 2aL.'], sol: s1 + step('Answer', `<b>${fmt(v)} m/s</b>. The frictionless answer √(2gh) = ${fmt(Math.sqrt(2 * G * h))} m/s is a trap.`) };
+  return { stem: stem + `After leaving the ramp, the box slides ${fmt(d * 100)} cm across a level concrete floor before stopping. What is μₖ between box and concrete?`, fig: figRamp(th, { L: L + ' m' }), ...mc(muf, [v * v / (G * d), v / (G * d), mk, Math.sqrt(2 * G * h) ** 2 / (2 * G * d)], '', { sig: 2 }), src: 'Midterm 2 Q7 style',
+    hints: ['You need the speed at the bottom of the ramp first (linked problem).', 'On the level floor only friction acts horizontally: a = −μₖg.', '0 = v² − 2μₖg·d → μₖ = v²/(2gd).'], sol: s1 + step('Level floor', eq(`0 = v² − 2μₖ g d → μₖ = ${fmt(v)}²/(2·9.81·${fmt(d)}) = <b>${fmt(muf, 2)}</b>`)) };
+});
+def('r_table', 'ramps', 'Pulled block + hanging mass (with friction)', (fix = {}) => {
+  let m1, m2, F, th, mk, ms, N, f, a;
+  do { m1 = fx(fix, 'm1', () => rnd(15, 35, 0.5)); m2 = fx(fix, 'm2', () => rnd(2, 8, 0.1)); F = fx(fix, 'F', () => rnd(100, 250, 0.1)); th = fx(fix, 'th', () => rnd(15, 40, 0.5)); mk = fx(fix, 'mk', () => rnd(0.1, 0.3, 0.001)); ms = fx(fix, 'ms', () => +(mk + 0.2).toFixed(2));
+    N = m1 * G - F * sin(th); f = mk * N; a = (F * cos(th) - m2 * G - f) / (m1 + m2); } while (!fix.m1 && (a < 0.5 || N < 20));
+  const T = m2 * (G + a), mode = fx(fix, 'mode', () => pick(['f', 'a', 'T']));
+  const stem = `Block m₁ = ${m1} kg on a horizontal table is connected over a frictionless, massless pulley to hanging block m₂ = ${m2} kg. A force F = ${F} N pulls m₁ at ${th}° above the horizontal, away from the pulley, so m₂ rises. Between m₁ and the table, μₛ = ${ms} and μₖ = ${mk}. `;
+  const sN = step('m₁ vertical', eq(`N = m₁g − F sin θ = ${fmt(m1 * G)} − ${fmt(F * sin(th))} = ${fmt(N)} N`)) + step('Friction (sliding → kinetic)', eq(`f = μₖN = ${fmt(f)} N`));
+  const sA = step('m₂ (up +)', eq(`T − m₂g = m₂a`)) + step('m₁ (toward F +)', eq(`F cos θ − T − f = m₁a`)) + step('Add them', eq(`a = (F cos θ − m₂g − f)/(m₁+m₂) = (${fmt(F * cos(th))} − ${fmt(m2 * G)} − ${fmt(f)})/${fmt(m1 + m2)} = ${fmt(a)} m/s²`));
+  const hints = ['Draw a separate FBD for each block. Choose + in the direction each one moves.', 'The normal force on m₁ is reduced by the upward part of F: N = m₁g − F sin θ.', 'Write Fnet = ma for each block, then add the equations so T cancels.'];
+  if (mode === 'f') return { stem: stem + 'What is the magnitude of the friction force on m₁?', fig: figTable({ pull: th }), ...mc(f, [mk * m1 * G, mk * (m1 * G + F * sin(th)), ms * N, mk * (m1 + m2) * G], 'N'), hints, sol: sN, src: 'Midterm 2 Q8 style' };
+  if (mode === 'a') return { stem: stem + 'What is the magnitude of the acceleration of m₂?', fig: figTable({ pull: th }), ...mc(a, [(F * cos(th) - m2 * G - mk * m1 * G) / (m1 + m2), (F * cos(th) - m2 * G - f) / m1, (F * cos(th) - f) / (m1 + m2), (F - m2 * G - f) / (m1 + m2)], 'm/s²'), hints, sol: sN + sA, src: 'Midterm 2 Q9 style' };
+  return { stem: stem + 'What is the tension in the string?', fig: figTable({ pull: th }), ...mc(T, [m2 * G, m2 * (G - a), m2 * a, F * cos(th) - f], 'N'), hints: [...hints.slice(0, 2), 'Once you have a, use the hanging block: T = m₂(g + a).'], sol: sN + sA + step('Tension', eq(`T = m₂(g + a) = ${m2}(9.81 + ${fmt(a)}) = <b>${fmt(T)} N</b>`)), src: 'Midterm 2 Q10 style' };
+});
+def('r_hang', 'ramps', 'Block on rough table pulled by hanging mass', (fix = {}) => {
+  let m1, m2, mk, a;
+  do { m1 = fx(fix, 'm1', () => rnd(2, 12, 0.5)); m2 = fx(fix, 'm2', () => rnd(1, 8, 0.5)); mk = fx(fix, 'mk', () => rnd(0.1, 0.4, 0.05)); a = (m2 - mk * m1) * G / (m1 + m2); } while (!fix.m1 && a < 0.5);
+  const T = m2 * (G - a), mode = fx(fix, 'mode', () => pick(['a', 'T']));
+  const stem = `A ${m1} kg block on a horizontal table (μₖ = ${mk}) is tied to a string that passes over a frictionless pulley to a hanging ${m2} kg block. The system is released and the hanging block falls. `;
+  const hints = ['Separate FBDs; take + in the direction of motion for each block.', 'm₁: T − μₖm₁g = m₁a. m₂: m₂g − T = m₂a.', 'Add to eliminate T.'];
+  const s = step('Add equations', eq(`a = (m₂g − μₖm₁g)/(m₁+m₂) = ${fmt(a)} m/s²`));
+  if (mode === 'a') return { stem: stem + 'What is the acceleration?', fig: figTable(), ...mc(a, [m2 * G / (m1 + m2), (m2 - mk * m1) * G / m1, m2 * G / m1, (m2 + mk * m1) * G / (m1 + m2)], 'm/s²'), hints, sol: s, src: 'Connected objects' };
+  return { stem: stem + 'What is the tension in the string?', fig: figTable(), ...mc(T, [m2 * G, m2 * (G + a), m1 * a, mk * m1 * G], 'N'), hints, sol: s + step('Hanging block', eq(`T = m₂(g − a) = <b>${fmt(T)} N</b> (less than m₂g because m₂ accelerates down)`)), src: 'Connected objects' };
+});
+def('r_incl_pulley', 'ramps', 'Incline + pulley + friction', (fix = {}) => {
+  let m1, m2, th, mk, a;
+  do { m1 = fx(fix, 'm1', () => rnd(2, 10, 0.5)); m2 = fx(fix, 'm2', () => rnd(2, 10, 0.5)); th = fx(fix, 'th', () => rnd(20, 45, 5)); mk = fx(fix, 'mk', () => rnd(0.1, 0.3, 0.05)); a = (m2 - m1 * sin(th) - mk * m1 * cos(th)) * G / (m1 + m2); } while (!fix.m1 && a < 0.4);
+  const T = m2 * (G - a), mode = fx(fix, 'mode', () => pick(['a', 'T']));
+  const stem = `A ${m1} kg block on a ${th}° incline (μₖ = ${mk}) is connected by a string over a pulley at the top of the incline to a hanging ${m2} kg block. The hanging block descends and pulls m₁ up the incline. `;
+  const hints = ['For the block on the incline, tilt the axes: x along the incline.', 'Forces along the incline on m₁: T up the slope; m₁g sin θ and μₖm₁g cos θ down the slope.', 'Hanging: m₂g − T = m₂a. Add the two equations.'];
+  const s = step('Along incline (m₁)', eq('T − m₁g sin θ − μₖm₁g cos θ = m₁a')) + step('Hanging (m₂)', eq('m₂g − T = m₂a')) + step('Add', eq(`a = g(m₂ − m₁ sin θ − μₖm₁ cos θ)/(m₁+m₂) = ${fmt(a)} m/s²`));
+  if (mode === 'a') return { stem: stem + 'What is the acceleration of the system?', fig: figRamp(th, { pulley: true, blockAt: 0.45, m: 'm₁' }), ...mc(a, [(m2 - m1 * sin(th)) * G / (m1 + m2), (m2 - m1 * cos(th) - mk * m1 * sin(th)) * G / (m1 + m2), (m2 - m1 * sin(th) - mk * m1 * cos(th)) * G / m2, m2 * G / (m1 + m2)], 'm/s²'), hints, sol: s, src: 'Ramps' };
+  return { stem: stem + 'What is the tension in the string?', fig: figRamp(th, { pulley: true, blockAt: 0.45, m: 'm₁' }), ...mc(T, [m2 * G, m1 * G * sin(th), m2 * (G + a), m2 * a], 'N'), hints, sol: s + step('Tension', eq(`T = m₂(g − a) = <b>${fmt(T)} N</b>`)), src: 'Ramps' };
+});
+def('r_rest', 'ramps', 'Friction on a block at rest on an incline', (fix = {}) => {
+  const m = fx(fix, 'm', () => rnd(2, 20)), th = fx(fix, 'th', () => rnd(15, 35, 5)), ms = fx(fix, 'ms', () => +(tan(th) + rnd(0.1, 0.3, 0.05)).toFixed(2));
+  const mode = fx(fix, 'mode', () => pick(['f', 'N']));
+  if (mode === 'f') return { stem: `A ${m} kg block sits at rest on a ${th}° incline. The coefficient of static friction is μₛ = ${ms}. What is the magnitude of the friction force on the block?`, fig: figRamp(th),
+    ...mc(m * G * sin(th), [ms * m * G * cos(th), ms * m * G, m * G * cos(th), m * G], 'N'), src: 'Ramps',
+    hints: ['The block is at rest, so the net force is zero.', 'Static friction is whatever is needed, up to μₛN. Don\'t automatically use μₛN.', 'Along the incline: f − mg sin θ = 0.'],
+    sol: step('Equilibrium along incline', eq(`f = mg sin θ = ${m}(9.81) sin ${th}° = <b>${fmt(m * G * sin(th))} N</b>`)) + step('Check', `μₛN = ${fmt(ms * m * G * cos(th))} N is only the maximum. Since it's larger than what's needed, the block stays put.`) };
+  return { stem: `A ${m} kg block sits at rest on a ${th}° incline. What is the magnitude of the normal force on the block?`, fig: figRamp(th), ...mc(m * G * cos(th), [m * G, m * G * sin(th), m * G / cos(th), m * G * tan(th)], 'N'), src: 'Ramps',
+    hints: ['Tilt the axes: perpendicular to the incline.', 'Only N and the perpendicular part of gravity act perpendicular to the surface.', 'N = mg cos θ.'], sol: step('Perpendicular to incline', eq(`N = mg cos θ = <b>${fmt(m * G * cos(th))} N</b>`)) };
+});
+
+/* ---- Circular motion ---- */
+def('c_bucket', 'circ', 'Bucket in a vertical circle', (fix = {}) => {
+  let m, v, r; do { m = fx(fix, 'm', () => rnd(2, 25)); v = fx(fix, 'v', () => rnd(6, 16)); r = fx(fix, 'r', () => rnd(1, 5, 0.5)); } while (!fix.m && v * v / r < G * 1.4);
+  const mode = fx(fix, 'mode', () => pick(['bot', 'top'])), Tb = m * (v * v / r + G), Tt = m * (v * v / r - G);
+  const stem = `A bucket of water (total mass ${m} kg) is swung in a vertical circle of radius ${r} m at a constant tangential speed of ${v} m/s. `;
+  const hints = ['At the top and bottom, the net force must point toward the CENTER: F_net = mv²/r.', mode === 'bot' ? 'At the bottom: tension up (toward center), gravity down (away).' : 'At the top: tension AND gravity both point down (toward center).', mode === 'bot' ? 'T − mg = mv²/r.' : 'T + mg = mv²/r.'];
+  if (mode === 'bot') return { stem: stem + 'What is the tension in the rope at the lowest point (A)?', fig: figVCircle(), ...mc(Tb, [Tt, m * v * v / r, m * v * v, m * G], 'N'), hints, src: 'Midterm 2 Q4 style',
+    sol: step('Bottom (toward center = up)', eq(`T − mg = mv²/r → T = m(v²/r + g) = ${m}(${fmt(v * v / r)} + 9.81) = <b>${fmt(Tb)} N</b>`)) };
+  return { stem: stem + 'What is the tension in the rope at the highest point (B)?', fig: figVCircle(), ...mc(Tt, [Tb, m * v * v / r, m * v * v, m * G], 'N'), hints, src: 'Midterm 2 Q5 style',
+    sol: step('Top (toward center = down)', eq(`T + mg = mv²/r → T = m(v²/r − g) = ${m}(${fmt(v * v / r)} − 9.81) = <b>${fmt(Tt)} N</b>`)) };
+});
+def('c_flat', 'circ', 'Max speed on a flat curve', (fix = {}) => {
+  const mu = fx(fix, 'mu', () => rnd(0.3, 0.9, 0.05)), r = fx(fix, 'r', () => rnd(30, 150, 5)), v = Math.sqrt(mu * G * r);
+  return { stem: `A car rounds a flat (unbanked) curve of radius ${r} m. The coefficient of static friction between tires and road is ${mu}. What is the maximum speed at which it can take the curve without skidding?`,
+    ...mc(v, [Math.sqrt(G * r), mu * G * r, Math.sqrt(mu * r), Math.sqrt(2 * mu * G * r)], 'm/s'), src: 'Forces in circular motion',
+    hints: ['Which force points toward the center? Static friction (sideways on the tires).', 'Max friction: μₛN = μₛmg.', 'Set μₛmg = mv²/r. Mass cancels.'],
+    sol: step('Friction supplies centripetal force', eq(`μₛmg = mv²/r → v = √(μₛgr) = √(${mu}·9.81·${r}) = <b>${fmt(v)} m/s</b>`)) };
+});
+def('c_bank', 'circ', 'Banked curve, no friction needed', (fix = {}) => {
+  const th = fx(fix, 'th', () => rnd(10, 35)), r = fx(fix, 'r', () => rnd(40, 200, 10)), v = Math.sqrt(r * G * tan(th));
+  return { stem: `A curve of radius ${r} m is banked at ${th}°. At what speed can a car take the curve with no friction at all?`,
+    ...mc(v, [Math.sqrt(r * G * sin(th)), Math.sqrt(r * G * cos(th)), Math.sqrt(r * G), Math.sqrt(r * G / tan(th))], 'm/s'), src: 'Forces in circular motion',
+    hints: ['Only gravity and the normal force act. Don\'t tilt the axes: the center is horizontal.', 'Vertical: N cos θ = mg. Horizontal (toward center): N sin θ = mv²/r.', 'Divide: tan θ = v²/(rg).'],
+    sol: step('Two equations', eq('N cos θ = mg, &nbsp; N sin θ = mv²/r')) + step('Divide', eq(`v = √(rg tan θ) = <b>${fmt(v)} m/s</b>`)) };
+});
+def('c_hill', 'circ', 'Car over the top of a hill', (fix = {}) => {
+  const m = fx(fix, 'm', () => rnd(800, 1600, 50)), r = fx(fix, 'r', () => rnd(10, 50)), v = fx(fix, 'v', () => +(Math.sqrt(G * r) * rnd(0.4, 0.85, 0.05)).toFixed(1));
+  const mode = fx(fix, 'mode', () => pick(['N', 'vmax'])), N = m * (G - v * v / r);
+  if (mode === 'N') return { stem: `A ${m} kg car drives over the top of a hill shaped like a circular arc of radius ${r} m at ${v} m/s. What normal force does the road exert on the car at the top?`,
+    ...mc(N, [m * G, m * (G + v * v / r), m * v * v / r, m * G - v * v / r * 10], 'N'), src: 'Forces in circular motion',
+    hints: ['At the top, the center of the circle is BELOW the car.', 'Toward center (down) is positive: mg − N = mv²/r.', 'So N < mg: the car feels lighter.'], sol: step('Toward center = down', eq(`mg − N = mv²/r → N = m(g − v²/r) = <b>${fmt(N)} N</b>`)) };
+  return { stem: `A car drives over the top of a hill shaped like a circular arc of radius ${r} m. What is the maximum speed at which the tires stay in contact with the road at the top?`,
+    ...mc(Math.sqrt(G * r), [G * r, Math.sqrt(2 * G * r), Math.sqrt(G * r / 2), Math.sqrt(r)], 'm/s'), src: 'Forces in circular motion',
+    hints: ['"Losing contact" means N = 0.', 'Then gravity alone provides the centripetal force.', 'mg = mv²/r.'], sol: step('N = 0', eq(`mg = mv²/r → v = √(gr) = <b>${fmt(Math.sqrt(G * r))} m/s</b>`)) };
+});
+def('c_puck', 'circ', 'Puck on a table with a hanging mass', (fix = {}) => {
+  const m1 = fx(fix, 'm1', () => rnd(0.2, 1.5, 0.1)), m2 = fx(fix, 'm2', () => rnd(0.5, 3, 0.1)), r = fx(fix, 'r', () => rnd(0.3, 1.5, 0.1)), v = Math.sqrt(m2 * G * r / m1);
+  return { stem: `A ${m1} kg puck slides in a circle of radius ${r} m on a frictionless table. The string through a hole in the center holds a ${m2} kg mass hanging at rest below. How fast is the puck moving?`,
+    ...mc(v, [Math.sqrt(m1 * G * r / m2), Math.sqrt(G * r), m2 * G * r / m1, Math.sqrt(m2 * G / (m1 * r))], 'm/s'), src: 'Forces in circular motion',
+    hints: ['The hanging mass is at rest → T = m₂g.', 'For the puck, tension is the centripetal force.', 'T = m₁v²/r.'], sol: step('Hanging mass', eq('T = m₂g')) + step('Puck', eq(`m₂g = m₁v²/r → v = √(m₂gr/m₁) = <b>${fmt(v)} m/s</b>`)) };
+});
+def('c_period', 'circ', 'Period and centripetal acceleration', (fix = {}) => {
+  const r = fx(fix, 'r', () => rnd(0.5, 8, 0.5)), Tp = fx(fix, 'T', () => rnd(0.5, 4, 0.1)), mode = fx(fix, 'mode', () => pick(['ac', 'v'])), v = 2 * Math.PI * r / Tp, ac = 4 * Math.PI ** 2 * r / Tp ** 2;
+  const stem = `A ball on a string moves in a horizontal circle of radius ${r} m, completing one revolution every ${Tp} s. `;
+  if (mode === 'v') return { stem: stem + 'What is its speed?', ...mc(v, [r / Tp, Math.PI * r / Tp, 2 * Math.PI / Tp, 2 * Math.PI * r * Tp], 'm/s'), hints: ['One revolution = circumference 2πr.', 'v = distance/time.', 'v = 2πr/T.'], sol: step('Speed', eq(`v = 2πr/T = <b>${fmt(v)} m/s</b>`)), src: 'Uniform circular motion' };
+  return { stem: stem + 'What is the magnitude of its centripetal acceleration?', ...mc(ac, [v * v * r, 2 * Math.PI * r / Tp ** 2, v / Tp, ac / (2 * Math.PI)], 'm/s²'), hints: ['a_r = v²/r = 4π²r/T² (it\'s on your formula sheet).', 'First get v = 2πr/T.', 'Then square and divide by r.'], sol: step('Centripetal', eq(`a_r = 4π²r/T² = <b>${fmt(ac)} m/s²</b>, toward the center`)), src: 'Uniform circular motion' };
+});
+
+/* ---- Work & energy ---- */
+def('e_sled', 'energy', 'Work by an angled force on a bobsled', (fix = {}) => {
+  const m = fx(fix, 'm', () => rnd(100, 300, 10)), F = fx(fix, 'F', () => rnd(60, 200, 10)), th = fx(fix, 'th', () => rnd(15, 45, 5)), d = fx(fix, 'd', () => rnd(5, 20));
+  const W = F * d * cos(th), v = Math.sqrt(2 * W / m), mode = fx(fix, 'mode', () => pick(['W', 'v']));
+  const stem = `A bobsled team pushes a ${m} kg sled along a flat, icy (frictionless) track with a total force of ${F} N directed ${th}° below the horizontal. The sled starts at rest and moves ${d} m. `;
+  if (mode === 'W') return { stem: stem + 'What total work does the team do on the sled?', ...mc(W, [F * d, F * d * sin(th), F * d * tan(th), 0.5 * F * d], 'J'), src: 'Midterm 3 Q2 style',
+    hints: ['W = F·Δr = F Δr cos θ, where θ is between F and the displacement.', 'The displacement is horizontal.', 'Only the horizontal component of F does work.'], sol: step('Constant force', eq(`W = F Δr cos θ = ${F}(${d}) cos ${th}° = <b>${fmt(W)} J</b>`)) };
+  return { stem: stem + 'What is the sled\'s final speed?', ...mc(v, [Math.sqrt(2 * F * d / m), Math.sqrt(W / m), 2 * W / m, Math.sqrt(2 * F * d * sin(th) / m)], 'm/s'), src: 'Midterm 3 Q3 style',
+    hints: ['Use the work–kinetic energy theorem: W_tot = ΔK.', 'Gravity and the normal force are perpendicular to the motion, so they do zero work.', '½mv² = F d cos θ.'],
+    sol: step('Work', eq(`W = ${fmt(W)} J`)) + step('W = ΔK', eq(`v = √(2W/m) = √(2·${fmt(W)}/${m}) = <b>${fmt(v)} m/s</b>`)) + step('Alt.', 'Newton + kinematics gives the same: a = F cos θ/m, v² = 2ad.') };
+});
+def('e_incline', 'energy', 'Work done by friction on an incline', (fix = {}) => {
+  let m, L, th, mk; do { m = fx(fix, 'm', () => rnd(2, 20)); L = fx(fix, 'L', () => rnd(2, 10)); th = fx(fix, 'th', () => rnd(25, 45, 5)); mk = fx(fix, 'mk', () => rnd(0.1, 0.4, 0.05)); } while (!fix.m && tan(th) < mk + 0.15);
+  const Wf = -mk * m * G * cos(th) * L, Wg = m * G * sin(th) * L, v = Math.sqrt(2 * (Wg + Wf) / m), mode = fx(fix, 'mode', () => pick(['Wf', 'v']));
+  const stem = `A ${m} kg block is released from rest and slides ${L} m down a ${th}° incline with μₖ = ${mk}. `;
+  if (mode === 'Wf') return { stem: stem + 'How much work does friction do on the block?', fig: figRamp(th), ...mc(Wf, [-Wf, -mk * m * G * L, -mk * m * G * sin(th) * L, -Wg], 'J', { signed: true }), src: 'Work by forces',
+    hints: ['Friction is opposite the displacement → negative work.', 'Kinetic friction magnitude: μₖN = μₖmg cos θ.', 'W_f = −f·L.'], sol: step('Work by friction', eq(`W_f = −μₖ mg cos θ · L = <b>${fmt(Wf)} J</b>`)) };
+  return { stem: stem + 'What is its speed at the bottom?', fig: figRamp(th), ...mc(v, [Math.sqrt(2 * G * L * sin(th)), Math.sqrt(2 * G * L), Math.sqrt(2 * G * L * (sin(th) + mk * cos(th))), Math.sqrt(G * L * (sin(th) - mk * cos(th)))], 'm/s'), src: 'Extended work–energy',
+    hints: ['Extended work–energy: W_nc = ΔK + ΔU.', 'Height drop h = L sin θ; friction work = −μₖmg cos θ L.', '½mv² = mgL sin θ − μₖmg cos θ L.'],
+    sol: step('Energy', eq(`½mv² = ${fmt(Wg)} J − ${fmt(-Wf)} J`)) + step('Speed', eq(`v = <b>${fmt(v)} m/s</b>`)) };
+});
+def('e_pend', 'energy', 'Pendulum speed & tension', (fix = {}) => {
+  const L = fx(fix, 'L', () => rnd(0.5, 3, 0.1)), th = fx(fix, 'th', () => rnd(20, 70, 5)), m = fx(fix, 'm', () => rnd(0.2, 3, 0.1));
+  const v = Math.sqrt(2 * G * L * (1 - cos(th))), T = m * (G + v * v / L), mode = fx(fix, 'mode', () => pick(['v', 'T']));
+  const stem = `A ${m} kg pendulum bob on a ${L} m string is pulled back to ${th}° from vertical and released from rest. `;
+  const hints = ['A pendulum = energy conservation (tension does no work).', 'Height drop: h = L − L cos θ = L(1 − cos θ).', 'mgh = ½mv².'];
+  const s = step('Height drop', eq(`h = L(1 − cos θ) = ${fmt(L * (1 - cos(th)))} m`)) + step('Energy', eq(`v = √(2gh) = ${fmt(v)} m/s`));
+  if (mode === 'v') return { stem: stem + 'What is its speed at the lowest point?', fig: figPend(th), ...mc(v, [Math.sqrt(2 * G * L), Math.sqrt(2 * G * L * cos(th)), Math.sqrt(2 * G * L * sin(th)), Math.sqrt(G * L * (1 - cos(th)))], 'm/s'), hints, sol: s, src: 'Energy conservation' };
+  return { stem: stem + 'What is the string tension at the lowest point?', fig: figPend(th), ...mc(T, [m * G, m * v * v / L, m * (G - v * v / L), m * G * cos(th)], 'N'), hints: [...hints, 'Then at the bottom: T − mg = mv²/L.'], sol: s + step('Circular motion at bottom', eq(`T = m(g + v²/L) = <b>${fmt(T)} N</b>`)), src: 'Energy + circular motion' };
+});
+def('e_coaster', 'energy', 'Roller coaster (frictionless)', (fix = {}) => {
+  let h1, v1, h2; do { h1 = fx(fix, 'h1', () => rnd(10, 50)); v1 = fx(fix, 'v1', () => rnd(0, 10)); h2 = fx(fix, 'h2', () => rnd(2, 45)); } while (!fix.h1 && v1 * v1 + 2 * G * (h1 - h2) < 4);
+  const v2 = Math.sqrt(v1 * v1 + 2 * G * (h1 - h2));
+  return { stem: `A roller-coaster car moves at ${v1} m/s at the top of a hill ${h1} m high. Ignoring friction, how fast is it moving at a point ${h2} m high?`,
+    ...mc(v2, [Math.sqrt(2 * G * (h1 - h2) || 1), v1 + Math.sqrt(Math.abs(2 * G * (h1 - h2))), Math.sqrt(v1 * v1 + 2 * G * h1), Math.sqrt(Math.abs(v1 * v1 + G * (h1 - h2)))], 'm/s'), src: 'Energy conservation',
+    hints: ['No friction → mechanical energy is conserved.', '½mv₁² + mgh₁ = ½mv₂² + mgh₂. Mass cancels.', 'Don\'t forget the initial KE.'],
+    sol: step('Conservation', eq(`v₂ = √(v₁² + 2g(h₁ − h₂)) = √(${v1}² + 2·9.81·${fmt(h1 - h2)}) = <b>${fmt(v2)} m/s</b>`)) };
+});
+def('e_power', 'energy', 'Power', (fix = {}) => {
+  const mode = fx(fix, 'mode', () => pick(['lift', 'car']));
+  if (mode === 'lift') { const m = fx(fix, 'm', () => rnd(50, 500, 10)), v = fx(fix, 'v', () => rnd(0.2, 2, 0.1)), P = m * G * v;
+    return { stem: `A motor lifts a ${m} kg load straight up at a constant speed of ${v} m/s. What power does the motor deliver?`, ...mc(P, [m * v, 0.5 * m * v * v, m * G, m * G * v / 2], 'W'), src: 'Power',
+      hints: ['Constant speed → the motor\'s force equals the weight.', 'P = F·v.', 'P = mgv.'], sol: step('P = Fv', eq(`P = mg·v = <b>${fmt(P)} W</b>`)) }; }
+  const f = fx(fix, 'f', () => rnd(300, 900, 10)), v = fx(fix, 'v', () => rnd(15, 35)), P = f * v;
+  return { stem: `A car moving at a constant ${v} m/s on a level road experiences ${f} N of total resistive force (air + rolling). What power must the engine deliver to the wheels?`, ...mc(P, [f / v, 0.5 * f * v, f * v * v, f], 'W'), src: 'Power',
+    hints: ['Constant velocity → driving force = resistive force.', 'P = F·v.', 'Watch units: N·m/s = W.'], sol: step('P = Fv', eq(`P = ${f}×${v} = <b>${fmt(P)} W</b>`)) };
+});
+def('e_stop', 'energy', 'Sliding to a stop on a rough floor', (fix = {}) => {
+  const v0 = fx(fix, 'v0', () => rnd(2, 12, 0.5)), mu = fx(fix, 'mu', () => rnd(0.1, 0.6, 0.05)), d = v0 * v0 / (2 * mu * G), mode = fx(fix, 'mode', () => pick(['d', 'mu']));
+  if (mode === 'd') return { stem: `A hockey puck sliding at ${v0} m/s crosses onto a rough mat with μₖ = ${mu}. How far does it slide before stopping?`, ...mc(d, [v0 * v0 / (mu * G), v0 / (mu * G), v0 * v0 / (2 * G), v0 * v0 * mu / (2 * G)], 'm'), src: 'Extended work–energy',
+    hints: ['Only friction does work: W_f = −μₖmg·d.', 'Set W_f = ΔK = 0 − ½mv₀².', 'd = v₀²/(2μₖg).'], sol: step('Work–energy', eq(`−μₖmg d = −½mv₀² → d = <b>${fmt(d)} m</b>`)) };
+  const dd = fx(fix, 'dd', () => +d.toFixed(2));
+  return { stem: `A box sliding at ${v0} m/s comes to rest after ${dd} m on a level floor. What is μₖ?`, ...mc(v0 * v0 / (2 * G * dd), [v0 * v0 / (G * dd), v0 / (G * dd), v0 * v0 / (2 * dd)], '', { sig: 2 }), src: 'Extended work–energy',
+    hints: ['W_friction = ΔK.', '−μₖmg d = −½mv₀².', 'μₖ = v₀²/(2gd).'], sol: step('Solve', eq(`μₖ = v₀²/(2gd) = <b>${fmt(v0 * v0 / (2 * G * dd), 2)}</b>`)) };
+});
+
+/* ---- Springs & ramps ---- */
+def('s_pull', 'springs', 'Spring pulls a block up a rough ramp at constant speed', (fix = {}) => {
+  const m = fx(fix, 'm', () => rnd(5, 20)), th = fx(fix, 'th', () => rnd(15, 45, 5)), k = fx(fix, 'k', () => rnd(300, 1500, 50)), mk = fx(fix, 'mk', () => rnd(0.1, 0.4, 0.05)), ms = fx(fix, 'ms', () => +(mk + 0.3).toFixed(2));
+  const x = m * G * (sin(th) + mk * cos(th)) / k, mode = fx(fix, 'mode', () => pick(['x', 'x', 'net']));
+  const stem = `An ideal spring (k = ${k} N/m) pulls a ${m} kg block up a ${th}° ramp at <b>constant speed</b>. The ramp has μₖ = ${mk} and μₛ = ${ms}. `;
+  if (mode === 'net') return { stem: stem + 'What is the magnitude of the net force on the block?', fig: figRamp(th, { pullUp: true, blockAt: 0.6 }), ...mc(0, [m * G * sin(th), mk * m * G * cos(th), m * G * cos(th), m * G * (sin(th) + mk * cos(th))], 'N', { floor: 1 }), src: 'Midterm 3 Q6 style',
+    hints: ['Read the words: constant speed.', 'Constant velocity → a = 0.', 'Newton\'s 2nd law → F_net = 0.'], sol: step('Constant speed', 'a = 0, so F_net = <b>0 N</b>. No calculation needed.') };
+  return { stem: stem + 'How far is the spring stretched from its equilibrium length?', fig: figRamp(th, { pullUp: true, blockAt: 0.6 }), ...mc(x * 100, [m * G * sin(th) / k * 100, m * G * (sin(th) - mk * cos(th)) / k * 100, m * G * (sin(th) + ms * cos(th)) / k * 100, Math.sqrt(2 * m * G * (sin(th) + mk * cos(th)) / k) * 10], 'cm'), src: 'Midterm 3 Q7 style',
+    hints: ['Constant speed → F_net = 0. Use Newton\'s 2nd law, not ½kx² (the stretch doesn\'t change).', 'Along the ramp: kx (up) = mg sin θ + μₖmg cos θ (both down).', 'It\'s sliding, so use μₖ, not μₛ. Convert to cm at the end.'],
+    sol: step('Along the ramp, a = 0', eq(`kx = mg sin θ + μₖ mg cos θ = ${fmt(m * G * sin(th))} + ${fmt(mk * m * G * cos(th))} N`)) + step('Solve', eq(`x = ${fmt(m * G * (sin(th) + mk * cos(th)))}/${k} = ${fmt(x, 3)} m = <b>${fmt(x * 100)} cm</b>`)) + step('Why not energy?', 'The spring\'s stretch is constant, so its potential energy doesn\'t change. ½kx² is the wrong tool here.') };
+});
+def('s_ramp_end', 'springs', 'Spring at the bottom of a rough ramp', (fix = {}) => {
+  let m, th, mk, L, v1, k, Fd; do { m = fx(fix, 'm', () => rnd(0.2, 2, 0.1)); th = fx(fix, 'th', () => rnd(20, 50, 5)); mk = fx(fix, 'mk', () => rnd(0.1, 0.3, 0.05)); L = fx(fix, 'L', () => rnd(0.3, 1.5, 0.1)); v1 = fx(fix, 'v1', () => rnd(0.1, 1, 0.1)); k = fx(fix, 'k', () => rnd(50, 400, 10)); Fd = m * G * (sin(th) - mk * cos(th)); } while (!fix.m && Fd < 0.2);
+  const C = 0.5 * m * v1 * v1 + Fd * L, d = (Fd + Math.sqrt(Fd * Fd + 2 * k * C)) / k;
+  const noFr = (() => { const F0 = m * G * sin(th), C0 = 0.5 * m * v1 * v1 + F0 * L; return (F0 + Math.sqrt(F0 * F0 + 2 * k * C0)) / k; })();
+  return { stem: `A ${m} kg block sits on a rough ramp inclined at ${th}° (μₖ = ${mk}). ${L} m down the ramp from the block is a spring with k = ${k} N/m. The block is given a small flick so it starts down the ramp at ${v1} m/s. How far will the spring compress before the block momentarily stops?`,
+    fig: figRamp(th, { spring: true, blockAt: 0.25 }), ...mc(d, [noFr, Math.sqrt(2 * C / k), Math.sqrt(2 * (Fd * L) / k), (Fd + Math.sqrt(Fd * Fd + 2 * k * Fd * L)) / k * 0.6, Math.sqrt(m * v1 * v1 / k)], 'm'), src: 'Final exam slide example (Springs & Ramps)',
+    hints: ['Extended work–energy from the start to maximum compression: K₁ + W_gravity + W_friction = ½kd².', 'The block travels L + d along the ramp (not just L)! Gravity and friction act over the whole distance.', 'You get a quadratic in d: ½kd² − F·d − (½mv₁² + F·L) = 0 with F = mg(sin θ − μₖ cos θ). Take the + root.'],
+    sol: step('Net "downhill" force', eq(`F = mg(sin θ − μₖ cos θ) = ${fmt(Fd)} N`)) + step('Energy, distance L + d', eq(`½mv₁² + F(L + d) = ½kd²`)) + step('Quadratic', eq(`${fmt(k / 2)}d² − ${fmt(Fd)}d − ${fmt(C)} = 0`) + eq(`d = [F + √(F² + 2k(½mv₁² + FL))]/k = <b>${fmt(d)} m</b>`)) };
+});
+def('s_launch', 'springs', 'Spring launcher onto a rough floor', (fix = {}) => {
+  const k = fx(fix, 'k', () => rnd(100, 1000, 50)), x = fx(fix, 'x', () => rnd(3, 20)), m = fx(fix, 'm', () => rnd(0.2, 3, 0.1)), mu = fx(fix, 'mu', () => rnd(0.1, 0.5, 0.05));
+  const xm = x / 100, v = xm * Math.sqrt(k / m), d = k * xm * xm / (2 * mu * m * G), mode = fx(fix, 'mode', () => pick(['v', 'd']));
+  const stem = `A spring (k = ${k} N/m) is compressed ${x} cm and launches a ${m} kg block across a frictionless floor. `;
+  if (mode === 'v') return { stem: stem + 'What is the block\'s launch speed?', ...mc(v, [x * Math.sqrt(k / m), xm * k / m, Math.sqrt(k * xm / m), xm * Math.sqrt(k / (2 * m))], 'm/s'), src: 'Springs', hints: ['Spring PE → KE: ½kx² = ½mv².', 'Convert cm to m first!', 'v = x√(k/m).'], sol: step('Energy', eq(`½kx² = ½mv² → v = ${xm}√(${k}/${m}) = <b>${fmt(v)} m/s</b>`)) };
+  return { stem: stem + `It then slides onto a rough patch with μₖ = ${mu}. How far does it slide on the rough patch?`, ...mc(d, [k * xm * xm / (mu * m * G), k * xm / (mu * m * G), k * x * x / (2 * mu * m * G) / 100, d / 2], 'm'), src: 'Springs + friction', hints: ['Spring PE ends up as friction work.', '½kx² = μₖmg·d.', 'Use x in metres.'], sol: step('Energy', eq(`½kx² = μₖmg d → d = <b>${fmt(d)} m</b>`)) };
+});
+def('s_up', 'springs', 'Spring launches a block up a frictionless incline', (fix = {}) => {
+  const k = fx(fix, 'k', () => rnd(200, 1500, 50)), x = fx(fix, 'x', () => rnd(5, 25)), m = fx(fix, 'm', () => rnd(0.5, 4, 0.5)), th = fx(fix, 'th', () => rnd(15, 45, 5));
+  const xm = x / 100, s = k * xm * xm / (2 * m * G * sin(th));
+  return { stem: `A spring (k = ${k} N/m) at the bottom of a frictionless ${th}° incline is compressed ${x} cm and launches a ${m} kg block up the incline. How far along the incline (measured from the release point) does the block travel before stopping?`, fig: figRamp(th, { spring: true, blockAt: 0.7 }),
+    ...mc(s, [k * xm * xm / (2 * m * G), k * xm * xm / (2 * m * G * cos(th)), s * sin(th), k * xm / (m * G * sin(th))], 'm'), src: 'Springs & ramps',
+    hints: ['½kx² → mgh.', 'h is vertical; the distance along the incline is s = h/sin θ.', 's = kx²/(2mg sin θ).'], sol: step('Energy', eq(`½kx² = mg s sin θ → s = <b>${fmt(s)} m</b>`)) };
+});
+def('s_hooke', 'springs', 'Hooke\'s law & spring energy', (fix = {}) => {
+  const m = fx(fix, 'm', () => rnd(0.2, 5, 0.1)), x = fx(fix, 'x', () => rnd(2, 20)), k = m * G / (x / 100), mode = fx(fix, 'mode', () => pick(['k', 'U']));
+  if (mode === 'k') return { stem: `Hanging a ${m} kg mass from a vertical spring stretches it ${x} cm at equilibrium. What is the spring constant?`, ...mc(k, [m / (x / 100), m * G / x, 2 * m * G / (x / 100), m * G * (x / 100)], 'N/m'), src: "Hooke's law",
+    hints: ['At equilibrium, spring force = weight.', 'kx = mg.', 'x in metres.'], sol: step('Equilibrium', eq(`k = mg/x = ${fmt(m * G)}/${x / 100} = <b>${fmt(k)} N/m</b>`)) };
+  const x2 = fx(fix, 'x2', () => x * 2), U1 = 0.5 * k * (x / 100) ** 2, U2 = 0.5 * k * (x2 / 100) ** 2;
+  return { stem: `A spring stretches ${x} cm when a ${m} kg mass hangs from it. How much work is needed to stretch it from ${x} cm to ${x2} cm?`, ...mc(U2 - U1, [U2, 0.5 * k * ((x2 - x) / 100) ** 2, k * (x2 - x) / 100, m * G * (x2 - x) / 100], 'J'), src: "Hooke's law",
+    hints: ['First find k from kx = mg.', 'Spring PE = ½kx², measured from the natural length.', 'W = ½k(x₂² − x₁²), not ½k(x₂ − x₁)².'], sol: step('k', eq(`k = ${fmt(k)} N/m`)) + step('Work', eq(`W = ½k(x₂² − x₁²) = <b>${fmt(U2 - U1)} J</b>`)) };
+});
+
+/* ---- Momentum & collisions ---- */
+def('m_chain', 'momentum', 'Slide → collide → stick → slide', (fix = {}) => {
+  let m1, m2, mu, v0, d, v1; do { m1 = fx(fix, 'm1', () => rnd(0.5, 3, 0.5)); m2 = fx(fix, 'm2', () => pick([m1, rnd(0.5, 3, 0.5)])); mu = fx(fix, 'mu', () => rnd(0.1, 0.3, 0.05)); v0 = fx(fix, 'v0', () => rnd(2, 5, 0.5)); d = fx(fix, 'd', () => rnd(0.5, 1.5, 0.1)); v1 = Math.sqrt(v0 * v0 - 2 * mu * G * d); } while (!fix.m1 && !(v1 > 0.6));
+  const V = m1 * v1 / (m1 + m2), s = V * V / (2 * mu * G), mode = fx(fix, 'mode', () => pick(['v1', 'V', 's']));
+  const stem = `Two blocks (m₁ = ${m1} kg, m₂ = ${m2} kg) sit on a level track with μₖ = ${mu}. Block 1 starts at ${v0} m/s and slides ${d} m before hitting block 2, which is at rest. The collision is perfectly inelastic: they stick together and slide to a stop. `;
+  const s1 = step('Before collision (extended W–E or Newton + kinematics)', eq(`v₁ = √(v₀² − 2μₖgd) = √(${v0}² − 2·${mu}·9.81·${d}) = ${fmt(v1)} m/s`));
+  const s2 = step('Collision: momentum only', eq(`m₁v₁ = (m₁+m₂)V → V = ${fmt(V)} m/s`));
+  if (mode === 'v1') return { stem: stem + 'What is the speed of block 1 just before the collision?', fig: figBlocks(), ...mc(v1, [v0, Math.sqrt(v0 * v0 - mu * G * d), v0 - mu * G * d, V], 'm/s'), hints: ['Friction does negative work over d.', '½mv₁² = ½mv₀² − μₖmg d (mass cancels).', 'Or: a = −μₖg, then v² = v₀² + 2ad.'], sol: s1, src: 'Midterm 3 Q8 style' };
+  if (mode === 'V') return { stem: stem + 'What is the speed of the combined blocks immediately after the collision?', fig: figBlocks(), ...mc(V, [v1, v0 * m1 / (m1 + m2), v1 * Math.sqrt(m1 / (m1 + m2)), v1 / 2 * (m1 === m2 ? 0.5 : 1)], 'm/s'), hints: ['Step 1: find the speed just before the collision (friction).', 'Step 2: momentum is conserved DURING the collision. KE is not (it\'s inelastic).', 'm₁v₁ = (m₁ + m₂)V.'], sol: s1 + s2, src: 'Midterm 3 Q9 style' };
+  return { stem: stem + 'How far do the stuck-together blocks slide after the collision?', fig: figBlocks(), ...mc(s, [v1 * v1 / (2 * mu * G), V * V / (mu * G), V / (2 * mu * G), v0 * v0 / (2 * mu * G) - d], 'm'), hints: ['Three stages: friction → collision → friction.', 'After collision, both blocks decelerate at a = −μₖg.', 'Δx = V²/(2μₖg).'], sol: s1 + s2 + step('After collision', eq(`Δx = V²/(2μₖg) = <b>${fmt(s)} m</b>`)), src: 'Midterm 3 Q10 style' };
+});
+def('m_elastic', 'momentum', '1-D elastic collision', (fix = {}) => {
+  const m1 = fx(fix, 'm1', () => rnd(0.5, 5, 0.5)), m2 = fx(fix, 'm2', () => rnd(0.5, 5, 0.5)), v = fx(fix, 'v', () => rnd(2, 10, 0.5));
+  const v1f = (m1 - m2) / (m1 + m2) * v, v2f = 2 * m1 / (m1 + m2) * v, mode = fx(fix, 'mode', () => pick(['v1', 'v2']));
+  const stem = `A ${m1} kg cart moving at +${v} m/s collides elastically head-on with a ${m2} kg cart at rest. `;
+  const hints = ['Elastic → BOTH momentum and kinetic energy are conserved.', 'Shortcut for a target at rest: v₁f = (m₁−m₂)v/(m₁+m₂), v₂f = 2m₁v/(m₁+m₂).', 'Keep the sign: negative means the cart bounces back.'];
+  if (mode === 'v2' || m1 === m2) return { stem: stem + 'What is the velocity of the second cart after the collision?', ...mc(v2f, [m1 * v / (m1 + m2), v, -v2f, v1f, m1 * v / m2], 'm/s', { signed: true }), hints, sol: step('Elastic, target at rest', eq(`v₂f = 2m₁v/(m₁+m₂) = <b>${fmt(v2f)} m/s</b>`)), src: 'Collisions' };
+  return { stem: stem + 'What is the velocity of the first cart after the collision?', ...mc(v1f, [-v1f, m1 * v / (m1 + m2), 0, v2f, -v], 'm/s', { signed: true, floor: 1 }), hints, sol: step('Elastic, target at rest', eq(`v₁f = (m₁−m₂)v/(m₁+m₂) = <b>${fmt(v1f)} m/s</b>`) + (v1f < 0 ? 'Negative: the lighter cart bounces back.' : 'Positive: the heavier cart keeps going forward.')), src: 'Collisions' };
+});
+def('m_2d', 'momentum', '2-D perfectly inelastic collision', (fix = {}) => {
+  const mA = fx(fix, 'mA', () => rnd(900, 2200, 50)), mB = fx(fix, 'mB', () => rnd(900, 2200, 50)), vA = fx(fix, 'vA', () => rnd(8, 25)), vB = fx(fix, 'vB', () => rnd(8, 25));
+  const px = mA * vA, py = mB * vB, V = Math.hypot(px, py) / (mA + mB), ang = atand(py / px), mode = fx(fix, 'mode', () => pick(['V', 'ang']));
+  const stem = `At an icy intersection, car A (${mA} kg) heading east at ${vA} m/s collides with car B (${mB} kg) heading north at ${vB} m/s. They lock together. `;
+  const hints = ['Momentum is conserved separately in x and in y.', `x: p_x = m_A v_A; y: p_y = m_B v_B.`, 'V = √(p_x² + p_y²)/(m_A+m_B); direction tan θ = p_y/p_x.'];
+  const s = step('Components', eq(`p_x = ${fmt(px)} kg·m/s, p_y = ${fmt(py)} kg·m/s`));
+  if (mode === 'V') return { stem: stem + 'What is their speed just after the collision?', fig: figCars(), ...mc(V, [(px + py) / (mA + mB), Math.hypot(vA, vB), (vA + vB) / 2, Math.hypot(vA, vB) / 2], 'm/s'), hints, sol: s + step('Speed', eq(`V = √(p_x² + p_y²)/(m_A+m_B) = <b>${fmt(V)} m/s</b>`)), src: '2-D collisions' };
+  return { stem: stem + 'In what direction do they move just after the collision?', fig: figCars(), ...mcText(`${fmt(ang, 2)}° NORTH of EAST`, [`${fmt(90 - ang, 2)}° NORTH of EAST`, `${fmt(atand(vB / vA), 2)}° NORTH of EAST`, `${fmt(ang, 2)}° SOUTH of EAST`, `${fmt(ang, 2)}° NORTH of WEST`, `${fmt(90 - ang, 2)}° SOUTH of EAST`, '45° NORTH of EAST', '30° NORTH of EAST', '60° NORTH of EAST']), hints, sol: s + step('Direction', eq(`θ = tan⁻¹(p_y/p_x) = <b>${fmt(ang, 2)}° N of E</b>`) + 'Using the velocities (instead of momenta) is the common mistake.'), src: '2-D collisions' };
+});
+def('m_2dgen', 'momentum', '2-D glancing collision', (fix = {}) => {
+  let m1, m2, v, v1p, al, p2x; do { m1 = fx(fix, 'm1', () => rnd(0.1, 0.5, 0.05)); m2 = fx(fix, 'm2', () => rnd(0.1, 0.5, 0.05)); v = fx(fix, 'v', () => rnd(3, 8, 0.5)); v1p = fx(fix, 'v1p', () => +(v * rnd(0.3, 0.7, 0.05)).toFixed(2)); al = fx(fix, 'al', () => rnd(25, 60, 5)); p2x = m1 * v - m1 * v1p * cos(al); } while (!fix.m1 && p2x <= 0);
+  const p2y = -m1 * v1p * sin(al), v2 = Math.hypot(p2x, p2y) / m2, b = atand(Math.abs(p2y) / p2x), mode = fx(fix, 'mode', () => pick(['v2', 'b']));
+  const stem = `A ${m1} kg puck moving at ${v} m/s in the +x direction strikes a ${m2} kg puck at rest. Afterward, the first puck moves at ${v1p} m/s at ${al}° above the +x axis. `;
+  const hints = ['x and y momentum are each conserved.', 'Before: p_x = m₁v, p_y = 0.', 'Puck 2 gets whatever is left: p₂x = m₁v − m₁v₁′cos α, p₂y = −m₁v₁′ sin α.'];
+  const s = step('Puck 2 components', eq(`p₂x = ${fmt(p2x)}, p₂y = ${fmt(p2y)} kg·m/s`));
+  if (mode === 'v2') return { stem: stem + 'What is the speed of the second puck?', ...mc(v2, [(m1 * v - m1 * v1p) / m2, p2x / m2, m1 * v / m2, Math.abs(p2y) / m2], 'm/s'), hints, sol: s + step('Speed', eq(`v₂ = √(p₂x² + p₂y²)/m₂ = <b>${fmt(v2)} m/s</b>`)), src: '2-D collisions' };
+  return { stem: stem + 'At what angle below the +x axis does the second puck move?', ...mc(b, [90 - b, al, 90 - al, b / 2 + 5], '°'), hints, sol: s + step('Angle', eq(`β = tan⁻¹(|p₂y|/p₂x) = <b>${fmt(b)}°</b> below +x`)), src: '2-D collisions' };
+});
+def('m_ballistic', 'momentum', 'Ballistic pendulum', (fix = {}) => {
+  const m = fx(fix, 'm', () => rnd(5, 30)), M = fx(fix, 'M', () => rnd(1, 5, 0.5)), v = fx(fix, 'v', () => rnd(200, 600, 10)), mk = m / 1000;
+  const V = mk * v / (mk + M), h = V * V / (2 * G), mode = fx(fix, 'mode', () => pick(['h', 'v']));
+  if (mode === 'h') return { stem: `A ${m} g bullet moving at ${v} m/s embeds itself in a ${M} kg wooden block hanging from strings (a ballistic pendulum). How high does the block swing?`, ...mc(h, [v * v / (2 * G), mk * v * v / (2 * G * (mk + M)), V * V / G, V / (2 * G)], 'm'), src: 'Lab 10 – Ballistic pendulum',
+    hints: ['Two stages! Collision first (momentum), then the swing (energy).', 'Don\'t use energy across the collision: it\'s inelastic.', 'mv = (m+M)V, then ½V² = gh.'], sol: step('Collision', eq(`V = mv/(m+M) = ${fmt(V)} m/s`)) + step('Swing', eq(`h = V²/(2g) = <b>${fmt(h)} m</b>`)) };
+  const hh = fx(fix, 'hh', () => +h.toFixed(3)), vb = (mk + M) / mk * Math.sqrt(2 * G * hh);
+  return { stem: `A ${m} g bullet embeds in a ${M} kg ballistic pendulum, which then rises ${fmt(hh * 100)} cm. What was the bullet's speed?`, ...mc(vb, [Math.sqrt(2 * G * hh), Math.sqrt(2 * G * hh * (mk + M) / mk), M / mk * Math.sqrt(2 * G * hh), (mk + M) / mk * Math.sqrt(G * hh)], 'm/s'), src: 'Lab 10 – Ballistic pendulum',
+    hints: ['Work backwards: the rise gives V just after the collision.', 'V = √(2gh).', 'Then momentum: v = (m+M)V/m.'], sol: step('Swing', eq(`V = √(2gh) = ${fmt(Math.sqrt(2 * G * hh))} m/s`)) + step('Collision', eq(`v = (m+M)V/m = <b>${fmt(vb)} m/s</b>`)) };
+});
+def('m_explode', 'momentum', 'Explosion from rest', (fix = {}) => {
+  const m1 = fx(fix, 'm1', () => rnd(0.5, 5, 0.5)), m2 = fx(fix, 'm2', () => rnd(1, 8, 0.5)), v1 = fx(fix, 'v1', () => rnd(2, 15)), v2 = m1 * v1 / m2, KE = 0.5 * m1 * v1 * v1 + 0.5 * m2 * v2 * v2;
+  const mode = fx(fix, 'mode', () => pick(['v2', 'KE']));
+  const stem = `An object at rest explodes into two pieces. A ${m1} kg piece flies east at ${v1} m/s; the other piece has mass ${m2} kg. `;
+  if (mode === 'v2') return { stem: stem + 'What is the speed of the second piece?', ...mc(v2, [v1, m2 * v1 / m1, Math.sqrt(m1 / m2) * v1, (m1 + m2) * v1 / m2], 'm/s'), src: 'Explosions', hints: ['Initial momentum is zero.', 'm₁v₁ + m₂v₂ = 0.', 'The second piece goes west.'], sol: step('Momentum', eq(`v₂ = m₁v₁/m₂ = <b>${fmt(v2)} m/s</b> west`)) };
+  return { stem: stem + 'How much kinetic energy did the explosion release?', ...mc(KE, [0.5 * m1 * v1 * v1, 0, 0.5 * (m1 + m2) * v1 * v1, 0.5 * m2 * v2 * v2], 'J'), src: 'Explosions', hints: ['Find v₂ from momentum first.', 'KE starts at 0. Mechanical energy is NOT conserved in an explosion; it increases.', 'Sum the KE of both pieces.'], sol: step('v₂', eq(`v₂ = ${fmt(v2)} m/s`)) + step('KE', eq(`½m₁v₁² + ½m₂v₂² = <b>${fmt(KE)} J</b>`)) };
+});
+def('m_impulse', 'momentum', 'Impulse and average force', (fix = {}) => {
+  const m = fx(fix, 'm', () => rnd(0.05, 0.6, 0.01)), v = fx(fix, 'v', () => rnd(5, 30)), vp = fx(fix, 'vp', () => rnd(3, 25)), ms = fx(fix, 'ms', () => rnd(2, 30)), F = m * (v + vp) / (ms / 1000);
+  return { stem: `A ${m} kg ball hits a wall at ${v} m/s and rebounds straight back at ${vp} m/s. The contact lasts ${ms} ms. What is the magnitude of the average force on the ball?`, ...mc(F, [m * Math.abs(v - vp) / (ms / 1000), m * v / (ms / 1000), m * (v + vp) / ms, 2 * m * v / (ms / 1000)], 'N'), src: 'Impulse–momentum',
+    hints: ['Impulse = Δp = F_avg Δt.', 'Velocity reverses: Δv = v_f − v_i = (−v′) − (+v) → magnitude v + v′.', 'Convert ms → s.'], sol: step('Δp', eq(`|Δp| = m(v + v′) = ${fmt(m * (v + vp))} kg·m/s`)) + step('Average force', eq(`F = Δp/Δt = <b>${fmt(F)} N</b>`)) };
+});
+
+/* ---- Rotational kinematics ---- */
+const rpm2 = r => r * 2 * Math.PI / 60;
+def('q_spin', 'rot', 'Spin-up with constant α', (fix = {}) => {
+  const w0r = fx(fix, 'w0', () => pick([0, 0, rnd(60, 300, 30)])), wr = fx(fix, 'w', () => rnd(600, 3000, 100)), t = fx(fix, 't', () => rnd(2, 12, 0.5));
+  const w0 = rpm2(w0r), w = rpm2(wr), al = (w - w0) / t, th = (w0 + w) / 2 * t, rev = th / (2 * Math.PI), mode = fx(fix, 'mode', () => pick(['al', 'rev']));
+  const stem = `A drill bit speeds up uniformly from ${w0r} rpm to ${wr} rpm in ${t} s. `;
+  const hints = ['Convert rpm → rad/s: × 2π/60.', 'Rotational kinematics mirror the linear ones: ω = ω₀ + αt, Δθ = ½(ω₀+ω)t.', 'Revolutions = Δθ/(2π).'];
+  const s = step('Convert', eq(`ω₀ = ${fmt(w0)} rad/s, ω = ${fmt(w)} rad/s`));
+  if (mode === 'al') return { stem: stem + 'What is its angular acceleration?', fig: figWheel(), ...mc(al, [(wr - w0r) / t, (w - w0) / t / (2 * Math.PI), (w - w0) * t, (w + w0) / t], 'rad/s²'), hints, sol: s + step('α', eq(`α = (ω − ω₀)/t = <b>${fmt(al)} rad/s²</b>`)), src: 'Constant angular acceleration' };
+  return { stem: stem + 'How many revolutions does it make during this time?', fig: figWheel(), ...mc(rev, [th, (wr - w0r) / 60 * t, w * t / (2 * Math.PI), rev / 2], 'rev'), hints, sol: s + step('Δθ', eq(`Δθ = ½(ω₀+ω)t = ${fmt(th)} rad`)) + step('Revolutions', eq(`${fmt(th)}/2π = <b>${fmt(rev)} rev</b>`)), src: 'Constant angular acceleration' };
+});
+def('q_stop', 'rot', 'Wheel slows to a stop', (fix = {}) => {
+  const wr = fx(fix, 'w', () => rnd(120, 1200, 30)), N = fx(fix, 'N', () => rnd(10, 200, 5)), w = rpm2(wr), th = 2 * Math.PI * N, al = w * w / (2 * th), t = 2 * th / w, mode = fx(fix, 'mode', () => pick(['al', 't']));
+  const stem = `A spinning wheel turning at ${wr} rpm slows down uniformly and stops after ${N} revolutions. `;
+  const hints = ['Convert: ω₀ in rad/s and Δθ = 2πN rad.', 'No time given → use ω² = ω₀² + 2αΔθ (with ω = 0).', 'Time: Δθ = ½(ω₀ + 0)t.'];
+  if (mode === 'al') return { stem: stem + 'What is the magnitude of its angular acceleration?', fig: figWheel(), ...mc(al, [w * w / (2 * N), w / th, wr * wr / (2 * th), w * w / th], 'rad/s²'), hints, sol: step('Convert', eq(`ω₀ = ${fmt(w)} rad/s, Δθ = ${fmt(th)} rad`)) + step('Time-free', eq(`0 = ω₀² + 2αΔθ → |α| = <b>${fmt(al)} rad/s²</b>`)), src: 'Constant angular acceleration' };
+  return { stem: stem + 'How long does it take to stop?', fig: figWheel(), ...mc(t, [th / w, 2 * N / w, N / wr * 60, 2 * th / wr], 's'), hints, sol: step('Average ω', eq(`Δθ = ½ω₀t → t = 2Δθ/ω₀ = <b>${fmt(t)} s</b>`)), src: 'Constant angular acceleration' };
+});
+def('q_point', 'rot', 'Accelerations of a point on a spinning disk', (fix = {}) => {
+  const r = fx(fix, 'r', () => rnd(0.1, 0.8, 0.05)), al = fx(fix, 'al', () => rnd(1, 8, 0.5)), t = fx(fix, 't', () => rnd(0.5, 4, 0.5));
+  const w = al * t, at = r * al, ar = r * w * w, mode = fx(fix, 'mode', () => pick(['at', 'ar', 'v', 'tot']));
+  const stem = `A disk of radius ${r} m starts from rest and spins up with constant angular acceleration ${al} rad/s². Consider a point on its rim at t = ${t} s. `;
+  const hints = ['ω = αt at that moment.', 'Tangential: a_t = rα. Radial (centripetal): a_r = rω². Speed: v = rω.', 'They are perpendicular: |a| = √(a_t² + a_r²).'];
+  const s = step('ω at that time', eq(`ω = αt = ${fmt(w)} rad/s`));
+  if (mode === 'at') return { stem: stem + 'What is its tangential acceleration?', fig: figWheel(), ...mc(at, [ar, al, r * w, Math.hypot(at, ar)], 'm/s²'), hints, sol: step('Tangential', eq(`a_t = rα = <b>${fmt(at)} m/s²</b> (constant, independent of t)`)), src: 'Linear/angular relations' };
+  if (mode === 'ar') return { stem: stem + 'What is its centripetal (radial) acceleration?', fig: figWheel(), ...mc(ar, [at, r * w, w * w, r * al * al], 'm/s²'), hints, sol: s + step('Radial', eq(`a_r = rω² = <b>${fmt(ar)} m/s²</b>`)), src: 'Linear/angular relations' };
+  if (mode === 'v') return { stem: stem + 'What is its linear (tangential) speed?', fig: figWheel(), ...mc(r * w, [w, r * al, r * w * w, w / r], 'm/s'), hints, sol: s + step('v = rω', eq(`v = <b>${fmt(r * w)} m/s</b>`)), src: 'Linear/angular relations' };
+  return { stem: stem + 'What is the magnitude of its total acceleration?', fig: figWheel(), ...mc(Math.hypot(at, ar), [at + ar, at, ar, Math.abs(ar - at)], 'm/s²'), hints, sol: s + step('Combine', eq(`|a| = √(${fmt(at)}² + ${fmt(ar)}²) = <b>${fmt(Math.hypot(at, ar))} m/s²</b>`)), src: 'Linear/angular relations' };
+});
+def('q_tire', 'rot', 'Rolling tire', (fix = {}) => {
+  const r = fx(fix, 'r', () => rnd(0.25, 0.4, 0.01)), v = fx(fix, 'v', () => rnd(10, 30)), t = fx(fix, 't', () => rnd(4, 12, 0.5)), al = v / (r * t), rev = (v * t / 2) / (2 * Math.PI * r), mode = fx(fix, 'mode', () => pick(['al', 'rev', 'w']));
+  const stem = `A car with tires of radius ${r} m accelerates uniformly from rest to ${v} m/s in ${t} s. The tires roll without slipping. `;
+  const hints = ['Rolling without slipping: v = rω, a = rα, Δx = rΔθ.', 'Linear: a = v/t, Δx = ½vt.', 'Revolutions = Δθ/(2π).'];
+  if (mode === 'al') return { stem: stem + 'What is the angular acceleration of each tire?', ...mc(al, [v / t, v / (r * t) / (2 * Math.PI), v * r / t, v / r], 'rad/s²'), hints, sol: step('a, then α', eq(`a = ${fmt(v / t)} m/s², α = a/r = <b>${fmt(al)} rad/s²</b>`)), src: 'Rolling' };
+  if (mode === 'w') return { stem: stem + 'What is the final angular speed of each tire?', ...mc(v / r, [v * r, v / (2 * Math.PI * r), v / r / 2, v], 'rad/s'), hints, sol: step('ω = v/r', eq(`ω = <b>${fmt(v / r)} rad/s</b>`)), src: 'Rolling' };
+  return { stem: stem + 'How many revolutions does each tire make?', ...mc(rev, [v * t / (2 * Math.PI * r), v * t / 2 / r, rev / 2, v * t / 2], 'rev'), hints, sol: step('Distance', eq(`Δx = ½vt = ${fmt(v * t / 2)} m`)) + step('Revolutions', eq(`N = Δx/(2πr) = <b>${fmt(rev)} rev</b>`)), src: 'Rolling' };
+});
+
+/* ===================== CONCEPT BANK (from your midterms, slides and review packets) ===================== */
+const CONCEPTS = [
+  { t: 'kin1d', q: 'Dropped, an object (no air resistance) accelerates downward at 9.81 m/s². If instead you THROW it downward, its acceleration after release is…', c: ['Greater than 9.81 m/s²', 'Equal to 9.81 m/s²', 'Less than 9.81 m/s²', 'Depends on the speed of the throw', 'Depends on the mass'], a: 1, why: 'Once released, only gravity acts. Free-fall acceleration is g regardless of how it was launched or its mass.', src: 'Midterm 1 Q3' },
+  { t: 'proj', q: 'From the top of a building, you drop a ball while your friend throws an identical ball perfectly horizontally at the same moment. Which is true? (I) They land at the same time. (II) Same speed just before landing. (III) They travel the same distance.', c: ['I only', 'II only', 'III only', 'I & II', 'I, II & III'], a: 0, why: 'Vertical motion is identical (v₀y = 0, same h, same g), so same landing time. The thrown ball has an extra horizontal velocity, so it lands faster and travels farther.', src: 'Midterm 1 Q4' },
+  { t: 'proj', q: 'At the very top of a projectile\'s path (no air resistance), which is true?', c: ['Velocity and acceleration are both zero', 'Velocity is zero, acceleration is g downward', 'Velocity is horizontal, acceleration is g downward', 'Velocity is horizontal, acceleration is zero', 'Velocity is vertical, acceleration is zero'], a: 2, why: 'v_y = 0 at the apex but v_x never changes. Gravity is still acting: a = g downward everywhere.' },
+  { t: 'proj', q: 'Two cannonballs are fired from the ground at the same speed, one at 30° and one at 60°. Ignoring air resistance, which lands farther away?', c: ['30°', '60°', 'They land at the same distance', '60° because it\'s in the air longer', 'Can\'t tell without the speed'], a: 2, why: 'R = v₀² sin 2θ / g, and sin 60° = sin 120°. Complementary angles give equal ranges (the 60° shot goes higher and stays up longer).' },
+  { t: 'graphs', q: 'On a position–time graph, a straight line with a negative slope means the object…', c: ['Is slowing down', 'Is at rest', 'Moves at constant velocity in the − direction', 'Has negative acceleration', 'Is speeding up in the − direction'], a: 2, why: 'Slope of x–t = velocity. Constant slope = constant velocity; negative slope = moving in the − direction.' },
+  { t: 'graphs', q: 'On a velocity–time graph, what does the area between the curve and the time axis represent?', c: ['Acceleration', 'Displacement', 'Distance only when v > 0', 'Average velocity', 'Jerk'], a: 1, why: 'Area under v–t = displacement (signed). Slope of v–t = acceleration.' },
+  { t: 'graphs', q: 'A car accelerates from rest at a constant rate, then drives at constant speed. Its velocity–time graph looks like…', c: ['A straight rising line, then a horizontal line', 'A curve that steepens, then a straight line', 'A horizontal line, then a drop to zero', 'A parabola opening downward', 'A rising line that keeps rising'], a: 0, why: 'Constant acceleration → straight slanted line on v–t. Constant speed → horizontal. (On x–t it would be a parabola then a straight line.)', src: 'Midterm 1 Q2' },
+  { t: 'vectors', q: '"33° SOUTH of EAST" means…', c: ['Start pointing south, rotate 33° toward east', 'Start pointing east, rotate 33° toward south', 'Start pointing east, rotate 33° toward north', 'An angle of 33° measured from north', 'An angle of 123° from +x'], a: 1, why: 'The last word is the reference direction. Start at EAST, rotate 33° toward SOUTH, so x > 0 and y < 0, an angle of −33° from +x.' },
+  { t: 'newton', q: 'A book is held against a wall by a hand pushing at an angle. Which pair is a Newton\'s 3rd law pair?', c: ['Force by hand on book & force by book on hand', 'Gravity on book & friction on book', 'Horizontal part of the push & normal force from the wall', 'Push by hand on book & normal force by wall on book', 'Gravity on book & normal force on book'], a: 0, why: '3rd-law pairs act on TWO DIFFERENT objects (A on B, B on A). All the other pairs act on the same object (the book).', src: 'Midterm 2 Q2' },
+  { t: 'newton', q: 'A child slides down a slide at CONSTANT speed. The friction force on the child points…', c: ['Parallel to and down the slide', 'Parallel to and up the slide', 'Perpendicular to the slide', 'Straight up', 'There is no friction at constant speed'], a: 1, why: 'Kinetic friction opposes the motion: up the slide. Constant speed means friction balances mg sin θ, not that friction is zero.', src: 'Midterm 2 Q3' },
+  { t: 'newton', q: 'A box slides across a floor at constant velocity while you push it. The net force on it is…', c: ['Equal to your push', 'Equal to friction', 'Zero', 'In the direction of motion', 'Equal to its weight'], a: 2, why: 'Constant velocity → a = 0 → F_net = 0 (Newton\'s 1st law). Your push balances friction.' },
+  { t: 'newton', q: 'A box at rest on the floor has friction coefficients μₛ = 0.5 and μₖ = 0.3. You push lightly and it doesn\'t move. The friction force equals…', c: ['μₛmg', 'μₖmg', 'Your push', 'Zero', 'mg'], a: 2, why: 'Static friction is "as much as needed" up to μₛN. If it doesn\'t move, friction exactly cancels your push.' },
+  { t: 'circ', q: 'An object moves in uniform circular motion. Which of these is constant?', c: ['Position vector', 'Velocity vector', 'Acceleration vector', 'None of these vectors', 'All of them'], a: 3, why: 'Magnitudes of v and a are constant, but their DIRECTIONS keep changing. A vector with changing direction is not constant.', src: 'Midterm 2 Q1' },
+  { t: 'circ', q: 'A car goes around a flat curve at constant speed. What force provides the centripetal force?', c: ['Gravity', 'The normal force', 'Static friction between tires and road', 'Kinetic friction', 'The engine'], a: 2, why: 'On a flat road, only sideways static friction can point toward the center. If it isn\'t enough, the car skids.' },
+  { t: 'circ', q: 'A bucket swung in a vertical circle at constant speed. Where is the rope tension greatest?', c: ['At the top', 'At the bottom', 'At the sides', 'Same everywhere', 'Depends on the mass'], a: 1, why: 'Bottom: T − mg = mv²/r → T = m(v²/r + g). Top: T = m(v²/r − g). The bottom always needs more.' },
+  { t: 'energy', q: 'A small box sits on a bigger box; a force F pulls the bigger box to the right and both move together on a rough floor. Which forces do POSITIVE work? (I) F on the big box (II) friction on the small box (III) friction from the floor on the big box.', c: ['I only', 'III only', 'I & II', 'II & III', 'I & III'], a: 2, why: 'F is along the motion (+). Static friction on the small box drags it forward, along its displacement (+). Floor friction opposes the big box\'s motion (−).', src: 'Midterm 3 Q5' },
+  { t: 'energy', q: 'During a pendulum swing, the tension in the string does…', c: ['Positive work', 'Negative work', 'Zero work because it\'s perpendicular to the motion', 'Work equal to mgh', 'Work that depends on the speed'], a: 2, why: 'Tension is always along the string, perpendicular to the circular path, so W = 0. That\'s why pendulum problems use energy conservation.' },
+  { t: 'energy', q: 'When is total mechanical energy (K + U) conserved?', c: ['Always', 'When the net force is zero', 'When non-conservative forces (like friction) do no work', 'When momentum is conserved', 'Only for springs'], a: 2, why: 'W_nc = ΔE. If W_nc = 0, E is constant. Friction doing work → use the extended work–energy theorem.' },
+  { t: 'springs', q: 'An ideal spring pulls a block up a rough ramp at CONSTANT speed. The net force on the block is…', c: ['kx', 'mg sin θ', 'μₖmg cos θ', 'kx − mg sin θ', 'Zero'], a: 4, why: 'Constant speed → a = 0 → F_net = 0. Read the words!', src: 'Midterm 3 Q6' },
+  { t: 'springs', q: 'You compress a spring twice as far. Its stored potential energy becomes…', c: ['The same', '2× as much', '4× as much', '½ as much', '√2× as much'], a: 2, why: 'U = ½kx². Doubling x quadruples U.' },
+  { t: 'springs', q: 'A block slides down a rough ramp into a spring at the bottom. To find the max compression d with energy, the friction and gravity work act over a distance of…', c: ['L (just to the spring)', 'd (just the compression)', 'L + d', 'L − d', 'Only the vertical height'], a: 2, why: 'The block keeps moving down the ramp while it compresses the spring, so gravity and friction act over the full L + d.', src: 'Final exam slide' },
+  { t: 'momentum', q: 'A ball is fired from a cannon at 30° above the ground. For the system of ball + cannon (not including Earth), which is conserved during firing?', c: ['x-component of momentum', 'y-component of momentum', 'x-component of mechanical energy', 'y-component of mechanical energy', 'Total mechanical energy'], a: 0, why: 'Gravity (and the ground\'s normal force) are external and vertical, so only p_x is conserved. Energy is a scalar (no components) and increases in an explosion.', src: 'Midterm 3 Q1' },
+  { t: 'momentum', q: 'A ping-pong ball and a bowling ball have the SAME momentum. You stop each with the same force. Which takes a longer distance to stop?', c: ['The bowling ball', 'The ping-pong ball', 'Same distance', 'Same time AND same distance', 'Not enough information'], a: 1, why: 'Same p → KE = p²/2m is larger for the smaller mass. F·d = KE, so the ping-pong ball needs more distance. (Same time, though: FΔt = Δp.)', src: 'Midterm 3 Q4' },
+  { t: 'momentum', q: 'In a perfectly inelastic collision (objects stick together), which is true?', c: ['Momentum and KE are both conserved', 'Momentum is conserved, KE is not', 'KE is conserved, momentum is not', 'Neither is conserved', 'Both are conserved only in 2-D'], a: 1, why: 'Momentum is conserved in every collision (no external force during the brief impact). Sticking together always loses KE.' },
+  { t: 'momentum', q: 'A cart hits an identical cart at rest in a 1-D ELASTIC collision. Afterward…', c: ['Both move at half the speed', 'They stick together', 'The first stops and the second moves off at the original speed', 'The first bounces back at the same speed', 'Both stop'], a: 2, why: 'Equal masses, elastic, target at rest → they swap velocities (think Newton\'s cradle).' },
+  { t: 'momentum', q: 'In an explosion, total mechanical energy…', c: ['Is conserved', 'Decreases', 'Increases', 'Is zero', 'Equals the momentum'], a: 2, why: 'Stored (chemical/spring) energy turns into kinetic energy, so KE increases. Momentum is still conserved.' },
+  { t: 'rot', q: 'A ladybug sits at the rim of a turntable and a gentleman bug sits halfway to the center. The turntable spins at a steady rate. The gentleman bug\'s ANGULAR speed is…', c: ['Half the ladybug\'s', 'The same as the ladybug\'s', 'Twice the ladybug\'s', 'Zero', 'Impossible to determine'], a: 1, why: 'Every point on a rigid rotating object has the same ω (and same α).', src: 'Day 22 slides' },
+  { t: 'rot', q: 'Same turntable: the gentleman bug (halfway out) has a TANGENTIAL speed that is…', c: ['Half the ladybug\'s', 'The same as the ladybug\'s', 'Twice the ladybug\'s', 'Four times the ladybug\'s', 'Zero'], a: 0, why: 'v = rω. Same ω, half the r → half the speed.', src: 'Day 22 slides' },
+  { t: 'rot', q: 'The turntable starts from rest and speeds up uniformly. The gentleman bug\'s angular acceleration (α) is…', c: ['Half the ladybug\'s', 'The same as the ladybug\'s', 'Twice the ladybug\'s', 'Zero', 'Impossible to relate'], a: 1, why: 'α is the same for every point on a rigid body. Only the LINEAR quantities (v, a_t, a_r) scale with r.', src: 'Day 22 slides' },
+  { t: 'rot', q: 'Which equation is the rotational version of v_f² = v_i² + 2aΔx?', c: ['ω = ω₀ + αt', 'Δθ = ω₀t + ½αt²', 'ω² = ω₀² + 2αΔθ', 'v = rω', 'a = rα'], a: 2, why: 'Every linear constant-acceleration equation has a twin: x→θ, v→ω, a→α. The "time-free" one is ω² = ω₀² + 2αΔθ.' },
+  { t: 'ramps', q: 'A block slides DOWN a rough incline. Which expression gives its acceleration magnitude?', c: ['g sin θ', 'g(sin θ − μₖ cos θ)', 'g(sin θ + μₖ cos θ)', 'g(cos θ − μₖ sin θ)', 'μₖg'], a: 1, why: 'Along the incline: mg sin θ down, friction μₖmg cos θ up (opposing motion). Going UP the incline, friction would point down and it would be sin θ + μₖ cos θ.' },
+  { t: 'ramps', q: 'For a block on an incline, the normal force equals mg cos θ when…', c: ['Always', 'Only if nothing else pushes or pulls perpendicular to the surface', 'Only if the block is at rest', 'Only if there\'s no friction', 'Never'], a: 1, why: 'N = mg cos θ comes from balancing forces perpendicular to the incline. Add any perpendicular push or pull and N changes (just like the angled pull on a flat table).' },
+  { t: 'kin1d', q: 'A ball thrown straight up reaches its highest point. At that instant its velocity and acceleration are…', c: ['v = 0, a = 0', 'v = 0, a = 9.81 m/s² down', 'v = 9.81 m/s up, a = 0', 'v = 0, a = 9.81 m/s² up', 'Both maximum'], a: 1, why: 'Momentarily at rest, but gravity never turns off. a = g downward the entire flight.' },
+];
+
+/* ===================== METHOD PICKER ("Thinking ahead" slide) ===================== */
+const METHODS = ['Kinematics equations (constant a)', 'Newton\'s 2nd law + FBD', 'Conservation of mechanical energy', 'Extended work–energy (friction does work)', 'Conservation of momentum', 'Momentum first, then energy (two stages)'];
+const METHOD_Q = [
+  { s: 'A pendulum is released from 40°. Find its speed at the bottom.', a: 2, why: 'Tension does no work and the path is curved, so kinematics won\'t work. Energy is the only clean route (your professor\'s own example).' },
+  { s: 'A ball rolls off a 1.2 m table at 3 m/s. Where does it land?', a: 0, why: 'Projectile: constant acceleration in each direction. Use x and y kinematics separately.' },
+  { s: 'Find the tension in the string connecting a block on a table to a hanging mass.', a: 1, why: 'Tension is a force. Draw FBDs for both blocks and apply ΣF = ma.' },
+  { s: 'A sled slides down a frictionless curved hill of height 12 m. Speed at the bottom?', a: 2, why: 'Curved path, no friction → mechanical energy is conserved; the shape doesn\'t matter.' },
+  { s: 'A box slides across a rough floor and stops after 3 m. Find μₖ, given its initial speed.', a: 3, why: 'Friction does work: W_f = ΔK. (Newton + kinematics also works, but this is one line.)' },
+  { s: 'Two ice skaters push off each other from rest. Find the speed of one, given the other\'s.', a: 4, why: 'No external horizontal force → total momentum stays zero.' },
+  { s: 'A bullet embeds in a hanging block, which then swings up. Find the bullet\'s speed from the rise height.', a: 5, why: 'Ballistic pendulum: momentum across the inelastic collision, energy for the swing. Using energy across the collision is the classic mistake.' },
+  { s: 'A car brakes with constant deceleration from 25 m/s over 40 m. How long did it take?', a: 0, why: 'Constant a, asked for time → kinematics (Δx = ½(v₀+v)t).' },
+  { s: 'What minimum speed must a roller coaster have at the top of a loop so riders don\'t lose contact?', a: 1, why: 'A condition on forces (N = 0) at one point: Newton\'s 2nd law with a = v²/r.' },
+  { s: 'A block on a rough ramp slides into a spring at the bottom. Find the max compression.', a: 3, why: 'Spring + friction + gravity over a distance → extended work–energy theorem (it gives a quadratic).' },
+  { s: 'A block slides 1 m on a rough track, then hits and sticks to a second block. Find their speed right after.', a: 5, why: 'Stage 1: friction (work–energy or kinematics) for the speed before impact. Stage 2: momentum through the collision.' },
+  { s: 'Two cars collide at a right-angle intersection and lock together. Find their direction afterward.', a: 4, why: '2-D momentum: conserve p_x and p_y separately.' },
+  { s: 'A spring stretched by a constant amount pulls a block up a rough ramp at constant speed. Find the stretch.', a: 1, why: 'Constant speed → ΣF = 0. Energy (½kx²) doesn\'t apply because the stretch isn\'t changing.' },
+  { s: 'A flywheel speeds up uniformly from 200 rpm to 800 rpm in 5 s. How many revolutions?', a: 0, why: 'Constant α → rotational kinematics: Δθ = ½(ω₀ + ω)t.' },
+  { s: 'A spring launches a block up a frictionless incline. How far up does it go?', a: 2, why: 'No friction: ½kx² → mgh. Then convert h to distance along the incline.' },
+  { s: 'A 60 kg person stands on a scale in an accelerating elevator. Find the scale reading.', a: 1, why: 'The scale reads N. FBD: N − mg = ma.' },
+  { s: 'A ball is thrown at 20 m/s from a 30 m cliff at some angle. Find its landing SPEED (not direction).', a: 2, why: 'Speed only → energy: ½mv² = ½mv₀² + mgh. The angle doesn\'t matter! (Kinematics works too, with more steps.)' },
+  { s: 'A bat hits a baseball; given contact time and velocities, find the average force.', a: 4, why: 'Impulse–momentum theorem: F_avg Δt = Δp. (Same family as momentum.)' },
+];
+
+/* ===================== MIDTERM REPLAY (real questions from your 3 midterms) ===================== */
+const REPLAY = [
+  { exam: 'Midterm 1', items: [
+    { q: 'Q1', id: 'k_planet', fix: { vx: 2, vy: 5, tt: 2 }, note: 'Planet Meepzorp g' },
+    { q: 'Q5–6', id: 'g_vt', fix: { vs: [5, 2, -3, -3, -1, 3, 3, 3], mode: 'turn' }, note: 'Same skill as Q5 (new graph)' },
+    { q: 'Q6', id: 'g_vt', fix: { vs: [5, 2, -3, -3, -1, 3, 3, 3], mode: 'disp', win: [8, 20] }, note: 'Same skill as Q6: net displacement' },
+    { q: 'Q7', id: 'v_legs', fix: { legs: [[158, 'S of E', 33], [219, 'N of E', 47], [206, 'due SOUTH']], mode: 'mag' }, note: 'Cyclist TA Jared, magnitude' },
+    { q: 'Q8', id: 'v_legs', fix: { legs: [[158, 'S of E', 33], [219, 'N of E', 47], [206, 'due SOUTH']], mode: 'dir' }, note: 'Same trip, direction' },
+    { q: 'Q9', id: 'p_cliff', fix: { th: 30, R: 200, t: 10, mode: 'v0' }, note: 'Archer on a cliff, v₀' },
+    { q: 'Q10', id: 'p_cliff', fix: { th: 30, R: 200, t: 10, mode: 'vf' }, note: 'Archer, impact speed' } ] },
+  { exam: 'Midterm 2', items: [
+    { q: 'Q4', id: 'c_bucket', fix: { m: 20, v: 15, r: 4, mode: 'bot' }, note: 'Bucket, bottom tension' },
+    { q: 'Q5', id: 'c_bucket', fix: { m: 20, v: 15, r: 4, mode: 'top' }, note: 'Bucket, top tension' },
+    { q: 'Q6', id: 'r_slide', fix: { m: 60, L: 1, h: 0.5, ms: 0.31, mk: 0.21, d: 0.489, mode: 'v' }, note: 'Moving-day ramp' },
+    { q: 'Q7', id: 'r_slide', fix: { m: 60, L: 1, h: 0.5, ms: 0.31, mk: 0.21, d: 0.489, mode: 'mu' }, note: 'Concrete μₖ' },
+    { q: 'Q8', id: 'r_table', fix: { m1: 27.5, m2: 5.7, F: 196.9, th: 30.5, ms: 0.45, mk: 0.201, mode: 'f' }, note: 'Pulled block, friction' },
+    { q: 'Q9', id: 'r_table', fix: { m1: 27.5, m2: 5.7, F: 196.9, th: 30.5, ms: 0.45, mk: 0.201, mode: 'a' }, note: 'Acceleration of m₂' },
+    { q: 'Q10', id: 'r_table', fix: { m1: 27.5, m2: 5.7, F: 196.9, th: 30.5, ms: 0.45, mk: 0.201, mode: 'T' }, note: 'Tension' } ] },
+  { exam: 'Midterm 3', items: [
+    { q: 'Q2', id: 'e_sled', fix: { m: 250, F: 100, th: 30, d: 10, mode: 'W' }, note: 'Bobsled work' },
+    { q: 'Q3', id: 'e_sled', fix: { m: 250, F: 100, th: 30, d: 10, mode: 'v' }, note: 'Bobsled final speed' },
+    { q: 'Q6', id: 's_pull', fix: { m: 10, th: 30, k: 1000, mk: 0.25, ms: 0.55, mode: 'net' }, note: 'Spring + ramp, net force' },
+    { q: 'Q7', id: 's_pull', fix: { m: 10, th: 30, k: 1000, mk: 0.25, ms: 0.55, mode: 'x' }, note: 'Spring stretch' },
+    { q: 'Q8', id: 'm_chain', fix: { m1: 1, m2: 1, mu: 0.15, v0: 3, d: 1, mode: 'v1' }, note: 'Speed before collision' },
+    { q: 'Q9', id: 'm_chain', fix: { m1: 1, m2: 1, mu: 0.15, v0: 3, d: 1, mode: 'V' }, note: 'Speed after sticking' },
+    { q: 'Q10', id: 'm_chain', fix: { m1: 1, m2: 1, mu: 0.15, v0: 3, d: 1, mode: 's' }, note: 'Sliding distance' } ] },
+  { exam: 'Final-exam slide', items: [
+    { q: 'Ex', id: 's_ramp_end', fix: { m: 0.2, th: 50, mk: 0.2, L: 0.7, v1: 0.2, k: 2 }, note: '"Spring at the end of a rough ramp" (the example on the final-exam info slide)' } ] },
+];
+
+const TOPICS = [
+  { id: 'graphs', name: 'Motion Graphs', short: 'Graphs', hot: false, mt: 1 },
+  { id: 'vectors', name: 'Vectors & Displacement Maps', short: 'Vectors', hot: false, mt: 1 },
+  { id: 'kin1d', name: '1-D Kinematics & Free Fall', short: '1-D Kin', hot: false, mt: 1 },
+  { id: 'proj', name: 'Projectile Motion', short: 'Projectiles', hot: true, mt: 1 },
+  { id: 'newton', name: "Newton's Laws, FBDs & Friction", short: 'Newton', hot: false, mt: 2 },
+  { id: 'ramps', name: 'Ramps & Connected Objects', short: 'Ramps', hot: true, mt: 2 },
+  { id: 'circ', name: 'Circular Motion & Forces', short: 'Circular', hot: false, mt: 2 },
+  { id: 'energy', name: 'Work, Energy & Extended W–E', short: 'Energy', hot: false, mt: 3 },
+  { id: 'springs', name: 'Springs & Ramps', short: 'Springs', hot: true, mt: 3 },
+  { id: 'momentum', name: 'Momentum & Collisions (1-D, 2-D)', short: 'Momentum', hot: true, mt: 3 },
+  { id: 'rot', name: 'Constant Angular Acceleration', short: 'Rotation', hot: true, mt: 4 },
+];
+
+function newSeed() { return (Math.random() * 4294967296) >>> 0; }
+function conceptProblem(ci, seed) {
+  seed = seed ?? newSeed(); _rng = mulberry32(seed);
+  const c = CONCEPTS[ci], order = shuffle(c.c.map((x, i) => i)); _rng = Math.random;
+  return { topic: c.t, kind: 'concept', title: 'Concept check', stem: c.q, fig: '', choices: order.map(i => c.c[i]), ans: order.indexOf(c.a), ref: { c: ci, s: seed },
+    hints: ['Strip it down: which law or definition applies here?', 'Test each option against that law. Watch for words like "constant", "at rest" and "system".'], sol: step('Why', c.why), src: c.src || 'Concept check' };
+}
+function makeProblem(id, fix, seed) {
+  const g = GEN[id]; seed = seed ?? newSeed(); _rng = mulberry32(seed);
+  let p; try { p = g.fn(fix ? JSON.parse(JSON.stringify(fix)) : {}); } finally { _rng = Math.random; }
+  p.stem = p.stem.replace(/\bA (?=8)/g, 'An ').replace(/ a (?=8)/g, ' an ');
+  return Object.assign({ topic: g.topic, kind: 'calc', title: g.title, fig: '', ref: { g: id, s: seed, f: fix || undefined } }, p);
+}
+function fromRef(r) { return r.c !== undefined ? conceptProblem(r.c, r.s) : makeProblem(r.g, r.f, r.s); }
+function randomProblem(topic, mode = 'mixed') {
+  const gens = Object.values(GEN).filter(g => !topic || g.topic === topic);
+  const cons = CONCEPTS.map((c, i) => [c, i]).filter(([c]) => !topic || c.t === topic);
+  const useConcept = mode === 'concept' || (mode === 'mixed' && cons.length && Math.random() < 0.3);
+  if (useConcept && cons.length) return conceptProblem(pick(cons)[1]);
+  return makeProblem(pick(gens).id);
+}
+
+</script>
+<script>
+/* ===================== APP ===================== */
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const strip = h => { const d = document.createElement('div'); d.innerHTML = h; return d.textContent.replace(/\s+/g, ' ').trim(); };
+const TOP = Object.fromEntries(TOPICS.map(t => [t.id, t]));
+const EXAM = new Date('2026-12-04T15:30:00-05:00');
+const KEY = 'phys1251-final-v1', MKEY = 'phys1251-mock-v1';
+
+/* ---------- state + sync ---------- */
+const blank = () => ({ att: [], mocks: [], plan: {}, missed: [], meth: { n: 0, ok: 0, streak: 0, best: 0 }, name: '', sec: '', setup: 0, upd: 0 });
+function load() { try { const r = JSON.parse(localStorage.getItem(KEY)); if (r && r.att) return Object.assign(blank(), r); } catch (e) {} return blank(); }
+let S = load();
+let db = null, uid = null, syncT = null, writing = false, again = false, tutorOK = false, sampleFn = null;
+function trim() { S.att = S.att.slice(-1500); S.missed = S.missed.slice(-60); S.mocks = S.mocks.slice(-20); }
+function save() { trim(); S.upd = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} if (db && uid) { clearTimeout(syncT); syncT = setTimeout(push, 1500); } }
+async function push() {
+  if (writing) { again = true; return; } writing = true;
+  try { await db.doc(`data/users/${uid}/progress`).set({ json: JSON.stringify(S), upd: S.upd }); setSync(true); } catch (e) { setSync(false); }
+  writing = false; if (again) { again = false; push(); }
+}
+function setSync(on) { $('#syncdot').classList.toggle('on', on); $('#synctxt').textContent = on ? 'Synced to your Claude account' : 'Progress saved in this browser'; }
+async function initCaps() {
+  if (!window.claude || !claude.use) return;
+  try {
+    const s = await claude.use('sample'); if (s) { sampleFn = s; tutorOK = true; render(); }
+  } catch (e) {}
+  try {
+    const [d, u] = await Promise.all([claude.use('db'), claude.use('user')]); if (!d || !u) return;
+    const id = await u.id(); if (!id) return; db = d; uid = id;
+    const snap = await db.doc(`data/users/${uid}/progress`).get();
+    if (snap.exists) { const r = JSON.parse(snap.data().json || '{}'); if (r.att && (r.upd || 0) > S.upd) { S = Object.assign(blank(), r); try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} render(); } else if (S.upd > (r.upd || 0)) push(); setSync(true); }
+    else { try { await db.doc(`data/users/${uid}/progress`).set({ json: JSON.stringify(S), upd: S.upd }); setSync(true); } catch (e) { db = null; setSync(false); } }
+  } catch (e) { db = null; }
+}
+
+/* ---------- stats ---------- */
+function tstat(t) {
+  const a = S.att.filter(x => x.t === t), rec = a.slice(-12); let w = 0, s = 0;
+  rec.forEach((x, i) => { const wt = 1 + i * 0.15; w += wt; s += wt * (x.ok ? (x.h ? 0.6 : 1) : 0); });
+  const m = w ? s / w : 0, conf = Math.min(1, a.length / 8);
+  return { n: a.length, ok: a.filter(x => x.ok).length, mastery: m, ready: m * conf };
+}
+function overall() { let w = 0, s = 0; TOPICS.forEach(t => { const k = t.hot ? 1.3 : 1; w += k; s += k * tstat(t.id).ready; }); return s / w; }
+function record(p, ok, hints) { S.att.push({ t: p.topic, ok: ok ? 1 : 0, h: hints ? 1 : 0, ts: Date.now() }); if (!ok && p.ref) { S.missed = S.missed.filter(m => JSON.stringify(m) !== JSON.stringify(p.ref)); S.missed.push(p.ref); } save(); }
+const ring = (v, col) => { const r = 22, c = 2 * Math.PI * r; return `<svg class="ring" viewBox="0 0 54 54"><circle class="bg" cx="27" cy="27" r="${r}"/><circle cx="27" cy="27" r="${r}" stroke="${col}" stroke-dasharray="${c * v} ${c}" stroke-linecap="round" transform="rotate(-90 27 27)"/><text x="27" y="31" text-anchor="middle">${Math.round(v * 100)}</text></svg>`; };
+const mcol = v => v >= 0.75 ? 'var(--ok)' : v >= 0.45 ? 'var(--acc)' : v > 0 ? 'var(--warn)' : 'var(--line2)';
+
+/* ---------- study plan ---------- */
+const PLAN = [
+  { d: '2026-11-22', title: 'Diagnostic', tasks: [['Take a full 20-question mock final (untimed is fine today) to see where you stand', 'mock'], ['Check your topic map and note your 3 weakest topics', 'home']] },
+  { d: '2026-11-23', title: 'Kinematics & graphs', tasks: [['Midterm 1 replay: all 6 questions, no hints', 'replay'], ['20 problems: Motion Graphs + Vectors', 'p:graphs'], ['eLC → Midterm #1 practice → "David\'s Guide to Ace the Kinematics Exam"', '']] },
+  { d: '2026-11-24', title: 'Projectiles ★', tasks: [['20 problems: Projectile Motion', 'p:proj'], ['eLC: Sample test_1 & Sample test_2 (Midterm #1 practice), timed', ''], ['Method Picker: 10 scenarios', 'methods']] },
+  { d: '2026-11-25', title: 'Newton & friction', tasks: [['15 problems: Newton\'s Laws, FBDs & Friction', 'p:newton'], ['Midterm 2 replay: Q4–Q7', 'replay'], ['eLC: Exam 2 review packet + "Extra practice on FBD" sheet', '']] },
+  { d: '2026-11-26', title: 'Thanksgiving: light day', tasks: [['30 min of concept-only practice, mixed topics', 'p:concept'], ['Read the formula sheet once, start to finish', 'formulas']] },
+  { d: '2026-11-27', title: 'Pulleys & circles', tasks: [['Midterm 2 replay: Q8–Q10 (pulled block + pulley)', 'replay'], ['15 problems: Ramps & Connected Objects ★', 'p:ramps'], ['15 problems: Circular Motion & Forces', 'p:circ']] },
+  { d: '2026-11-28', title: 'Energy + springs ★', tasks: [['15 problems: Work, Energy & Extended W–E', 'p:energy'], ['15 problems: Springs & Ramps ★ (do "spring at the bottom of a rough ramp" at least twice)', 'p:springs'], ['eLC: Exam 3 review packet (energy problems)', '']] },
+  { d: '2026-11-29', title: 'Momentum & 2-D collisions ★', tasks: [['Midterm 3 replay: all questions', 'replay'], ['20 problems: Momentum & Collisions ★', 'p:momentum'], ['eLC: Sample Test 3 + the 2-D collision examples', '']] },
+  { d: '2026-11-30', title: 'Rotation ★ + Mock #2', tasks: [['20 problems: Constant Angular Acceleration ★', 'p:rot'], ['Mock final #2 in 90-minute pressure mode', 'mock']] },
+  { d: '2026-12-01', title: 'Weak-spot day', tasks: [['45 min: Weak-spot drill', 'p:weak'], ['Clear your Missed list', 'p:missed'], ['Method Picker until you hit a streak of 15', 'methods']] },
+  { d: '2026-12-02', title: 'Dress rehearsal', tasks: [['Mock final #3 on the official 3-hour timer: formula sheet only, phone away', 'mock'], ['EXTRA CREDIT due 11:59 pm: AI-chatbot survey (drops lowest lab) + course evaluation (drops 2 lowest HW)', '']] },
+  { d: '2026-12-03', title: 'Light review', tasks: [['Redo only your missed problems', 'p:missed'], ['Skim the formula sheet + "use when" notes', 'formulas'], ['Sleep 8 hours. It\'s worth more than another hour of practice.', '']] },
+  { d: '2026-12-04', title: 'Final exam day', tasks: [['20-minute warm-up: 5 concept checks, nothing new', 'p:concept'], ['3:30–6:30 pm · 8:40 & 12:00 sections → Instructional Plaza N106; 2:55 section → S306 · calculator (arithmetic only), pencil, UGA ID', '']] },
+];
+const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+function planToday() { const t = today(); return PLAN.find(p => p.d === t) || (t < PLAN[0].d ? PLAN[0] : PLAN.find(p => p.d >= t) || PLAN[PLAN.length - 1]); }
+function goTask(link) {
+  if (!link) return; if (link.startsWith('p:')) { const k = link.slice(2); PR.topic = ['weak', 'missed', 'concept'].includes(k) ? (k === 'concept' ? 'all' : k) : k; PR.mode = k === 'concept' ? 'concept' : 'mixed'; PR.p = null; go('practice'); }
+  else go(link);
+}
+const todoHTML = (p, i, j) => { const k = `${p.d}:${j}`, done = !!S.plan[k], [txt, link] = p.tasks[j];
+  return `<label class="todo ${done ? 'done' : ''}"><input type="checkbox" data-todo="${k}" ${done ? 'checked' : ''}><span>${esc(txt)}</span>${link ? `<button class="btn sm ghost go" data-go="${link}">Open</button>` : ''}</label>`; };
+function bindTodos(root) {
+  $$('[data-todo]', root).forEach(c => c.onchange = () => { S.plan[c.dataset.todo] = c.checked; save(); c.closest('.todo').classList.toggle('done', c.checked); });
+  $$('[data-go]', root).forEach(b => b.onclick = e => { e.preventDefault(); goTask(b.dataset.go); });
+}
+
+/* ---------- router ---------- */
+const ICON = {
+  home: '<path d="M3 12l9-8 9 8M5 10v10h14V10"/>', practice: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/>',
+  replay: '<path d="M4 4v6h6"/><path d="M5 15a8 8 0 1 0 2-9L4 10"/>', mock: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+  methods: '<path d="M12 3v6M12 9l-6 6M12 9l6 6M6 15v4M18 15v4M12 9v10"/>', formulas: '<path d="M7 4h10M9 4c0 6-2 10-4 16M15 4c0 6 2 10 4 16M8 13h8"/>', plan: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'
+};
+const ROUTES = [['home', 'Mission Control'], ['practice', 'Practice'], ['replay', 'Midterm Replay'], ['mock', 'Mock Final'], ['methods', 'Method Picker'], ['formulas', 'Formula Sheet'], ['plan', 'Study Plan']];
+function route() { const h = location.hash.slice(1); return ROUTES.some(r => r[0] === h) ? h : 'home'; }
+function go(r) { if (location.hash.slice(1) === r) render(); else location.hash = r; }
+window.addEventListener('hashchange', () => { render(); window.scrollTo(0, 0); });
+function render() {
+  const r = route(); keyTarget = null;
+  $('#nav').innerHTML = ROUTES.map(([id, nm]) => `<a href="#${id}" class="${id === r ? 'on' : ''}"><svg viewBox="0 0 24 24">${ICON[id]}</svg><span>${nm}</span></a>`).join('');
+  ({ home: vHome, practice: vPractice, replay: vReplay, mock: vMock, methods: vMethods, formulas: vFormulas, plan: vPlan })[r]();
+}
+
+/* ---------- HOME ---------- */
+let cdTimer = null;
+function vHome() {
+  const o = overall(), p = planToday(), tot = S.att.length, acc = tot ? S.att.filter(x => x.ok).length / tot : 0;
+  const lastMock = S.mocks[S.mocks.length - 1];
+  $('#view').innerHTML = `
+  <div class="pagehead"><div><div class="eyebrow">Mission Control · PHYS 1251 Final</div><h1>Ace the final${S.name ? ', ' + esc(S.name) : ''}.</h1><p>Built from the PHYS 1251 eLC course (Dr. Weliweriya, Fall 2026): the three midterms and their keys, the review packets, the final-exam formula sheet, and the final-exam slides. Your progress is saved just for you.</p></div><button class="btn sm ghost" id="profileBtn">Profile & backup</button></div>
+  <section class="hero">
+    <div class="card glow">
+      <div class="lbl">Time until the final</div>
+      <div class="count mono" id="count"></div>
+      <div style="color:var(--mut);font-size:13.5px">Friday, Dec 4 · 3:30–6:30 pm · ${roomLine()}</div>
+      <div style="margin-top:18px"><div class="lbl">Exam readiness</div>
+        <div class="readybar"><i style="width:${Math.max(2, o * 100)}%"></i></div>
+        <div class="hud"><span>Readiness <b>${Math.round(o * 100)}%</b></span><span>Problems done <b>${tot}</b></span><span>Accuracy <b>${tot ? Math.round(acc * 100) + '%' : '—'}</b></span><span>Last mock <b>${lastMock ? lastMock.score + '/' + lastMock.n : '—'}</b></span></div>
+      </div>
+      <div class="actions"><button class="btn pri" data-go="p:weak">Drill my weak spots</button><button class="btn" data-go="mock">Take a mock final</button></div>
+    </div>
+    <div class="card">
+      <div class="lbl" style="margin-bottom:12px">Exam intel (from the final-exam slides)</div>
+      <ul class="intel">
+        <li><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8"/></svg><span><b>20 multiple-choice questions</b>, cumulative, 3 hours. "Expectations are the same as for the three midterms."</span></li>
+        <li><svg viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4 2 7-6.5-4.5L5.5 20l2-7L2 9h7z"/></svg><span>Highlighted on his slide: <b>projectiles, ramps, springs & ramps, 2-D collisions, constant angular acceleration</b> (★ in this app).</span></li>
+        <li><svg viewBox="0 0 24 24"><path d="M7 4h10M9 4c0 6-2 10-4 16M15 4c0 6 2 10 4 16"/></svg><span><b>Formula sheet provided.</b> Memorize when to use each equation, not the equations themselves.</span></li>
+        <li><svg viewBox="0 0 24 24"><path d="M4 4v6h6"/><path d="M5 15a8 8 0 1 0 2-9L4 10"/></svg><span>His #1 tip: <b>re-do all three midterms</b>, review packets and sample tests. He doesn't post a sample final.</span></li>
+        <li><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2 2 0 0 1 3 3L7 19l-4 1 1-4z"/></svg><span>Show your work: a wrong answer with good work still earns partial credit (1–4 of 5 pts).</span></li>
+      </ul>
+    </div>
+  </section>
+  ${today() <= '2026-12-02' ? `<div class="alert" style="margin-top:16px"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--warn)" stroke-width="2"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/></svg><div><b>Free points:</b> complete the AI-chatbot survey (drops your lowest lab score) and the course evaluation (drops your 2 lowest homework scores) by <b>Dec 2, 11:59 pm</b>.</div></div>` : ''}
+  <section class="grid g2" style="margin-top:16px">
+    <div class="card"><div class="ctrlrow" style="margin-bottom:10px"><div><div class="lbl">Today's mission</div><h2 style="font-size:20px;margin-top:4px">${esc(p.title)}</h2></div><button class="btn sm ghost" data-go="plan">Full plan</button></div>
+      <div class="grid" style="gap:8px" id="todos">${p.tasks.map((t, j) => todoHTML(p, 0, j)).join('')}</div></div>
+    <div class="card"><div class="lbl">Missed problems queue</div><h2 style="font-size:20px;margin:4px 0 8px">${S.missed.length} to redo</h2>
+      <p style="color:var(--mut);margin:0 0 14px;font-size:14px">Every problem you miss lands here with the exact same numbers. Clear the queue before Dec 3.</p>
+      <button class="btn" data-go="p:missed" ${S.missed.length ? '' : 'disabled'}>Redo missed problems</button>
+      <div class="lbl" style="margin-top:18px">Method Picker best streak</div><div class="mono" style="font-size:22px;margin-top:2px">${S.meth.best}</div></div>
+  </section>
+  <section style="margin-top:22px"><div class="ctrlrow"><div><div class="eyebrow">Topic map</div><h2 style="font-size:22px;margin-top:4px">Mastery by topic</h2></div><span class="kbd">Ring = recent accuracy × confidence · ★ = highlighted on the final-exam slide</span></div>
+    <div class="tiles">${TOPICS.map(t => { const s = tstat(t.id); return `<button class="tile" data-topic="${t.id}">${ring(s.ready, mcol(s.ready))}<div><div class="nm">${esc(t.name)} ${t.hot ? '<span style="color:var(--warn)">★</span>' : ''}</div><div class="meta">${s.n ? `${s.ok}/${s.n} correct` : 'Not started'} · ${t.mt === 4 ? 'New since Midterm 3' : 'Midterm ' + t.mt}</div></div></button>`; }).join('')}</div>
+  </section>`;
+  $$('[data-topic]').forEach(b => b.onclick = () => { PR.topic = b.dataset.topic; PR.mode = 'mixed'; PR.p = null; go('practice'); });
+  bindTodos($('#view')); $('#profileBtn').onclick = profileModal; if (!S.setup) profileModal();
+  const tick = () => { const ms = EXAM - Date.now(), el = $('#count'); if (!el) { clearInterval(cdTimer); return; } if (ms <= 0) { el.innerHTML = '<div><b>GO</b><span>GOOD LUCK</span></div>'; return; } const d = Math.floor(ms / 864e5), h = Math.floor(ms / 36e5) % 24, m = Math.floor(ms / 6e4) % 60; el.innerHTML = `<div><b>${d}</b><span>DAYS</span></div><div><b>${String(h).padStart(2, '0')}</b><span>HRS</span></div><div><b>${String(m).padStart(2, '0')}</b><span>MIN</span></div>`; };
+  clearInterval(cdTimer); tick(); cdTimer = setInterval(tick, 30000);
+}
+
+/* ---------- problem card (shared) ---------- */
+function probCard(p, o = {}) {
+  const t = TOP[p.topic], st = { sel: -1, hints: 0, done: false };
+  const el = document.createElement('article'); el.className = 'card prob';
+  el.innerHTML = `<div class="ptag"><span class="pill ${t.hot ? 'hot' : 'acc'}">${esc(t.short)}${t.hot ? ' ★' : ''}</span><span class="pill">${p.kind === 'concept' ? 'Concept' : 'Calculation'}</span><span class="kbd">${esc(p.src || '')}</span>${o.badge || ''}</div>
+    <div class="stem">${p.stem}</div>${p.fig ? `<div class="figwrap">${p.fig}</div>` : ''}
+    <div class="choices ${p.visualChoices ? 'visual' : ''}">${p.choices.map((c, i) => `<button class="choice" data-i="${i}"><span class="key">${'ABCDE'[i]}</span><span class="ctext">${c}</span></button>`).join('')}</div>
+    <div class="hintbox"></div>
+    <div class="actions"><button class="btn ghost" data-a="hint">Hint <span class="mono">0/${p.hints.length}</span></button><span class="sp"></span><span class="kbd">A–E select · Enter check · H hint</span><button class="btn pri" data-a="check" disabled>Check answer</button></div>
+    <div class="res"></div>`;
+  const pickC = i => { if (st.done) return; st.sel = i; $$('.choice', el).forEach(b => b.classList.toggle('sel', +b.dataset.i === i)); $('[data-a=check]', el).disabled = false; };
+  $$('.choice', el).forEach(b => b.onclick = () => pickC(+b.dataset.i));
+  const hint = () => { if (st.done || st.hints >= p.hints.length) return; $('.hintbox', el).insertAdjacentHTML('beforeend', `<div class="hint"><b>HINT ${st.hints + 1}</b>${p.hints[st.hints]}</div>`); st.hints++; $('[data-a=hint] .mono', el).textContent = `${st.hints}/${p.hints.length}`; if (st.hints >= p.hints.length) $('[data-a=hint]', el).disabled = true; };
+  $('[data-a=hint]', el).onclick = hint;
+  const check = () => {
+    if (st.done || st.sel < 0) return; st.done = true; const ok = st.sel === p.ans;
+    $$('.choice', el).forEach(b => { const i = +b.dataset.i; b.disabled = true; b.classList.remove('sel'); if (i === p.ans) b.classList.add('right'); else if (i === st.sel) b.classList.add('wrong'); });
+    $('.actions', el).remove();
+    $('.res', el).innerHTML = `<div class="verdict ${ok ? 'ok' : 'no'}">${ok ? '✓ Correct' : '✕ Not quite'}${st.hints && ok ? '<span class="pill" style="margin-left:6px">with hints</span>' : ''}</div>
+      <div class="sol">${p.sol}</div>
+      <div class="actions">${tutorOK ? `<button class="btn" data-a="tutor">${ok ? 'Ask the tutor a question' : 'Have the tutor explain my mistake'}</button>` : ''}<span class="sp"></span>${o.next ? `<button class="btn pri" data-a="next">Next problem →</button>` : ''}</div>`;
+    if (tutorOK) $('[data-a=tutor]', el).onclick = () => openTutor(p, st.sel, ok);
+    if (o.next) $('[data-a=next]', el).onclick = o.next;
+    if (!o.norecord) record(p, ok, st.hints);
+    o.onDone && o.onDone(ok, st.hints);
+  };
+  $('[data-a=check]', el).onclick = check;
+  el._key = e => {
+    const k = e.key.toLowerCase();
+    if (!st.done && 'abcde'.includes(k) && k.length === 1) { const i = 'abcde'.indexOf(k); if (i < p.choices.length) pickC(i); }
+    else if (!st.done && '12345'.includes(k) && k.length === 1) { const i = +k - 1; if (i < p.choices.length) pickC(i); }
+    else if (k === 'h') hint();
+    else if (k === 'enter') { if (!st.done) check(); else if (o.next) o.next(); }
+  };
+  return el;
+}
+let keyTarget = null;
+document.addEventListener('keydown', e => { if (e.target.closest('input,textarea,summary') || e.metaKey || e.ctrlKey || e.altKey) return; if ($('#drawer').classList.contains('open') || $('#modal').innerHTML) return; if (keyTarget) { if (e.key === 'Enter' && e.target.closest('button')) return; keyTarget._key(e); if (e.key === 'Enter') e.preventDefault(); } });
+
+/* ---------- PRACTICE ---------- */
+const PR = { topic: 'all', mode: 'mixed', p: null, n: 0, ok: 0, streak: 0, missIdx: null };
+function weakTopic() { const ws = TOPICS.map(t => { const s = tstat(t.id); return [t.id, (1 - s.ready) + 0.12 + (t.hot ? 0.1 : 0)]; }); let r = Math.random() * ws.reduce((a, b) => a + b[1], 0); for (const [id, w] of ws) { r -= w; if (r <= 0) return id; } return ws[0][0]; }
+function nextPractice() {
+  if (PR.topic === 'missed') { if (!S.missed.length) { PR.p = null; return; } PR.missIdx = 0; PR.p = fromRef(S.missed[0]); return; }
+  const t = PR.topic === 'all' ? null : PR.topic === 'weak' ? weakTopic() : PR.topic;
+  PR.p = randomProblem(t, PR.mode);
+}
+function vPractice() {
+  if (!PR.p) nextPractice();
+  const s = PR.topic !== 'all' && TOP[PR.topic] ? tstat(PR.topic) : null;
+  $('#view').innerHTML = `<div class="pagehead"><div><div class="eyebrow">Practice</div><h1>Problem generator</h1><p>Problems are modeled on your midterms. Every calculation problem gets new numbers each time, and the wrong choices come from the mistakes students actually make.</p></div>
+    <div class="hud"><span>Session <b>${PR.ok}/${PR.n}</b></span><span>Streak <b>${PR.streak}</b></span>${s ? `<span>Topic mastery <b>${Math.round(s.ready * 100)}%</b></span>` : ''}</div></div>
+    <div class="card" style="margin-bottom:16px;display:grid;gap:12px">
+      <div class="chips" id="tchips">${[['all', 'All topics'], ['weak', 'Weak-spot drill'], ['missed', `Missed (${S.missed.length})`]].map(([k, n]) => `<button class="chip ${PR.topic === k ? 'on' : ''}" data-t="${k}">${n}</button>`).join('')}</div>
+      <div class="chips">${TOPICS.map(t => `<button class="chip ${PR.topic === t.id ? 'on' : ''}" data-t="${t.id}">${esc(t.short)}${t.hot ? ' <span class="star">★</span>' : ''}</button>`).join('')}</div>
+      <div class="chips">${[['mixed', 'Mixed'], ['calc', 'Calculations'], ['concept', 'Concepts only']].map(([k, n]) => `<button class="chip ${PR.mode === k ? 'on' : ''}" data-m="${k}" ${PR.topic === 'missed' ? 'disabled' : ''}>${n}</button>`).join('')}</div>
+    </div><div id="pslot"></div>`;
+  $$('[data-t]').forEach(b => b.onclick = () => { PR.topic = b.dataset.t; PR.p = null; vPractice(); });
+  $$('[data-m]').forEach(b => b.onclick = () => { PR.mode = b.dataset.m; PR.p = null; vPractice(); });
+  const slot = $('#pslot');
+  if (!PR.p) { slot.innerHTML = `<div class="empty">No missed problems in the queue. Nice! Pick a topic above.</div>`; return; }
+  const p = PR.p, fromMissed = PR.topic === 'missed';
+  const card = probCard(p, {
+    badge: fromMissed ? '<span class="pill bad">Redo</span>' : '',
+    onDone: ok => { PR.n++; if (ok) { PR.ok++; PR.streak++; if (fromMissed) { const k = JSON.stringify(p.ref); S.missed = S.missed.filter(m => JSON.stringify(m) !== k); save(); } } else PR.streak = 0; $('.hud').innerHTML = `<span>Session <b>${PR.ok}/${PR.n}</b></span><span>Streak <b>${PR.streak}</b></span>`; },
+    next: () => { nextPractice(); vPractice(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  });
+  slot.appendChild(card); keyTarget = card;
+}
+
+/* ---------- REPLAY ---------- */
+let RP = null;
+function vReplay() {
+  if (RP) {
+    const it = RP.item, fix = RP.remix ? null : it.fix;
+    const p = RP.p || (RP.p = RP.remix ? makeProblem(it.id, fixMode(it.fix)) : makeProblem(it.id, fix));
+    $('#view').innerHTML = `<div class="pagehead"><div><div class="eyebrow">Midterm Replay · ${esc(RP.exam)} ${esc(it.q)}</div><h1>${esc(it.note)}</h1><p>${RP.remix ? 'Same question, new numbers. If you can do the remix, you understand it rather than remember it.' : 'The original numbers from your test. Answers match Dr. Weliweriya\'s solution key.'}</p></div>
+      <div class="actions" style="margin:0"><button class="btn ghost" id="rback">← All replays</button><button class="btn" id="rremix">${RP.remix ? 'Original numbers' : 'Remix numbers'}</button></div></div><div id="rslot"></div>`;
+    $('#rback').onclick = () => { RP = null; vReplay(); };
+    $('#rremix').onclick = () => { RP.remix = !RP.remix; RP.p = null; vReplay(); };
+    const card = probCard(p, { next: () => { const all = REPLAY.flatMap(g => g.items.map(i => [g.exam, i])); const k = all.findIndex(([e, i]) => i === RP.item); const [e, i] = all[(k + 1) % all.length]; RP = { exam: e, item: i, remix: RP.remix }; vReplay(); window.scrollTo(0, 0); } });
+    $('#rslot').appendChild(card); keyTarget = card; return;
+  }
+  $('#view').innerHTML = `<div class="pagehead"><div><div class="eyebrow">Midterm Replay</div><h1>Redo your three midterms</h1><p>Dr. Weliweriya's #1 instruction for the final: "Make sure to re-do all THREE midterms." These are the calculation questions from Tests 1–3 (the concept questions are in Practice). Do the original first, then hit Remix until you can solve it with any numbers.</p></div></div>
+    <div class="grid g3">${REPLAY.map(g => `<div class="card"><div class="lbl" style="margin-bottom:10px">${esc(g.exam)}</div><div class="rgroup">${g.items.map((it, k) => `<button class="ritem" data-e="${esc(g.exam)}" data-k="${k}"><span class="q">${esc(it.q)}</span><span>${esc(it.note)}</span><span class="pill">${TOP[GEN[it.id].topic].short}</span></button>`).join('')}</div></div>`).join('')}</div>`;
+  $$('.ritem').forEach(b => b.onclick = () => { const g = REPLAY.find(x => x.exam === b.dataset.e); RP = { exam: g.exam, item: g.items[+b.dataset.k], remix: false }; vReplay(); window.scrollTo(0, 0); });
+}
+function fixMode(f) { return f && f.mode ? { mode: f.mode } : null; }
+
+/* ---------- MOCK FINAL ---------- */
+const ALLOC = { graphs: 1, vectors: 2, kin1d: 1, proj: 2, newton: 2, ramps: 2, circ: 2, energy: 2, springs: 2, momentum: 2, rot: 2 };
+let MK = null;
+try { const m = JSON.parse(localStorage.getItem(MKEY)); if (m && m.refs) MK = m; } catch (e) {}
+const saveMK = () => { try { MK ? localStorage.setItem(MKEY, JSON.stringify(MK)) : localStorage.removeItem(MKEY); } catch (e) {} };
+let MKP = null, mkTimer = null;
+function buildMock(limit) {
+  const refs = [];
+  for (const [t, n] of Object.entries(ALLOC)) for (let i = 0; i < n; i++) { const p = Math.random() < 0.35 ? randomProblem(t, 'concept') : randomProblem(t, 'calc'); refs.push(p.ref); }
+  const order = shuffle(refs.map((r, i) => i)); _rng = Math.random;
+  MK = { refs: order.map(i => refs[i]), ans: Array(20).fill(-1), flags: Array(20).fill(0), cur: 0, start: Date.now(), limit, done: false }; MKP = null; saveMK();
+}
+const mkProbs = () => MKP || (MKP = MK.refs.map(fromRef));
+function vMock() {
+  clearInterval(mkTimer);
+  if (!MK) {
+    $('#view').innerHTML = `<div class="pagehead"><div><div class="eyebrow">Mock Final</div><h1>Full 20-question simulation</h1><p>Same format as the real final: 20 multiple-choice questions covering every topic, weighted toward the ones he highlighted. No hints or feedback until you submit, just like the exam.</p></div></div>
+      <div class="grid g3">
+        ${[[180, 'Official', '3 hours, exactly like Dec 4. Use it for the dress rehearsal.'], [90, 'Pressure', '90 minutes, so the real exam feels roomy.'], [0, 'Untimed', 'For your diagnostic or learning runs.']].map(([m, n, d]) => `<button class="card tile" style="display:block;text-align:left" data-lim="${m}"><div class="lbl">${n}</div><div class="mono" style="font-size:30px;margin:6px 0">${m ? (m >= 60 ? (m / 60) + 'h' : m + 'm') : '∞'}</div><div style="color:var(--mut);font-size:14px">${d}</div></button>`).join('')}
+      </div>
+      ${S.mocks.length ? `<div class="card" style="margin-top:16px"><div class="lbl" style="margin-bottom:10px">Your mock history</div><div class="bars">${S.mocks.map((m, i) => `<div class="bar"><span>#${i + 1} · ${new Date(m.ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}${m.limit ? ' · ' + m.limit + 'm' : ''}</span><span class="tr"><i style="width:${m.score / m.n * 100}%;background:${mcol(m.score / m.n)}"></i></span><b class="mono">${m.score}/${m.n}</b></div>`).join('')}</div></div>` : ''}`;
+    $$('[data-lim]').forEach(b => b.onclick = () => { buildMock(+b.dataset.lim); vMock(); });
+    return;
+  }
+  const P = mkProbs();
+  if (MK.done) return mockResults(P);
+  const i = MK.cur, p = P[i], t = TOP[p.topic];
+  $('#view').innerHTML = `<div class="ctrlrow"><div><div class="eyebrow">Mock Final · in progress</div><h1 style="font-size:24px;margin-top:4px">Question ${i + 1} of 20</h1></div><div style="text-align:right"><div class="timer mono" id="timer"></div><div class="kbd">${MK.limit ? 'Time remaining' : 'Elapsed'}</div></div></div>
+    <div class="grid mockgrid">
+      <article class="card prob"><div class="ptag"><span class="pill">${esc(t.short)}</span>${MK.flags[i] ? '<span class="pill hot">Flagged</span>' : ''}</div><div class="stem">${p.stem}</div>${p.fig ? `<div class="figwrap">${p.fig}</div>` : ''}
+        <div class="choices ${p.visualChoices ? 'visual' : ''}">${p.choices.map((c, k) => `<button class="choice ${MK.ans[i] === k ? 'sel' : ''}" data-k="${k}"><span class="key">${'ABCDE'[k]}</span><span class="ctext">${c}</span></button>`).join('')}</div>
+        <div class="actions"><button class="btn ghost" id="mprev" ${i ? '' : 'disabled'}>← Prev</button><button class="btn ghost" id="mflag">${MK.flags[i] ? 'Unflag' : 'Flag for review'}</button><span class="sp"></span><button class="btn pri" id="mnext">${i < 19 ? 'Next →' : 'Review & submit'}</button></div></article>
+      <div class="card"><div class="lbl" style="margin-bottom:10px">Questions</div><div class="navgrid">${P.map((q, k) => `<button class="${MK.ans[k] >= 0 ? 'ans' : ''} ${k === i ? 'cur' : ''} ${MK.flags[k] ? 'flag' : ''}" data-q="${k}">${k + 1}</button>`).join('')}</div>
+        <div class="kbd" style="margin:12px 0">${MK.ans.filter(a => a >= 0).length}/20 answered · ${MK.flags.filter(Boolean).length} flagged</div>
+        <button class="btn" style="width:100%;justify-content:center" id="msubmit">Submit exam</button>
+        <button class="btn ghost sm" style="width:100%;justify-content:center;margin-top:8px" id="mquit">Abandon this mock</button></div>
+    </div>`;
+  $$('.choice').forEach(b => b.onclick = () => { MK.ans[i] = +b.dataset.k; saveMK(); vMock(); });
+  $('#mprev').onclick = () => { MK.cur--; saveMK(); vMock(); };
+  $('#mnext').onclick = () => { if (i < 19) { MK.cur++; saveMK(); vMock(); } else confirmSubmit(); };
+  $('#mflag').onclick = () => { MK.flags[i] = MK.flags[i] ? 0 : 1; saveMK(); vMock(); };
+  $$('[data-q]').forEach(b => b.onclick = () => { MK.cur = +b.dataset.q; saveMK(); vMock(); });
+  $('#msubmit').onclick = confirmSubmit;
+  $('#mquit').onclick = () => modal('Abandon this mock?', 'Your answers so far will be discarded and nothing is recorded.', 'Abandon', () => { MK = null; MKP = null; saveMK(); vMock(); });
+  keyTarget = { _key: e => { const k = e.key.toLowerCase(); if ('abcde'.includes(k) && k.length === 1 && 'abcde'.indexOf(k) < p.choices.length) { MK.ans[i] = 'abcde'.indexOf(k); saveMK(); vMock(); } else if (k === 'arrowright' && i < 19) { MK.cur++; saveMK(); vMock(); } else if (k === 'arrowleft' && i) { MK.cur--; saveMK(); vMock(); } } };
+  const tick = () => { const el = $('#timer'); if (!el) { clearInterval(mkTimer); return; } const el2 = (Date.now() - MK.start) / 1000; let s = MK.limit ? MK.limit * 60 - el2 : el2; if (MK.limit && s <= 0) { clearInterval(mkTimer); submitMock(); return; } s = Math.max(0, Math.floor(s)); el.textContent = `${Math.floor(s / 3600)}:${String(Math.floor(s / 60) % 60).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`; el.classList.toggle('low', MK.limit && s < 600); };
+  tick(); mkTimer = setInterval(tick, 1000);
+}
+function modal(title, body, okTxt, onOk) {
+  $('#modal').innerHTML = `<div class="modal"><div class="card glow"><h2 style="font-size:20px">${title}</h2><p style="color:var(--mut)">${body}</p><div class="actions"><button class="btn ghost" id="mx">Cancel</button><span class="sp"></span><button class="btn pri" id="mo">${okTxt}</button></div></div></div>`;
+  $('#mx').onclick = () => $('#modal').innerHTML = ''; $('#mo').onclick = () => { $('#modal').innerHTML = ''; onOk(); };
+}
+function confirmSubmit() { const left = MK.ans.filter(a => a < 0).length; modal('Submit your mock final?', left ? `You have <b style="color:var(--warn)">${left} unanswered</b> question${left > 1 ? 's' : ''}. On the real exam, always guess: there's no penalty.` : 'All 20 answered. Ready to see your score?', 'Submit', submitMock); }
+function submitMock() {
+  const P = mkProbs(); MK.done = true; MK.end = Date.now(); let score = 0; const by = {};
+  P.forEach((p, i) => { const ok = MK.ans[i] === p.ans; if (ok) score++; by[p.topic] = by[p.topic] || [0, 0]; by[p.topic][1]++; if (ok) by[p.topic][0]++; S.att.push({ t: p.topic, ok: ok ? 1 : 0, h: 0, ts: Date.now() }); if (!ok) S.missed.push(p.ref); });
+  S.mocks.push({ score, n: 20, ts: Date.now(), limit: MK.limit, mins: Math.round((MK.end - MK.start) / 6e4), by }); save(); saveMK(); vMock();
+}
+function mockResults(P) {
+  const m = S.mocks[S.mocks.length - 1], score = P.filter((p, i) => MK.ans[i] === p.ans).length;
+  const by = {}; P.forEach((p, i) => { by[p.topic] = by[p.topic] || [0, 0]; by[p.topic][1]++; if (MK.ans[i] === p.ans) by[p.topic][0]++; });
+  $('#view').innerHTML = `<div class="pagehead"><div><div class="eyebrow">Mock Final · results</div><h1>${score}/20 · ${Math.round(score / 20 * 100)}%</h1><p>${score >= 18 ? 'Exam-ready on this set. Keep it sharp with the weak-spot drill.' : score >= 14 ? 'Solid. Fix the red topics below and you\'re in A territory.' : 'This is exactly why we diagnose early. Every miss is now in your Missed queue.'} ${m && m.mins ? `Time used: ${m.mins} min.` : ''}</p></div>
+    <div class="actions" style="margin:0"><button class="btn" id="mnew">New mock</button><button class="btn pri" data-go="p:missed">Redo my misses</button></div></div>
+    <div class="grid resgrid">
+      <div class="card"><div class="lbl" style="margin-bottom:12px">By topic</div><div class="bars">${Object.entries(by).map(([t, [a, n]]) => `<div class="bar" style="grid-template-columns:110px 1fr 40px"><span>${TOP[t].short}</span><span class="tr"><i style="width:${a / n * 100}%;background:${mcol(a / n)}"></i></span><b class="mono">${a}/${n}</b></div>`).join('')}</div>
+        <div class="navgrid" style="margin-top:16px">${P.map((p, i) => `<button class="${MK.ans[i] === p.ans ? 'r' : 'w'}" data-j="${i}">${i + 1}</button>`).join('')}</div></div>
+      <div id="review" class="grid" style="gap:12px"></div></div>`;
+  $('#mnew').onclick = () => { MK = null; MKP = null; saveMK(); vMock(); };
+  const rv = $('#review');
+  P.forEach((p, i) => {
+    const ok = MK.ans[i] === p.ans, el = document.createElement('details'); el.className = 'card'; el.id = 'rv' + i; if (!ok && !$('details[open]', rv)) el.open = true;
+    el.innerHTML = `<summary style="cursor:pointer;display:flex;gap:10px;align-items:center"><span class="pill ${ok ? 'ok' : 'bad'}">${ok ? '✓' : '✕'} Q${i + 1}</span><span>${esc(TOP[p.topic].short)} · ${esc(strip(p.stem).slice(0, 80))}…</span></summary>
+      <div style="margin-top:12px" class="prob"><div class="stem">${p.stem}</div>${p.fig ? `<div class="figwrap">${p.fig}</div>` : ''}<div class="choices ${p.visualChoices ? 'visual' : ''}">${p.choices.map((c, k) => `<div class="choice ${k === p.ans ? 'right' : k === MK.ans[i] ? 'wrong' : ''}"><span class="key">${'ABCDE'[k]}</span><span class="ctext">${c}</span></div>`).join('')}</div>
+      <div class="sol" style="margin-top:14px">${p.sol}</div>${tutorOK ? `<div class="actions"><button class="btn sm" data-tq="${i}">Ask the tutor about this one</button></div>` : ''}</div>`;
+    rv.appendChild(el);
+  });
+  $$('[data-tq]').forEach(b => b.onclick = () => { const i = +b.dataset.tq; openTutor(P[i], MK.ans[i], MK.ans[i] === P[i].ans); });
+  $$('[data-j]').forEach(b => b.onclick = () => { const d = $('#rv' + b.dataset.j); d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+}
+
+/* ---------- METHOD PICKER ---------- */
+let MQ = null;
+function vMethods() {
+  if (!MQ) MQ = { i: Math.floor(Math.random() * METHOD_Q.length), pick: -1 };
+  const q = METHOD_Q[MQ.i];
+  $('#view').innerHTML = `<div class="pagehead"><div><div class="eyebrow">Method Picker</div><h1>Which tool do you reach for?</h1><p>From his "Thinking Ahead" slide: "Take the time to evaluate each problem solving method. Which is appropriate given the information you are given?" Picking the right method in the first 20 seconds is half of each exam question.</p></div>
+    <div class="hud"><span>Streak <b>${S.meth.streak}</b></span><span>Best <b>${S.meth.best}</b></span><span>All-time <b>${S.meth.ok}/${S.meth.n}</b></span></div></div>
+    <article class="card glow"><div class="lbl">Scenario</div><div class="stem" style="font-size:19px;margin-top:8px;font-family:var(--fd)">${esc(q.s)}</div>
+      <div class="mgrid">${METHODS.map((m, k) => `<button class="choice ${MQ.pick < 0 ? '' : k === q.a ? 'right' : k === MQ.pick ? 'wrong' : ''}" data-k="${k}" ${MQ.pick >= 0 ? 'disabled' : ''}><span class="key">${k + 1}</span><span class="ctext">${esc(m)}</span></button>`).join('')}</div>
+      ${MQ.pick >= 0 ? `<div class="verdict ${MQ.pick === q.a ? 'ok' : 'no'}">${MQ.pick === q.a ? '✓ Right tool' : '✕ Better tool: ' + esc(METHODS[q.a])}</div><div class="sol"><div class="st"><b>Why</b><div>${esc(q.why)}</div></div></div><div class="actions"><span class="sp"></span><button class="btn pri" id="mqn">Next scenario →</button></div>` : '<div class="kbd" style="margin-top:12px">Press 1–6</div>'}
+    </article>`;
+  const choose = k => { if (MQ.pick >= 0) return; MQ.pick = k; S.meth.n++; if (k === q.a) { S.meth.ok++; S.meth.streak++; S.meth.best = Math.max(S.meth.best, S.meth.streak); } else S.meth.streak = 0; save(); vMethods(); };
+  $$('[data-k]').forEach(b => b.onclick = () => choose(+b.dataset.k));
+  const nxt = () => { let j; do { j = Math.floor(Math.random() * METHOD_Q.length); } while (j === MQ.i); MQ = { i: j, pick: -1 }; vMethods(); };
+  if ($('#mqn')) $('#mqn').onclick = nxt;
+  keyTarget = { _key: e => { if (MQ.pick < 0 && /^[1-6]$/.test(e.key)) choose(+e.key - 1); else if (MQ.pick >= 0 && e.key === 'Enter') nxt(); } };
+}
+
+/* ---------- FORMULA SHEET ---------- */
+const FSHEET = [
+  ['Kinematics: definitions', [['v = dr/dt, &nbsp; a = dv/dt', 'Slope of x–t is v; slope of v–t is a; area under v–t is Δx.'], ['ω = dθ/dt, &nbsp; α = dω/dt', 'The rotational twins (Day 22): every point on a rigid body shares ω and α.']]],
+  ['Constant acceleration (tᵢ = 0)', [['Δr = ½(vᵢ + v_f)t', 'No acceleration given? This one doesn\'t need a.'], ['Δr = vᵢt + ½at²', 'Time known, final velocity unknown: free fall, projectile y-motion.'], ['Δv = at', 'Time to the top of a throw: 0 = v₀y − gt.'], ['v_fx² = v_ix² + 2a_x Δx', 'No time given: braking distances, ramp speed (Midterm 2 Q6), sliding to a stop.'], ['Rotational: Δθ = ωᵢt + ½αt², &nbsp; ω_f² = ωᵢ² + 2αΔθ', 'Swap x→θ, v→ω, a→α. Convert rpm → rad/s (×2π/60) and revolutions → rad (×2π).']]],
+  ['Linear ↔ angular, circular motion', [['s = rθ, &nbsp; v_t = rω, &nbsp; a_t = rα', 'Points farther out move faster (bugs on the turntable).'], ['a_r = v²/r = rω² = 4π²r/T²', 'Always toward the center. In F_net = ma at the top/bottom of a circle, the "ma" is m·v²/r.'], ['T = 2πr/v = 2π/ω', 'Period: time for one revolution.']]],
+  ['Relative motion', [['v_AB + v_BC = v_AC', 'Boats in currents, planes in wind. Add as vectors (components!).']]],
+  ['Newton\'s laws', [['F_net = 0 ⇒ v constant', '"Constant speed" or "at rest" in a problem = net force zero (Midterm 3 Q6).'], ['F_net = ma', 'Separate FBD for each object; pick + in the direction of motion; add equations to cancel tension.'], ['F₁₂ = −F₂₁', '3rd-law pairs act on DIFFERENT objects (Midterm 2 Q2).']]],
+  ['Types of forces', [['f_s ≤ μₛF_N, &nbsp; f_k = μₖF_N', 'Static is "up to". If it\'s sliding, use μₖ. N is not always mg (angled pushes, inclines, circles).'], ['F = mg, &nbsp; U = mgy', 'On an incline: mg sin θ along, mg cos θ into the surface.'], ['F = −kΔr, &nbsp; U = ½k(Δr)²', 'Force for equilibrium/constant speed; ½kx² only when the stretch changes.']]],
+  ['Work & energy', [['W = F·Δr = FΔr cos θ', 'θ is between F and displacement: friction gives −, forces perpendicular to motion give 0.'], ['W_tot = ΔK', 'All forces (Midterm 3 Q3: bobsled speed).'], ['W_nc = ΔE = ΔK + ΔU', 'Extended W–E: friction doing work. Springs on rough ramps → quadratic in the compression.'], ['P = dW/dt = F·v', 'Constant-speed lifting: P = mgv.'], ['K = ½mv² = p²/2m', 'Same momentum, smaller mass → more KE → longer stopping distance (Midterm 3 Q4).']]],
+  ['Momentum', [['p = mv, &nbsp; I = FΔt = Δp', 'Impulse: bouncing back makes Δv = v + v′.'], ['ΣF_ext = 0 ⇒ p_tot constant', 'Conserve x and y SEPARATELY. In 2-D: p_x before = p_x after, p_y before = p_y after.'], ['Mr_cm = Σmᵢrᵢ, &nbsp; Mv_cm = Σpᵢ', 'Center of mass of a system.']]],
+  ['Rotational dynamics (on the sheet, beyond his focus list)', [['τ = rF sin φ, &nbsp; Στ = Iα', 'Lab 11 "Balancing Act": Στ = 0 for balance.'], ['K_rot = ½Iω², &nbsp; K = ½Mv_cm² + ½I_cmω²', 'Rolling without slipping: v = rω.'], ['I: rod ML²/12 (end ML²/3), hoop MR², disk MR²/2, solid sphere 2MR²/5, hollow sphere 2MR²/3', 'Given on the sheet. Don\'t memorize.']]],
+];
+function vFormulas() {
+  $('#view').innerHTML = `<div class="pagehead"><div><div class="eyebrow">Formula Sheet</div><h1>Your final-exam formula sheet, annotated</h1><p>These are the equations on the official "Physics 1251 Final Exam Formula/Data Sheets" (g = 9.81 m/s²). You'll have the sheet in the exam, so the right column is what to learn: when to use each one.</p></div></div>
+    <div class="grid" style="gap:18px">${FSHEET.map(([h, rows]) => `<section class="fsec"><div class="lbl">${esc(h)}</div>${rows.map(([f, w]) => `<div class="frow"><div class="f">${f}</div><div class="w">${w}</div></div>`).join('')}</section>`).join('')}</div>`;
+}
+
+/* ---------- PLAN ---------- */
+function vPlan() {
+  const t = today(), done = PLAN.reduce((a, p) => a + p.tasks.filter((x, j) => S.plan[`${p.d}:${j}`]).length, 0), all = PLAN.reduce((a, p) => a + p.tasks.length, 0);
+  $('#view').innerHTML = `<div class="pagehead"><div><div class="eyebrow">Study Plan · Nov 22 → Dec 4</div><h1>13 days, one topic block at a time</h1><p>Built from his study tips: go section by section, redo slide examples and homework, then the midterms, review packets and sample tests. ★ days are his highlighted topics. Tick tasks as you go; "Open" jumps to the right place in the app.</p></div>
+    <div class="hud"><span>Tasks done <b>${done}/${all}</b></span></div></div>
+    <div class="grid" style="gap:12px">${PLAN.map(p => { const dt = new Date(p.d + 'T12:00:00'); return `<div class="day ${p.d === t ? 'today' : p.d < t ? 'past' : ''}"><div class="dt">${dt.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase()}<b>${dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</b>${p.d === t ? '<span class="pill acc" style="margin-top:6px">TODAY</span>' : ''}</div><div><h3>${esc(p.title)}</h3><div class="grid" style="gap:8px">${p.tasks.map((x, j) => todoHTML(p, 0, j)).join('')}</div></div></div>`; }).join('')}</div>`;
+  bindTodos($('#view'));
+}
+
+/* ---------- PROFILE / BACKUP ---------- */
+const SECTIONS = { '840': ['8:40 am', 'Instructional Plaza N106'], '1200': ['12:00 pm', 'Instructional Plaza N106'], '255': ['2:55 pm', 'Instructional Plaza S306'] };
+function roomLine() { const x = SECTIONS[S.sec]; return x ? `<b style="color:var(--ink)">${x[1]}</b> (your ${x[0]} section)` : '8:40 & 12:00 sections → <b style="color:var(--ink)">Instructional Plaza N106</b> · 2:55 section → <b style="color:var(--ink)">S306</b>'; }
+function profileModal() {
+  const code = (() => { try { return btoa(unescape(encodeURIComponent(JSON.stringify(S)))); } catch (e) { return ''; } })();
+  $('#modal').innerHTML = `<div class="modal"><div class="card glow" style="max-width:520px;width:100%"><div class="eyebrow">${S.setup ? 'Profile & backup' : 'Welcome'}</div><h2 style="font-size:22px;margin:4px 0 6px">${S.setup ? 'Your profile' : 'Set up your study console'}</h2>
+    <p style="color:var(--mut);margin:0 0 14px;font-size:14px">Your progress is stored only for you. It never mixes with anyone else's, even when the same link is shared.</p>
+    <label class="lbl" for="pname">First name (optional)</label><input id="pname" class="field" value="${esc(S.name)}" maxlength="24" placeholder="e.g. Jordan">
+    <label class="lbl" for="psec" style="margin-top:12px;display:block">Your PHYS 1251 class time</label>
+    <select id="psec" class="field"><option value="">Not sure / other</option>${Object.entries(SECTIONS).map(([k, [t, r]]) => `<option value="${k}" ${S.sec === k ? 'selected' : ''}>${t} (final in ${r})</option>`).join('')}</select>
+    ${S.setup ? `<details style="margin-top:16px"><summary class="lbl" style="cursor:pointer">Move progress to another device</summary>
+      <p style="color:var(--mut);font-size:13.5px">Copy your backup code here, then paste it on the other device under "Restore".</p>
+      <div class="actions" style="margin-top:6px"><button class="btn sm" id="pcopy">Copy backup code</button><span class="kbd" id="pcopied"></span></div>
+      <textarea id="pcode" class="field" rows="3" readonly style="margin-top:8px;font:11px var(--fm)">${code}</textarea>
+      <label class="lbl" for="prest" style="margin-top:12px;display:block">Restore from a backup code</label><textarea id="prest" class="field" rows="2" placeholder="Paste a backup code"></textarea>
+      <div class="actions"><button class="btn sm" id="pdo">Restore</button><span class="kbd" id="pmsg"></span><span class="sp"></span><button class="btn sm ghost" id="preset" style="color:var(--bad)">Reset all progress</button></div></details>` : ''}
+    <div class="actions"><span class="sp"></span><button class="btn pri" id="psave">${S.setup ? 'Save' : 'Start studying'}</button></div></div></div>`;
+  $('#psave').onclick = () => { S.name = $('#pname').value.trim().slice(0, 24); S.sec = $('#psec').value; S.setup = 1; save(); $('#modal').innerHTML = ''; render(); };
+  if (!S.setup) return;
+  $('#pcopy').onclick = async () => { const t = $('#pcode'); try { await navigator.clipboard.writeText(t.value); $('#pcopied').textContent = 'Copied.'; } catch (e) { t.select(); $('#pcopied').textContent = 'Selected: press Ctrl/⌘+C.'; } };
+  $('#pdo').onclick = () => { try { const r = JSON.parse(decodeURIComponent(escape(atob($('#prest').value.trim())))); if (!r || !Array.isArray(r.att)) throw 0; S = Object.assign(blank(), r, { setup: 1 }); save(); $('#modal').innerHTML = ''; render(); } catch (e) { $('#pmsg').textContent = 'That code didn\'t work. Copy the whole thing and try again.'; } };
+  $('#preset').onclick = () => { if ($('#preset').dataset.sure) { const n = S.name, sec = S.sec; S = Object.assign(blank(), { name: n, sec, setup: 1 }); save(); $('#modal').innerHTML = ''; render(); } else { $('#preset').dataset.sure = 1; $('#preset').textContent = 'Click again to erase everything'; } };
+}
+
+/* ---------- TUTOR ---------- */
+let TU = { msgs: [], ctx: '', busy: false, ac: null };
+function openTutor(p, sel, ok) {
+  const ctx = `You are a patient, sharp physics tutor helping a UGA student (PHYS 1251, calculus-based mechanics for engineers, Dr. Weliweriya) prepare for a cumulative multiple-choice final. Use g = 9.81 m/s². Write plain text (no markdown headings, no LaTeX); use simple inline math like v^2 = 2ad. Be concise: at most about 170 words unless asked for more. Teach the reasoning: which principle applies and why, the setup, and the one idea that unlocks it. Never just restate the solution.
+
+PROBLEM: ${strip(p.stem)}
+CHOICES: ${p.choices.map((c, i) => 'ABCDE'[i] + ') ' + strip(c)).join('  ')}
+CORRECT ANSWER: ${'ABCDE'[p.ans]}) ${strip(p.choices[p.ans])}
+OFFICIAL WORKED SOLUTION: ${strip(p.sol)}
+STUDENT CHOSE: ${sel >= 0 ? 'ABCDE'[sel] + ') ' + strip(p.choices[sel]) : '(no answer)'} — ${ok ? 'correct' : 'incorrect'}`;
+  TU = { msgs: [], ctx, busy: false, ac: null };
+  $('#drawer').classList.add('open'); $('#tmsgs').innerHTML = '';
+  ask(ok ? 'I got this right. Explain the key idea so I can do any version of it, and tell me the trap to watch for.' : `I picked ${'ABCDE'[sel]}. What did I most likely do wrong, and how should I think about this problem?`);
+}
+async function ask(q) {
+  if (TU.busy || !sampleFn) return; TU.busy = true;
+  TU.msgs.push({ role: 'user', content: q });
+  $('#tmsgs').insertAdjacentHTML('beforeend', `<div class="msg me">${esc(q)}</div><div class="msg ai" id="tcur">Thinking…</div>`);
+  const cur = $('#tcur'); cur.removeAttribute('id');
+  const convo = TU.msgs.map((m, i) => i === 0 ? { role: 'user', content: TU.ctx + '\n\nSTUDENT: ' + m.content } : m);
+  TU.ac = new AbortController();
+  try {
+    const r = await sampleFn(convo, { onText: ({ text }) => { cur.textContent = text; $('#tmsgs').scrollTop = 1e9; }, signal: TU.ac.signal, cache: false });
+    cur.textContent = r.text; TU.msgs.push({ role: 'assistant', content: r.text });
+  } catch (e) {
+    if (e && e.code === 'not_granted') { tutorOK = false; cur.textContent = 'The tutor isn\'t available here. Open this page on claude.ai to use it.'; }
+    else if (e && e.code === 'rate_limited') cur.textContent = 'The tutor is busy right now. Try again in a minute.';
+    else if (e && e.name !== 'AbortError') cur.textContent = 'Couldn\'t reach the tutor. Try again in a moment.';
+    TU.msgs.pop();
+  }
+  TU.busy = false; $('#tmsgs').scrollTop = 1e9;
+}
+$('#tclose').onclick = () => { $('#drawer').classList.remove('open'); TU.ac && TU.ac.abort(); };
+$('#tform').onsubmit = e => { e.preventDefault(); const v = $('#tinput').value.trim(); if (!v) return; $('#tinput').value = ''; ask(v); };
+
+/* ---------- boot ---------- */
+document.addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b && !b.closest('.todo')) { e.preventDefault(); goTask(b.dataset.go); } });
+render();
+initCaps();
+
+</script>
+</body>
+</html>
