@@ -505,7 +505,7 @@ def('v_river', 'vectors', 'Relative velocity: boat in a current', (fix = {}) => 
 def('k_planet', 'kin1d', 'Find g on another planet', (fix = {}) => {
   const vx = fx(fix, 'vx', () => rnd(1, 4)), vy = fx(fix, 'vy', () => rnd(3, 9)), tt = fx(fix, 'tt', () => pick([2, 3]));
   const g = vy / (tt - 1);
-  return { stem: `On Planet Meepzorp a student throws a ball (no air resistance). Its position is marked every 1 s, and it reaches the top of its path at t = ${tt} s. At t = 1 s the ball's velocity is v = (${vx} î + ${vy} ĵ) m/s. What is the gravitational acceleration g on Meepzorp?`,
+  return { stem: `On Planet Meepzorp a student throws a ball (no air resistance). Its position is marked every 1 s, and it reaches the top of its path at t = ${tt} s. At t = 1 s the ball's velocity is v⃗ = (${vx} x̂ + ${vy} ŷ) m/s, i.e. v = (${vx}, ${vy}) m/s. What is the gravitational acceleration g on Meepzorp?`,
     ...mc(g, [vy / tt, Math.hypot(vx, vy) / (tt - 1), 2 * vy / (tt - 1), 9.81, vy], 'm/s²'), src: 'Midterm 1 Q1 style',
     hints: ['At the top of the path, the vertical velocity is zero.', `From t = 1 s to t = ${tt} s, v_y goes from ${vy} m/s to 0.`, 'Use v_y,f = v_y,i − g·Δt.'],
     sol: step('At the top', 'v_y = 0 at the highest point. Horizontal velocity is irrelevant for g.') + step('Kinematics in y', eq(`0 = ${vy} − g(${tt} − 1) → g = <b>${fmt(g)} m/s²</b>`)) };
