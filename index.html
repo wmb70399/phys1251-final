@@ -106,7 +106,7 @@ main{padding:28px clamp(16px,3.2vw,44px) 90px;max-width:1180px;width:100%}
 .prob .stem b{color:var(--acc)}
 .figwrap{margin:14px 0 4px;overflow-x:auto}
 .fig{width:100%;max-width:400px;height:auto;display:block}
-.fig.wide{max-width:600px}
+.fig.wide{max-width:640px}
 .fig .solid,.fig .thin,.fig .dash,.fig .spring,.fig .ax,.fig .gr,.fig .gr2,.fig .plot,.fig .vec,.fig .vec2{fill:none}
 .fig .solid{stroke:var(--mut);stroke-width:2}
 .fig .surf{fill:rgba(79,227,255,.06);stroke:var(--mut);stroke-width:1.6}
@@ -116,6 +116,7 @@ main{padding:28px clamp(16px,3.2vw,44px) 90px;max-width:1180px;width:100%}
 .fig .blk{fill:rgba(160,139,255,.22);stroke:var(--acc2);stroke-width:1.6}
 .fig .ghost{fill:none;stroke:var(--acc2);stroke-dasharray:3 3}
 .fig .dot{fill:var(--acc)}
+.fig .knot{fill:var(--bg);stroke:var(--acc);stroke-width:2.4}
 .fig .vec{stroke:var(--acc);stroke-width:2.2}
 .fig .vec2{stroke:var(--acc2);stroke-width:2.2}
 .fig .ahd{fill:var(--acc)}
@@ -297,16 +298,17 @@ const arrowDefs = `<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" m
 const T = (x, y, s, a = 'middle', c = 'lbl') => `<text x="${x}" y="${y}" text-anchor="${a}" class="${c}">${s}</text>`;
 
 function figVT(ts, vs) {
-  const W = 560, H = 240, L = 46, R = 16, Tp = 16, B = 34, tmax = ts[ts.length - 1];
+  const W = 620, H = 300, L = 58, R = 18, Tp = 16, B = 44, tmax = ts[ts.length - 1];
   const X = t => L + (W - L - R) * t / tmax, Y = v => Tp + (H - Tp - B) * (6 - v) / 12;
   let g = '';
-  for (let t = 0; t <= tmax; t += 2) g += `<line x1="${X(t)}" y1="${Y(6)}" x2="${X(t)}" y2="${Y(-6)}" class="${t % 4 ? 'gr2' : 'gr'}"/>`;
-  for (let v = -6; v <= 6; v++) g += `<line x1="${L}" y1="${Y(v)}" x2="${W - R}" y2="${Y(v)}" class="${v === 0 ? 'ax' : (v % 5 ? 'gr2' : 'gr')}"/>`;
-  for (let t = 0; t <= tmax; t += 4) g += T(X(t), Y(0) + 15, t, 'middle', 'tick');
-  [-5, 5].forEach(v => g += T(L - 8, Y(v) + 4, (v > 0 ? '+' : '−') + '5', 'end', 'tick'));
-  g += T(W - R, Y(-6) + 26, 'time (s)', 'end', 'tick');
+  for (let t = 0; t <= tmax; t += 1) g += `<line x1="${X(t)}" y1="${Y(6)}" x2="${X(t)}" y2="${Y(-6)}" class="${t % 2 ? 'gr2' : 'gr'}"/>`;
+  for (let v = -6; v <= 6; v++) g += `<line x1="${L}" y1="${Y(v)}" x2="${W - R}" y2="${Y(v)}" class="${v === 0 ? 'ax' : 'gr'}"/>`;
+  for (let v = -5; v <= 5; v++) g += T(L - 8, Y(v) + 4, v > 0 ? '+' + v : v < 0 ? '−' + (-v) : '0', 'end', 'tick');
+  for (let t = 0; t <= tmax; t += 2) g += T(X(t), Y(-6) + 16, t, 'middle', 'tick');
+  g += T((L + W - R) / 2, H - 6, 'time (s)', 'middle', 'tick');
   g += `<text x="14" y="${(Y(6) + Y(-6)) / 2}" transform="rotate(-90 14 ${(Y(6) + Y(-6)) / 2})" text-anchor="middle" class="tick">velocity (m/s)</text>`;
   g += `<polyline points="${ts.map((t, i) => X(t) + ',' + Y(vs[i])).join(' ')}" class="plot"/>`;
+  g += ts.map((t, i) => `<circle cx="${X(t)}" cy="${Y(vs[i])}" r="4.5" class="knot"/>`).join('');
   return svg(W, H, g, 'wide');
 }
 function figMini(fn, kind) {
